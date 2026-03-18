@@ -26,8 +26,8 @@ export default function Sidebar({ isExpanded }) {
         bg-[#F4F4F5] dark:bg-[#27272A] border-r border-zinc-200 dark:border-white/5 
         transition-all duration-300 ease-in-out shadow-2xl shadow-black/10 dark:shadow-black/50
         hidden sm:flex p-2
-        ${isExpanded ? 'sm:translate-x-0' : 'sm:-translate-x-full'} lg:translate-x-0
-        sm:w-[68px] ${isExpanded ? 'lg:w-64' : 'lg:w-[68px]'}
+        -translate-x-full sm:translate-x-0 ${isExpanded ? 'translate-x-0' : ''}
+        w-[68px] ${isExpanded ? 'sm:w-64' : 'sm:w-[68px]'}
       `}
         >
             {/* Header / Logo */}

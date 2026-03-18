@@ -113,7 +113,7 @@ export default function ClientLayout({ children }) {
                 />
             )}
 
-            <div className={`flex flex-col h-screen overflow-hidden w-full pb-20 sm:pb-0 transition-all duration-300 ${isSidebarExpanded ? 'sm:ml-[68px] lg:ml-64 lg:w-[calc(100%-16rem)]' : 'sm:ml-[68px] sm:w-[calc(100%-68px)]'}`}>
+            <div className={`flex flex-col h-screen overflow-hidden w-full pb-20 sm:pb-0 transition-all duration-300 ${isSidebarExpanded ? 'sm:ml-64 sm:w-[calc(100%-16rem)]' : 'sm:ml-[68px] sm:w-[calc(100%-68px)]'}`}>
                 <Header 
                     onToggleSidebar={() => setIsSidebarExpanded(!isSidebarExpanded)} 
                     onOpenMobileSheet={() => setIsMobileSheetOpen(true)}
