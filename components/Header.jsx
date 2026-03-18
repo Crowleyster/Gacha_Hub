@@ -9,10 +9,15 @@ export default function Header({ onToggleSidebar, onOpenMobileSheet }) {
   const pathname = usePathname();
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
+  const [isLowHeight, setIsLowHeight] = useState(false);
 
   // prevent hydration mismatch
   useEffect(() => {
     setMounted(true);
+    const handleResize = () => setIsLowHeight(window.innerHeight < 600);
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   // Simple mapping to get a title from the pathname
@@ -78,10 +83,10 @@ export default function Header({ onToggleSidebar, onOpenMobileSheet }) {
           {mounted && (theme === 'dark' ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />)}
         </button>
 
-        {/* Mobile Settings Toggle (Visible only below sm) */}
+        {/* Mobile Settings Toggle (Visible only below sm or when height is low) */}
         <button
           onClick={onOpenMobileSheet}
-          className="flex sm:hidden items-center justify-center w-10 h-10 rounded-lg border border-transparent text-zinc-600 dark:text-zinc-300 hover:bg-zinc-200/50 dark:hover:bg-zinc-700/50 transition-colors"
+          className={`items-center justify-center w-10 h-10 rounded-lg border border-transparent text-zinc-600 dark:text-zinc-300 hover:bg-zinc-200/50 dark:hover:bg-zinc-700/50 transition-colors ${isLowHeight ? 'flex' : 'flex sm:hidden'}`}
           title="Menú de Ajustes"
         >
           <MoreVertical className="w-5 h-5" />

@@ -1,11 +1,20 @@
 "use client";
 
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Calendar, Home, Gamepad2, Newspaper, Settings, CircleHelp, Compass } from 'lucide-react';
 
 export default function Sidebar({ isExpanded }) {
     const pathname = usePathname();
+    const [isLowHeight, setIsLowHeight] = useState(false);
+
+    useEffect(() => {
+        const handleResize = () => setIsLowHeight(window.innerHeight < 600);
+        handleResize();
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
     const topNavItems = [
         { name: 'Inicio', href: '/', icon: Home },
@@ -32,7 +41,7 @@ export default function Sidebar({ isExpanded }) {
         >
             {/* Header / Logo */}
             <div
-                className={`flex items-center transition-opacity rounded-xl ${isExpanded ? 'px-4 gap-4 justify-start' : 'justify-center w-full'}`}
+                className={`flex items-center transition-opacity shrink-0 rounded-xl ${isExpanded ? 'px-4 gap-4 justify-start' : 'justify-center w-full'}`}
                 style={{ height: '66px' }}
             >
                 <div className="shrink-0 flex items-center justify-center">
@@ -51,7 +60,7 @@ export default function Sidebar({ isExpanded }) {
 
             {/* Top Navigation Links */}
             <nav
-                className="flex-1 overflow-y-auto overflow-x-hidden custom-scrollbar flex flex-col pt-2 pb-4"
+                className="flex-1 overflow-y-auto overflow-x-hidden min-h-0 custom-scrollbar flex flex-col pt-2 pb-4"
                 style={{ marginTop: '6px' }}
             >
                 {topNavItems.map((item) => {
@@ -84,35 +93,37 @@ export default function Sidebar({ isExpanded }) {
             </nav>
 
             {/* Bottom Navigation Links */}
-            <div className="flex flex-col border-t border-zinc-200 dark:border-white/5 pt-2 mt-auto">
-                {bottomNavItems.map((item) => {
-                    const isActive = pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href));
+            {!isLowHeight && (
+                <div className="flex flex-col border-t border-zinc-200 dark:border-white/5 pt-2 mt-auto shrink-0">
+                    {bottomNavItems.map((item) => {
+                        const isActive = pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href));
 
-                    return (
-                        <Link
-                            key={item.href}
-                            href={item.href}
-                            className={`
-                flex items-center rounded-xl w-full shrink-0
-                transition-all duration-200 group relative
-                ${isExpanded ? 'gap-4 px-4 justify-start' : 'justify-center'}
-                ${isActive
-                                    ? 'bg-[#27272A] text-white shadow-md dark:bg-white dark:text-zinc-900 font-semibold'
-                                    : 'text-zinc-700 hover:bg-zinc-200 dark:text-zinc-100 dark:hover:bg-zinc-700 font-medium'
-                                }
-              `}
-                            style={{ height: '54px' }}
-                            title={!isExpanded ? item.name : undefined}
-                        >
-                            <item.icon className={`w-5 h-5 shrink-0 ${isActive ? 'scale-110' : 'group-hover:scale-110'} transition-transform`} />
+                        return (
+                            <Link
+                                key={item.href}
+                                href={item.href}
+                                className={`
+                    flex items-center rounded-xl w-full shrink-0
+                    transition-all duration-200 group relative
+                    ${isExpanded ? 'gap-4 px-4 justify-start' : 'justify-center'}
+                    ${isActive
+                                        ? 'bg-[#27272A] text-white shadow-md dark:bg-white dark:text-zinc-900 font-semibold'
+                                        : 'text-zinc-700 hover:bg-zinc-200 dark:text-zinc-100 dark:hover:bg-zinc-700 font-medium'
+                                    }
+                  `}
+                                style={{ height: '54px' }}
+                                title={!isExpanded ? item.name : undefined}
+                            >
+                                <item.icon className={`w-5 h-5 shrink-0 ${isActive ? 'scale-110' : 'group-hover:scale-110'} transition-transform`} />
 
-                            <span className={`whitespace-nowrap transition-all duration-300 overflow-hidden ${!isExpanded ? 'w-0 opacity-0' : 'w-full opacity-100'}`}>
-                                {item.name}
-                            </span>
-                        </Link>
-                    )
-                })}
-            </div>
+                                <span className={`whitespace-nowrap transition-all duration-300 overflow-hidden ${!isExpanded ? 'w-0 opacity-0' : 'w-full opacity-100'}`}>
+                                    {item.name}
+                                </span>
+                            </Link>
+                        )
+                    })}
+                </div>
+            )}
 
         </aside>
     );

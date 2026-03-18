@@ -7,6 +7,7 @@ import Sidebar from '@/components/Sidebar';
 import Header from '@/components/Header';
 import MobileNav from '@/components/MobileNav';
 import BottomSheet from '@/components/BottomSheet';
+import RightSheet from '@/components/RightSheet';
 import { Settings, CircleHelp, Moon, Sun } from 'lucide-react';
 import Link from 'next/link';
 import { useTheme } from 'next-themes';
@@ -14,9 +15,14 @@ import { useTheme } from 'next-themes';
 function SettingsSheet({ isOpen, onClose }) {
     const { theme, setTheme } = useTheme();
     const [mounted, setMounted] = useState(false);
+    const [isLowHeight, setIsLowHeight] = useState(false);
 
     useEffect(() => {
         setMounted(true);
+        const handleResize = () => setIsLowHeight(window.innerHeight < 600);
+        handleResize();
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
     }, []);
 
     const menuItems = [
@@ -26,49 +32,61 @@ function SettingsSheet({ isOpen, onClose }) {
 
     if (!mounted) return null;
 
-    return (
-        <BottomSheet isOpen={isOpen} onClose={onClose} title="Más opciones">
-            <div className="flex flex-col w-full gap-4">
-                {/* Navigation Links */}
-                <div className="flex flex-col gap-2">
-                    {menuItems.map((item) => (
-                        <Link
-                            key={item.href}
-                            href={item.href}
-                            onClick={onClose}
-                            className="flex items-center gap-4 w-full h-[54px] px-4 rounded-xl border border-zinc-200 bg-zinc-50 hover:bg-zinc-100 dark:border-zinc-800 dark:bg-[#27272A] dark:hover:bg-[#333333] transition-colors"
-                        >
-                            <div className="flex items-center justify-center w-10 h-10 rounded-full bg-zinc-200 dark:bg-zinc-700/50 text-zinc-700 dark:text-zinc-300">
-                                <item.icon className="w-5 h-5" />
-                            </div>
-                            <span className="text-base font-semibold text-zinc-900 dark:text-white">
-                                {item.name}
-                            </span>
-                        </Link>
-                    ))}
-                </div>
-
-                {/* Theme Section */}
-                <div className="flex flex-col gap-2">
-                    <span className="text-sm text-zinc-500 dark:text-zinc-400 font-medium ml-1">Preferencia</span>
-                    <button
-                        onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+    const Content = (
+        <div className="flex flex-col w-full gap-4">
+            {/* Navigation Links */}
+            <div className="flex flex-col gap-2">
+                {menuItems.map((item) => (
+                    <Link
+                        key={item.href}
+                        href={item.href}
+                        onClick={onClose}
                         className="flex items-center gap-4 w-full h-[54px] px-4 rounded-xl border border-zinc-200 bg-zinc-50 hover:bg-zinc-100 dark:border-zinc-800 dark:bg-[#27272A] dark:hover:bg-[#333333] transition-colors"
                     >
                         <div className="flex items-center justify-center w-10 h-10 rounded-full bg-zinc-200 dark:bg-zinc-700/50 text-zinc-700 dark:text-zinc-300">
-                            {theme === 'dark' ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />}
+                            <item.icon className="w-5 h-5" />
                         </div>
                         <span className="text-base font-semibold text-zinc-900 dark:text-white">
-                            {theme === 'dark' ? 'Modo Oscuro' : 'Modo Claro'}
+                            {item.name}
                         </span>
-                    </button>
-                </div>
-
-                {/* Version Details */}
-                <div className="w-full text-center py-2">
-                    <p className="text-xs text-zinc-400 dark:text-zinc-500 font-medium tracking-wide">GACHA HUB v1.0.0</p>
-                </div>
+                    </Link>
+                ))}
             </div>
+
+            {/* Theme Section */}
+            <div className="flex flex-col gap-2">
+                <span className="text-sm text-zinc-500 dark:text-zinc-400 font-medium ml-1">Preferencia</span>
+                <button
+                    onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+                    className="flex items-center gap-4 w-full h-[54px] px-4 rounded-xl border border-zinc-200 bg-zinc-50 hover:bg-zinc-100 dark:border-zinc-800 dark:bg-[#27272A] dark:hover:bg-[#333333] transition-colors"
+                >
+                    <div className="flex items-center justify-center w-10 h-10 rounded-full bg-zinc-200 dark:bg-zinc-700/50 text-zinc-700 dark:text-zinc-300">
+                        {theme === 'dark' ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />}
+                    </div>
+                    <span className="text-base font-semibold text-zinc-900 dark:text-white">
+                        {theme === 'dark' ? 'Modo Oscuro' : 'Modo Claro'}
+                    </span>
+                </button>
+            </div>
+
+            {/* Version Details */}
+            <div className="w-full text-center py-2">
+                <p className="text-xs text-zinc-400 dark:text-zinc-500 font-medium tracking-wide">GACHA HUB v1.0.0</p>
+            </div>
+        </div>
+    );
+
+    if (isLowHeight) {
+        return (
+            <RightSheet isOpen={isOpen} onClose={onClose} title="Más opciones">
+                {Content}
+            </RightSheet>
+        );
+    }
+
+    return (
+        <BottomSheet isOpen={isOpen} onClose={onClose} title="Más opciones">
+            {Content}
         </BottomSheet>
     );
 }
