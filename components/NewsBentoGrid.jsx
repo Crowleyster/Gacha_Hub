@@ -8,22 +8,37 @@ const NEWS_DATA = [
         id: 1,
         title: "Wuthering Waves 1.1: 'Thaw of Eons' - Nuevos Personajes y Región",
         category: "Actualización",
-        image: "https://images.unsplash.com/photo-1614728263952-84ea256f9679?auto=format&fit=crop&q=80&w=1200",
-        isHero: true
+        image: "https://images.unsplash.com/photo-1614728263952-84ea256f9679?auto=format&fit=crop&q=80&w=1200"
     },
     {
         id: 2,
         title: "Dev Log: Mejoras en el sistema de Echoes",
         category: "Desarrollo",
-        image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=800",
-        isHero: false
+        image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=800"
     },
     {
         id: 3,
         title: "Guía: Mejores composiciones para el Abismo",
         category: "Guía",
-        image: "https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&q=80&w=800",
-        isHero: false
+        image: "https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&q=80&w=800"
+    },
+    {
+        id: 4,
+        title: "Evento: Festival de la Luna Llena",
+        category: "Evento",
+        image: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&q=80&w=800"
+    },
+    {
+        id: 5,
+        title: "Análisis: Jinhsi, la Magistrada de Jinzhou",
+        category: "Análisis",
+        image: "https://images.unsplash.com/photo-1534423861386-85a16f5d13fd?auto=format&fit=crop&q=80&w=800"
+    },
+    {
+        id: 6,
+        title: "Comunidad: Resumen del Mes de Junio",
+        category: "Comunidad",
+        image: "https://images.unsplash.com/photo-1515523110800-9415d13b84a8?auto=format&fit=crop&q=80&w=800"
     }
 ];
 
@@ -61,9 +76,6 @@ function NewsCard({ news, className }) {
 }
 
 export default function NewsBentoGrid() {
-    const heroCard = NEWS_DATA.find(n => n.id === 1);
-    const secondaryCards = NEWS_DATA.filter(n => n.id !== 1);
-
     return (
         <section className="col-span-full space-y-6 font-sans">
             {/* Header */}
@@ -84,20 +96,32 @@ export default function NewsBentoGrid() {
             <div className="grid grid-cols-4 md:grid-cols-8 xl:grid-cols-12 gap-4 md:gap-6 auto-rows-fr">
                 {/* 1. Card Hero */}
                 <NewsCard 
-                    news={heroCard} 
+                    news={NEWS_DATA[0]} 
                     className="col-span-4 md:col-span-8 xl:col-span-8 xl:row-span-2 min-h-[300px] md:min-h-[400px]" 
                 />
 
-                {/* 2. Card Secundaria 1 */}
+                {/* 2 & 3. Cards Secundarias (Lado derecho en XL) */}
                 <NewsCard 
-                    news={secondaryCards[0]} 
+                    news={NEWS_DATA[1]} 
+                    className="col-span-2 md:col-span-4 xl:col-span-4 xl:row-span-1 min-h-[180px] md:min-h-0" 
+                />
+                <NewsCard 
+                    news={NEWS_DATA[2]} 
                     className="col-span-2 md:col-span-4 xl:col-span-4 xl:row-span-1 min-h-[180px] md:min-h-0" 
                 />
 
-                {/* 3. Card Secundaria 2 */}
+                {/* 4, 5 & 6. Fila inferior en XL */}
                 <NewsCard 
-                    news={secondaryCards[1]} 
+                    news={NEWS_DATA[3]} 
                     className="col-span-2 md:col-span-4 xl:col-span-4 xl:row-span-1 min-h-[180px] md:min-h-0" 
+                />
+                <NewsCard 
+                    news={NEWS_DATA[4]} 
+                    className="col-span-2 md:col-span-4 xl:col-span-4 xl:row-span-1 min-h-[180px] md:min-h-0" 
+                />
+                <NewsCard 
+                    news={NEWS_DATA[5]} 
+                    className="col-span-4 md:col-span-8 xl:col-span-4 xl:row-span-1 min-h-[180px] md:min-h-0" 
                 />
             </div>
         </section>
