@@ -27,6 +27,7 @@ export default function Header({ onToggleSidebar, onOpenMobileSheet }) {
     if (path.startsWith('/noticias')) return 'Noticias';
     if (path.startsWith('/eventos')) return 'Eventos';
     if (path.startsWith('/ajustes')) return 'Ajustes';
+    if (path.startsWith('/ayuda')) return 'Ayuda';
     return 'Gacha Hub';
   };
 
