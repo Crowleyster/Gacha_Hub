@@ -1,0 +1,163 @@
+{
+  "games": [
+    {
+      "id": 1,
+      "name": "Genshin Impact",
+      "slug": "genshin-impact",
+      "developer": "HoYoverse",
+      "genres": ["Action RPG", "Open World"],
+      "cover_image_url": "https://placehold.co/1920x1080/1a1a24/ffffff?text=Genshin+Impact",
+      "icon_url": "https://placehold.co/200x200/1a1a24/ffffff?text=GI"
+    },
+    {
+      "id": 2,
+      "name": "Wuthering Waves",
+      "slug": "wuthering-waves",
+      "developer": "Kuro Games",
+      "genres": ["Action RPG", "Open World"],
+      "cover_image_url": "https://placehold.co/1920x1080/1a1a24/ffffff?text=Wuthering+Waves",
+      "icon_url": "https://placehold.co/200x200/1a1a24/ffffff?text=WW"
+    },
+    {
+      "id": 3,
+      "name": "Honkai: Star Rail",
+      "slug": "honkai-star-rail",
+      "developer": "HoYoverse",
+      "genres": ["RPG", "Turn-Based Strategy"],
+      "cover_image_url": "https://placehold.co/1920x1080/1a1a24/ffffff?text=Honkai+Star+Rail",
+      "icon_url": "https://placehold.co/200x200/1a1a24/ffffff?text=HSR"
+    }
+  ],
+  "game_versions": [
+    {
+      "id": 1,
+      "game_id": 1,
+      "region": "Global",
+      "publisher": "Cognosphere PTE. LTD.",
+      "current_version": "4.5",
+      "platforms": ["PC", "PS4", "PS5", "Mobile"]
+    },
+    {
+      "id": 2,
+      "game_id": 1,
+      "region": "CN",
+      "publisher": "miHoYo",
+      "current_version": "4.5",
+      "platforms": ["PC", "Mobile"]
+    },
+    {
+      "id": 3,
+      "game_id": 2,
+      "region": "Global",
+      "publisher": "Kuro Games",
+      "current_version": "1.0",
+      "platforms": ["PC", "Mobile"]
+    },
+    {
+      "id": 4,
+      "game_id": 2,
+      "region": "CN",
+      "publisher": "Kuro Games",
+      "current_version": "1.0",
+      "platforms": ["PC", "Mobile"]
+    },
+    {
+      "id": 5,
+      "game_id": 3,
+      "region": "Global",
+      "publisher": "Cognosphere PTE. LTD.",
+      "current_version": "2.1",
+      "platforms": ["PC", "PS5", "Mobile"]
+    },
+    {
+      "id": 6,
+      "game_id": 3,
+      "region": "CN",
+      "publisher": "miHoYo",
+      "current_version": "2.1",
+      "platforms": ["PC", "Mobile"]
+    }
+  ],
+  "updates": [
+    {
+      "id": 1,
+      "game_id": 1,
+      "title": "Version 4.5 Update Details",
+      "summary": "Full details on the new limited-time events, characters, and optimizations coming in Version 4.5.",
+      "thumbnail_url": "https://placehold.co/600x400/2a2a35/ffffff?text=4.5+Update",
+      "published_at": "2024-03-13T10:00:00Z",
+      "status": "approved",
+      "tags": ["Updates", "Eventos"]
+    },
+    {
+      "id": 2,
+      "game_id": 1,
+      "title": "Drip Marketing: Arlecchino",
+      "summary": "Take a look at the upcoming Fatui Harbinger joining the playable roster in Version 4.6.",
+      "thumbnail_url": "https://placehold.co/600x400/2a2a35/ffffff?text=Arlecchino",
+      "published_at": "2024-03-11T09:00:00Z",
+      "status": "approved",
+      "tags": ["Drip marketing", "Updates"]
+    },
+    {
+      "id": 3,
+      "game_id": 1,
+      "title": "Version 4.5 Special Program Livestream",
+      "summary": "Join us for a preview of the upcoming Version 4.5 content. Free redemption codes included!",
+      "thumbnail_url": "https://placehold.co/600x400/2a2a35/ffffff?text=4.5+Livestream",
+      "published_at": "2024-03-01T12:00:00Z",
+      "status": "approved",
+      "tags": ["Livestreams", "Códigos"]
+    },
+    {
+      "id": 4,
+      "game_id": 2,
+      "title": "Wuthering Waves CBT2 Concludes",
+      "summary": "Thank you all Rovers for participating in the second closed beta test. Here is a summary of our optimizations.",
+      "thumbnail_url": "https://placehold.co/600x400/2a2a35/ffffff?text=CBT2+Concludes",
+      "published_at": "2024-03-17T08:00:00Z",
+      "status": "approved",
+      "tags": ["Updates", "QoL"]
+    },
+    {
+      "id": 5,
+      "game_id": 2,
+      "title": "Pre-registration is now open!",
+      "summary": "Pre-register now to unlock exclusive milestone rewards when Wuthering Waves officially launches.",
+      "thumbnail_url": "https://placehold.co/600x400/2a2a35/ffffff?text=Pre-registration",
+      "published_at": "2024-03-16T14:30:00Z",
+      "status": "approved",
+      "tags": ["Recompensas", "Eventos"]
+    },
+    {
+      "id": 6,
+      "game_id": 3,
+      "title": "Version 2.1 'Into the Yawning Chasm' Trailer",
+      "summary": "The journey in Penacony continues. What mysteries lie within the deepest depths of the dreamscape?",
+      "thumbnail_url": "https://placehold.co/600x400/2a2a35/ffffff?text=2.1+Trailer",
+      "published_at": "2024-03-16T10:00:00Z",
+      "status": "approved",
+      "tags": ["Updates", "Livestreams"]
+    },
+    {
+      "id": 7,
+      "game_id": 3,
+      "title": "Acheron & Aventurine Banners Out Now",
+      "summary": "The new 5-star characters Acheron (Nihility: Lightning) and Aventurine (Preservation: Imaginary) are available.",
+      "thumbnail_url": "https://placehold.co/600x400/2a2a35/ffffff?text=New+Banners",
+      "published_at": "2024-03-27T04:00:00Z",
+      "status": "approved",
+      "tags": ["Banners"]
+    },
+    {
+      "id": 8,
+      "game_id": 3,
+      "title": "Anniversary Rewards & Free Pulls",
+      "summary": "Celebrate the first anniversary of Honkai: Star Rail with 20 free pulls and extra Login events!",
+      "thumbnail_url": "https://placehold.co/600x400/2a2a35/ffffff?text=Anniversary",
+      "published_at": "2024-03-15T12:00:00Z",
+      "status": "approved",
+      "tags": ["Recompensas", "Eventos"]
+    }
+  ]
+}
