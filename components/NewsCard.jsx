@@ -19,11 +19,16 @@ export default function NewsCard({
     isHero = false 
 }) {
     return (
-        <article className="
-            group relative w-full h-full rounded-[16px] overflow-hidden cursor-pointer
-            border-2 border-transparent transition-all duration-300
-            hover:border-border
-        ">
+        <article 
+            tabIndex={0}
+            role="button"
+            className="
+                group relative w-full h-full rounded-[16px] overflow-hidden cursor-pointer
+                border-2 border-transparent transition-all duration-300
+                hover:border-border
+                focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2
+            "
+        >
             {/* 1. Imagen de Fondo */}
             <img 
                 src={imageUrl} 
@@ -32,15 +37,13 @@ export default function NewsCard({
             />
 
             {/* 2. Scrims (Gradientes) */}
-            {/* Capa base: Default y Focus */}
             <div className="
                 absolute inset-0 
-                bg-gradient-to-b from-black/40 to-black/100
+                bg-gradient-to-b from-transparent via-black/20 to-black/90
                 transition-opacity duration-500
                 group-hover:opacity-0
             " />
             
-            {/* Capa Hover: Scrim específico */}
             <div className="
                 absolute inset-0 
                 bg-gradient-to-b from-transparent to-black/100
@@ -52,12 +55,13 @@ export default function NewsCard({
             <div className="
                 relative h-full w-full flex flex-col justify-end
                 p-[24px] lg:p-[32px]
+                gap-[4px]
                 transition-all duration-300
             ">
-                {/* Parte Superior: Icono y Tag */}
-                <div className="absolute top-[24px] lg:top-[32px] left-[24px] lg:left-[32px] flex items-center gap-3">
+                {/* Parte Inferior: Icono + Tag */}
+                <div className="flex items-center gap-3">
                     {gameIconUrl && (
-                        <div className="w-[40px] h-[40px] rounded-full overflow-hidden border border-white/20 shadow-lg">
+                        <div className="w-[40px] h-[40px] rounded-full overflow-hidden border border-white/20 shadow-lg shrink-0">
                             <img 
                                 src={gameIconUrl} 
                                 alt="Game Icon" 
@@ -74,9 +78,10 @@ export default function NewsCard({
                     </span>
                 </div>
 
-                {/* Parte Inferior: Titular */}
+                {/* Parte Inferior: Titular (Máximo 2 líneas) */}
                 <h3 className={`
                     text-white transition-transform duration-300 group-hover:-translate-y-1
+                    line-clamp-2
                     ${isHero ? 'Title-Hero' : 'Subheading-Strong'}
                 `}>
                     {title}
