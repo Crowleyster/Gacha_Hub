@@ -82,7 +82,7 @@ export default function NewsCard({
                 <h3 className={`
                     text-white transition-transform duration-300 group-hover:-translate-y-1
                     line-clamp-2
-                    ${isHero ? 'text-title-hero' : 'text-subheading-strong'}
+                    ${isHero ? 'text-title-page' : 'text-subheading-strong'}
                 `}>
                     {title}
                 </h3>
