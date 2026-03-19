@@ -2,10 +2,61 @@
 
 import { ArrowRight } from 'lucide-react';
 import Link from 'next/link';
-
-
+import NewsCard from './NewsCard';
 
 export default function NewsBentoGrid() {
+    // Mock Data for demonstration
+    const newsData = [
+        {
+            id: 1,
+            title: "Colaboración confirmada: Gacha Hub x Persona 5 Royal",
+            tag: "EVENTO ESPECIAL",
+            gameIconUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=P5R",
+            imageUrl: "https://images.unsplash.com/photo-1614728263952-84ea206f99b6?q=80&w=1000&auto=format&fit=crop",
+            isHero: true
+        },
+        {
+            id: 2,
+            title: "Guía de Reroll: Consigue las mejores unidades desde el día 1",
+            tag: "GUÍA",
+            gameIconUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=Guide",
+            imageUrl: "https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=1000&auto=format&fit=crop",
+            isHero: false
+        },
+        {
+            id: 3,
+            title: "Análisis: ¿Vale la pena tirar por la nueva unidad Shogun?",
+            tag: "ANÁLISIS",
+            gameIconUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=Shogun",
+            imageUrl: "https://images.unsplash.com/photo-1578632738980-43314a5b4236?q=80&w=1000&auto=format&fit=crop",
+            isHero: false
+        },
+        {
+            id: 4,
+            title: "Nuevos Banners de Verano: Todo lo que necesitas saber",
+            tag: "NOTICIAS",
+            gameIconUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=Summer",
+            imageUrl: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1000&auto=format&fit=crop",
+            isHero: false
+        },
+        {
+            id: 5,
+            title: "Mantenimiento: Parche 2.4 ya disponible",
+            tag: "INFO",
+            gameIconUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=Patch",
+            imageUrl: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=1000&auto=format&fit=crop",
+            isHero: false
+        },
+        {
+            id: 6,
+            title: "Comunidad: Resultados del concurso de Fan Art",
+            tag: "COMUNIDAD",
+            gameIconUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=Art",
+            imageUrl: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?q=80&w=1000&auto=format&fit=crop",
+            isHero: false
+        }
+    ];
+
     return (
         <section className="
             grid w-full font-sans
@@ -23,7 +74,7 @@ export default function NewsBentoGrid() {
             /* XL (1536px - 1919px) */
             xl:grid-rows-[46px_repeat(3,240px)]
             /* XXL (>= 1920px) */
-            2xl:grid-rows-[46px_repeat(4,240px)]
+            2xl:grid-rows-[46px_repeat(3,240px)]
             grid-auto-rows-[240px]
         ">
             {/* 1. Header (Fila 1) */}
@@ -31,9 +82,10 @@ export default function NewsBentoGrid() {
                 row-start-1 col-start-1 col-span-4
                 sm:col-span-8 
                 md:col-span-12
+                lg:col-span-9
                 flex items-center justify-between
             ">
-                <h2 className="text-2xl font-bold text-foreground">
+                <h2 className="text-2xl font-bold text-foreground font-sans">
                     Noticias Destacadas
                 </h2>
                 {/* Botón visible solo en Tablet/Desktop en Fila 1 */}
@@ -47,76 +99,70 @@ export default function NewsBentoGrid() {
             </div>
 
             {/* 2. 6 Tarjetas (Priority Order: Card-1 to Card-6) */}
-
-            {/* Card-1 (Red) */}
+            
+            {/* Card-1 (Hero) */}
             <div className="
-                bg-red-500/10 border border-red-500/20 rounded-xl w-full h-full flex items-center justify-center text-red-500/40 font-bold text-xl
                 col-start-1 col-span-4 row-start-2 row-span-2
                 sm:col-span-8
                 md:col-span-12
                 lg:col-span-6
             ">
-                Card-1 (Red)
+                <NewsCard {...newsData[0]} />
             </div>
 
-            {/* Card-2 (Yellow) */}
+            {/* Card-2 */}
             <div className="
-                bg-yellow-500/10 border border-yellow-500/20 rounded-xl w-full h-full flex items-center justify-center text-yellow-500/40 font-bold
                 col-start-1 col-span-4 row-start-5 row-span-1
                 xs:row-start-4
                 sm:col-start-5 sm:col-span-4 sm:row-start-4
                 md:col-start-7 md:col-span-6
                 lg:col-start-1 lg:col-span-6
             ">
-                Card-2 (Yellow)
+                <NewsCard {...newsData[1]} />
             </div>
 
-            {/* Card-3 (Light green) */}
+            {/* Card-3 */}
             <div className="
-                bg-lime-500/10 border border-lime-500/20 rounded-xl w-full h-full flex items-center justify-center text-lime-500/40 font-bold
                 col-start-1 col-span-2 row-start-4 row-span-1
                 xs:row-start-6 xs:row-span-2
                 sm:row-start-4 sm:row-span-2
                 md:col-span-3
                 lg:col-start-7 lg:row-start-3
             ">
-                Card-3 (Light green)
+                <NewsCard {...newsData[2]} />
             </div>
 
-            {/* Card-4 (Base green) */}
+            {/* Card-4 */}
             <div className="
-                bg-green-500/10 border border-green-500/20 rounded-xl w-full h-full flex items-center justify-center text-green-500/40 font-bold
                 col-start-3 col-span-2 row-start-4 row-span-1
                 xs:row-start-5 xs:row-span-2
                 sm:row-start-4 sm:row-span-2
                 md:col-start-4 md:col-span-3 md:row-start-4 md:row-span-2
-                lg:col-start-10 lg:row-start-2 lg:row-span-2
+                lg:col-start-10 lg:row-start-1 lg:row-span-2
             ">
-                Card-4 (Base green)
+                <NewsCard {...newsData[3]} />
             </div>
 
-            {/* Card-5 (Dark green) */}
+            {/* Card-5 */}
             <div className="
-                bg-emerald-700/10 border border-emerald-700/20 rounded-xl w-full h-full flex items-center justify-center text-emerald-700/40 font-bold
                 col-start-1 col-span-2 row-start-6 row-span-1
                 xs:row-start-5
-                sm:col-start-5 sm:row-start-5
-                md:col-start-7 md:col-span-3
+                sm:col-start-5 sm:row-start-5 sm:row-span-1
+                md:col-start-7 md:col-span-3 md:row-start-5 md:row-span-1
                 lg:row-start-2
             ">
-                Card-5 (Dark green)
+                <NewsCard {...newsData[4]} />
             </div>
 
-            {/* Card-6 (Brown) */}
+            {/* Card-6 */}
             <div className="
-                bg-amber-900/10 border border-amber-900/20 rounded-xl w-full h-full flex items-center justify-center text-amber-900/40 font-bold
                 col-start-3 col-span-2 row-start-6 row-span-1
                 xs:row-start-7
                 sm:col-start-7 sm:row-start-5
                 md:col-start-10 md:col-span-3
-                lg:row-start-4 lg:row-span-3
+                lg:row-start-3 lg:row-span-2
             ">
-                Card-6 (Brown)
+                <NewsCard {...newsData[5]} />
             </div>
 
             {/* 3. Button (Mobile only at the end) */}
