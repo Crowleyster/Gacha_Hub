@@ -5,54 +5,54 @@ import Link from 'next/link';
 import NewsCard from './NewsCard';
 
 export default function NewsBentoGrid() {
-    // Mock Data for demonstration
+    // Mock Data for demonstration (6 Diferentes Gachas)
     const newsData = [
         {
             id: 1,
-            title: "Colaboración confirmada: Gacha Hub x Persona 5 Royal",
-            tag: "EVENTO ESPECIAL",
-            gameIconUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=P5R",
-            imageUrl: "https://images.unsplash.com/photo-1614728263952-84ea206f99b6?q=80&w=1000&auto=format&fit=crop",
+            title: "Genshin Impact: La expedición a Natlan ya está disponible para todos",
+            tag: "NUEVA REGIÓN",
+            gameIconUrl: "https://api.dicebear.com/7.x/identicon/svg?seed=genshin",
+            imageUrl: "https://images.unsplash.com/photo-1614728263952-84ea206f99b6?q=80&w=1200",
             isHero: true
         },
         {
             id: 2,
-            title: "Guía de Reroll: Consigue las mejores unidades desde el día 1",
-            tag: "GUÍA",
-            gameIconUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=Guide",
-            imageUrl: "https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=1000&auto=format&fit=crop",
+            title: "Honkai Star Rail: Ruan Mei y Blade regresan en los nuevos banners",
+            tag: "BANNERS",
+            gameIconUrl: "https://api.dicebear.com/7.x/identicon/svg?seed=starrail",
+            imageUrl: "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?q=80&w=1000",
             isHero: false
         },
         {
             id: 3,
-            title: "Análisis: ¿Vale la pena tirar por la nueva unidad Shogun?",
-            tag: "ANÁLISIS",
-            gameIconUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=Shogun",
-            imageUrl: "https://images.unsplash.com/photo-1578632738980-43314a5b4236?q=80&w=1000&auto=format&fit=crop",
+            title: "ZZZ: ¿Cómo buildear a Jane Doe? Análisis de Anomalía Físico",
+            tag: "GUÍA",
+            gameIconUrl: "https://api.dicebear.com/7.x/identicon/svg?seed=zzz",
+            imageUrl: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=1000",
             isHero: false
         },
         {
             id: 4,
-            title: "Nuevos Banners de Verano: Todo lo que necesitas saber",
-            tag: "NOTICIAS",
-            gameIconUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=Summer",
-            imageUrl: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1000&auto=format&fit=crop",
+            title: "Blue Archive: ¡El Comité de Disciplina sale a la playa!",
+            tag: "EVENTO",
+            gameIconUrl: "https://api.dicebear.com/7.x/identicon/svg?seed=bluearchive",
+            imageUrl: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1000",
             isHero: false
         },
         {
             id: 5,
-            title: "Mantenimiento: Parche 2.4 ya disponible",
-            tag: "INFO",
-            gameIconUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=Patch",
-            imageUrl: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=1000&auto=format&fit=crop",
+            title: "Nikke: Colaboración con Evangelion: Recluta a Asuka y Rei",
+            tag: "COLABORACIÓN",
+            gameIconUrl: "https://api.dicebear.com/7.x/identicon/svg?seed=nikke",
+            imageUrl: "https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=1000",
             isHero: false
         },
         {
             id: 6,
-            title: "Comunidad: Resultados del concurso de Fan Art",
-            tag: "COMUNIDAD",
-            gameIconUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=Art",
-            imageUrl: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?q=80&w=1000&auto=format&fit=crop",
+            title: "Arknights: Nuevo Episodio: Una historia de Victoria disponible",
+            tag: "HISTORIA",
+            gameIconUrl: "https://api.dicebear.com/7.x/identicon/svg?seed=arknights",
+            imageUrl: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?q=80&w=1000",
             isHero: false
         }
     ];
