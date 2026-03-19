@@ -47,7 +47,7 @@ export default function NewsBentoGrid() {
             </div>
 
             {/* 2. 6 Tarjetas (Priority Order: Card-1 to Card-6) */}
-            
+
             {/* Card-1 (Red) */}
             <div className="
                 bg-red-500/10 border border-red-500/20 rounded-xl w-full h-full flex items-center justify-center text-red-500/40 font-bold text-xl
@@ -87,10 +87,10 @@ export default function NewsBentoGrid() {
             <div className="
                 bg-green-500/10 border border-green-500/20 rounded-xl w-full h-full flex items-center justify-center text-green-500/40 font-bold
                 col-start-3 col-span-2 row-start-4 row-span-1
-                xs:row-start-5
-                sm:row-start-4
-                md:col-start-4 md:col-span-3
-                lg:col-start-10 lg:row-start-1 lg:row-span-2
+                xs:row-start-5 xs:row-span-2
+                sm:row-start-4 sm:row-span-2
+                md:col-start-4 md:col-span-3 md:row-start-4 md:row-span-2
+                lg:col-start-10 lg:row-start-2 lg:row-span-2
             ">
                 Card-4 (Base green)
             </div>
@@ -111,6 +111,7 @@ export default function NewsBentoGrid() {
             <div className="
                 bg-amber-900/10 border border-amber-900/20 rounded-xl w-full h-full flex items-center justify-center text-amber-900/40 font-bold
                 col-start-3 col-span-2 row-start-6 row-span-1
+                xs:row-start-7
                 sm:col-start-7 sm:row-start-5
                 md:col-start-10 md:col-span-3
                 lg:row-start-4 lg:row-span-3
