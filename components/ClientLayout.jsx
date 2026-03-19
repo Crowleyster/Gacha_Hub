@@ -138,7 +138,7 @@ export default function ClientLayout({ children }) {
                 />
 
                 <div className="flex-1 flex flex-col min-w-0 overflow-x-hidden overflow-y-auto bg-background">
-                    <main className="w-full max-w-[3840px] mx-auto grid content-start grid-cols-4 sm:grid-cols-8 md:grid-cols-12 gap-[16px] sm:gap-[24px] px-[24px] py-[24px] xs:px-[32px] xs:py-[32px] sm:px-[48px] sm:py-[48px] md:px-[64px] md:py-[64px] lg:px-[96px] lg:py-[96px] xl:px-[160px] xl:py-[160px]">
+                    <main className="w-full max-w-[3840px] mx-auto grid content-start grid-cols-4 sm:grid-cols-8 md:grid-cols-12 gap-[16px] sm:gap-[24px] p-6 xs:p-8 sm:p-12 md:px-24 md:py-12 2xl:px-[160px] 2xl:py-12">
                         {children}
                     </main>
                 </div>

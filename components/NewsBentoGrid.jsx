@@ -82,7 +82,7 @@ export default function NewsBentoGrid() {
                 row-start-1 col-start-1 col-span-4
                 sm:col-span-8 
                 md:col-span-12
-                lg:col-span-9
+                lg:col-span-12
                 flex items-center justify-between
             ">
                 <h2 className="text-2xl font-bold text-foreground font-sans">
@@ -105,7 +105,7 @@ export default function NewsBentoGrid() {
                 col-start-1 col-span-4 row-start-2 row-span-2
                 sm:col-span-8
                 md:col-span-12
-                lg:col-span-6
+                lg:col-span-6 lg:row-start-2 lg:row-span-2
             ">
                 <NewsCard {...newsData[0]} />
             </div>
@@ -116,7 +116,7 @@ export default function NewsBentoGrid() {
                 xs:row-start-4
                 sm:col-start-5 sm:col-span-4 sm:row-start-4
                 md:col-start-7 md:col-span-6
-                lg:col-start-1 lg:col-span-6
+                lg:col-start-1 lg:col-span-6 lg:row-start-4 lg:row-span-1
             ">
                 <NewsCard {...newsData[1]} />
             </div>
@@ -127,7 +127,7 @@ export default function NewsBentoGrid() {
                 xs:row-start-6 xs:row-span-2
                 sm:row-start-4 sm:row-span-2
                 md:col-span-3
-                lg:col-start-7 lg:row-start-3
+                lg:col-start-7 lg:col-span-3 lg:row-start-3 lg:row-span-2
             ">
                 <NewsCard {...newsData[2]} />
             </div>
@@ -138,7 +138,7 @@ export default function NewsBentoGrid() {
                 xs:row-start-5 xs:row-span-2
                 sm:row-start-4 sm:row-span-2
                 md:col-start-4 md:col-span-3 md:row-start-4 md:row-span-2
-                lg:col-start-10 lg:row-start-1 lg:row-span-2
+                lg:col-start-10 lg:col-span-3 lg:row-start-2 lg:row-span-2
             ">
                 <NewsCard {...newsData[3]} />
             </div>
@@ -149,7 +149,7 @@ export default function NewsBentoGrid() {
                 xs:row-start-5
                 sm:col-start-5 sm:row-start-5 sm:row-span-1
                 md:col-start-7 md:col-span-3 md:row-start-5 md:row-span-1
-                lg:row-start-2
+                lg:col-start-7 lg:col-span-3 lg:row-start-2 lg:row-span-1
             ">
                 <NewsCard {...newsData[4]} />
             </div>
@@ -160,7 +160,7 @@ export default function NewsBentoGrid() {
                 xs:row-start-7
                 sm:col-start-7 sm:row-start-5
                 md:col-start-10 md:col-span-3
-                lg:row-start-3 lg:row-span-2
+                lg:col-start-10 lg:col-span-3 lg:row-start-4 lg:row-span-1
             ">
                 <NewsCard {...newsData[5]} />
             </div>

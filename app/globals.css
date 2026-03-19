@@ -116,6 +116,15 @@
     background-color: var(--background);
     color: var(--foreground);
   }
+
+  /* Design System Typography Tokens */
+  .Title-Hero {
+    @apply text-[32px] sm:text-[40px] md:text-[48px] lg:text-[56px] font-black leading-[1.1] tracking-[-0.04em] uppercase;
+  }
+
+  .Subheading-Strong {
+    @apply text-[18px] sm:text-[20px] md:text-[24px] font-bold leading-[1.2] tracking-[-0.02em];
+  }
 }
 
 /* Custom WebKit Scrollbar (Minimal Pill Design) */
