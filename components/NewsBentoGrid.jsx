@@ -9,50 +9,50 @@ export default function NewsBentoGrid() {
     const newsData = [
         {
             id: 1,
-            title: "Genshin Impact: La expedición a Natlan ya está disponible para todos",
-            tag: "NUEVA REGIÓN",
-            gameIconUrl: "https://api.dicebear.com/7.x/identicon/svg?seed=genshin",
-            imageUrl: "https://images.unsplash.com/photo-1614728263952-84ea206f99b6?q=80&w=1200",
+            title: "¡Ya disponible la versión 3.2!",
+            tag: "Nueva versión",
+            gameIconUrl: "https://play-lh.googleusercontent.com/L0Dn7FRoGO0Ocxb3MidlNpv_DMehL8xlEkVJcnb2MaxtdhCKIBMOC0IfWmpr0okokXfwKKw-PSxcDnoJrJ2v",
+            imageUrl: "https://i.ytimg.com/vi/aMAJhkp0hlc/maxresdefault.jpg",
             isHero: true
         },
         {
             id: 2,
-            title: "Honkai Star Rail: Ruan Mei y Blade regresan en los nuevos banners",
-            tag: "BANNERS",
-            gameIconUrl: "https://api.dicebear.com/7.x/identicon/svg?seed=starrail",
-            imageUrl: "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?q=80&w=1000",
+            title: "¡Ya disponible la versión 3.2!",
+            tag: "Nueva versión",
+            gameIconUrl: "https://play-lh.googleusercontent.com/L0Dn7FRoGO0Ocxb3MidlNpv_DMehL8xlEkVJcnb2MaxtdhCKIBMOC0IfWmpr0okokXfwKKw-PSxcDnoJrJ2v",
+            imageUrl: "https://i.ytimg.com/vi/aMAJhkp0hlc/maxresdefault.jpg",
             isHero: false
         },
         {
             id: 3,
-            title: "ZZZ: ¿Cómo buildear a Jane Doe? Análisis de Anomalía Físico",
-            tag: "GUÍA",
-            gameIconUrl: "https://api.dicebear.com/7.x/identicon/svg?seed=zzz",
-            imageUrl: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=1000",
+            title: "¡Ya disponible la versión 3.2!",
+            tag: "Nueva versión",
+            gameIconUrl: "https://play-lh.googleusercontent.com/L0Dn7FRoGO0Ocxb3MidlNpv_DMehL8xlEkVJcnb2MaxtdhCKIBMOC0IfWmpr0okokXfwKKw-PSxcDnoJrJ2v",
+            imageUrl: "https://i.ytimg.com/vi/aMAJhkp0hlc/maxresdefault.jpg",
             isHero: false
         },
         {
             id: 4,
-            title: "Blue Archive: ¡El Comité de Disciplina sale a la playa!",
-            tag: "EVENTO",
-            gameIconUrl: "https://api.dicebear.com/7.x/identicon/svg?seed=bluearchive",
-            imageUrl: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1000",
+            title: "¡Ya disponible la versión 3.2!",
+            tag: "Nueva versión",
+            gameIconUrl: "https://play-lh.googleusercontent.com/L0Dn7FRoGO0Ocxb3MidlNpv_DMehL8xlEkVJcnb2MaxtdhCKIBMOC0IfWmpr0okokXfwKKw-PSxcDnoJrJ2v",
+            imageUrl: "https://i.ytimg.com/vi/aMAJhkp0hlc/maxresdefault.jpg",
             isHero: false
         },
         {
             id: 5,
-            title: "Nikke: Colaboración con Evangelion: Recluta a Asuka y Rei",
-            tag: "COLABORACIÓN",
-            gameIconUrl: "https://api.dicebear.com/7.x/identicon/svg?seed=nikke",
-            imageUrl: "https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=1000",
+            title: "¡Ya disponible la versión 3.2!",
+            tag: "Nueva versión",
+            gameIconUrl: "https://play-lh.googleusercontent.com/L0Dn7FRoGO0Ocxb3MidlNpv_DMehL8xlEkVJcnb2MaxtdhCKIBMOC0IfWmpr0okokXfwKKw-PSxcDnoJrJ2v",
+            imageUrl: "https://i.ytimg.com/vi/aMAJhkp0hlc/maxresdefault.jpg",
             isHero: false
         },
         {
             id: 6,
-            title: "Arknights: Nuevo Episodio: Una historia de Victoria disponible",
-            tag: "HISTORIA",
-            gameIconUrl: "https://api.dicebear.com/7.x/identicon/svg?seed=arknights",
-            imageUrl: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?q=80&w=1000",
+            title: "¡Ya disponible la versión 3.2!",
+            tag: "Nueva versión",
+            gameIconUrl: "https://play-lh.googleusercontent.com/L0Dn7FRoGO0Ocxb3MidlNpv_DMehL8xlEkVJcnb2MaxtdhCKIBMOC0IfWmpr0okokXfwKKw-PSxcDnoJrJ2v",
+            imageUrl: "https://i.ytimg.com/vi/aMAJhkp0hlc/maxresdefault.jpg",
             isHero: false
         }
     ];
@@ -99,7 +99,7 @@ export default function NewsBentoGrid() {
             </div>
 
             {/* 2. 6 Tarjetas (Priority Order: Card-1 to Card-6) */}
-            
+
             {/* Card-1 (Hero) */}
             <div className="
                 col-start-1 col-span-4 row-start-2 row-span-2
