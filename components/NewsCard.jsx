@@ -25,7 +25,7 @@ export default function NewsCard({
             className="
                 group relative w-full h-full rounded-[16px] overflow-hidden cursor-pointer
                 border-2 border-transparent transition-all duration-300
-                hover:border-border
+                hover:border-border-default-default
                 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2
             "
         >
@@ -54,14 +54,14 @@ export default function NewsCard({
             {/* 3. Contenido (UI Layer) */}
             <div className="
                 relative h-full w-full flex flex-col justify-end
-                p-[24px] lg:p-[32px]
+                p-6 lg:p-8
                 gap-[4px]
                 transition-all duration-300
             ">
                 {/* Parte Inferior: Icono + Tag */}
                 <div className="flex items-center gap-3">
                     {gameIconUrl && (
-                        <div className="w-[40px] h-[40px] rounded-full overflow-hidden border border-white/20 shadow-lg shrink-0">
+                        <div className="w-[32px] h-[32px] rounded-full overflow-hidden border border-border-default-default/20 shadow-400 shrink-0">
                             <img 
                                 src={gameIconUrl} 
                                 alt="Game Icon" 
@@ -70,9 +70,9 @@ export default function NewsCard({
                         </div>
                     )}
                     <span className="
-                        bg-white/10 backdrop-blur-md border border-white/20 
-                        text-white text-[10px] font-bold uppercase tracking-[0.1em]
-                        p-[8px] rounded-md leading-none
+                        bg-background-secondary/20 backdrop-blur-md 
+                        text-white text-body-small-strong uppercase tracking-[0.1em]
+                        p-1.5 px-2 rounded-md leading-none
                     ">
                         {tag}
                     </span>
@@ -82,7 +82,7 @@ export default function NewsCard({
                 <h3 className={`
                     text-white transition-transform duration-300 group-hover:-translate-y-1
                     line-clamp-2
-                    ${isHero ? 'Title-Hero' : 'Subheading-Strong'}
+                    ${isHero ? 'text-title-hero' : 'text-subheading-strong'}
                 `}>
                     {title}
                 </h3>

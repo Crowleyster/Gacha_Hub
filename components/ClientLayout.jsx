@@ -41,12 +41,12 @@ function SettingsSheet({ isOpen, onClose }) {
                         key={item.href}
                         href={item.href}
                         onClick={onClose}
-                        className="flex items-center gap-4 w-full h-[54px] px-4 rounded-xl border border-zinc-200 bg-zinc-50 hover:bg-zinc-100 dark:border-zinc-800 dark:bg-[#27272A] dark:hover:bg-[#333333] transition-colors"
+                        className="flex items-center gap-4 w-full h-[54px] px-4 rounded-xl border border-border-default-default bg-background-secondary hover:bg-background-secondary-hover transition-colors"
                     >
-                        <div className="flex items-center justify-center w-10 h-10 rounded-full bg-zinc-200 dark:bg-zinc-700/50 text-zinc-700 dark:text-zinc-300">
+                        <div className="flex items-center justify-center w-10 h-10 rounded-full bg-background-tertiary text-text-default-secondary">
                             <item.icon className="w-5 h-5" />
                         </div>
-                        <span className="text-base font-semibold text-zinc-900 dark:text-white">
+                        <span className="text-body-strong text-text-default-default">
                             {item.name}
                         </span>
                     </Link>
@@ -55,15 +55,15 @@ function SettingsSheet({ isOpen, onClose }) {
 
             {/* Theme Section */}
             <div className="flex flex-col gap-2">
-                <span className="text-sm text-zinc-500 dark:text-zinc-400 font-medium ml-1">Preferencia</span>
+                <span className="text-body-small text-text-default-secondary ml-1">Preferencia</span>
                 <button
                     onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-                    className="flex items-center gap-4 w-full h-[54px] px-4 rounded-xl border border-zinc-200 bg-zinc-50 hover:bg-zinc-100 dark:border-zinc-800 dark:bg-[#27272A] dark:hover:bg-[#333333] transition-colors"
+                    className="flex items-center gap-4 w-full h-[54px] px-4 rounded-xl border border-border-default-default bg-background-secondary hover:bg-background-secondary-hover transition-colors"
                 >
-                    <div className="flex items-center justify-center w-10 h-10 rounded-full bg-zinc-200 dark:bg-zinc-700/50 text-zinc-700 dark:text-zinc-300">
+                    <div className="flex items-center justify-center w-10 h-10 rounded-full bg-background-tertiary text-text-default-secondary">
                         {theme === 'dark' ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />}
                     </div>
-                    <span className="text-base font-semibold text-zinc-900 dark:text-white">
+                    <span className="text-body-strong text-text-default-default">
                         {theme === 'dark' ? 'Modo Oscuro' : 'Modo Claro'}
                     </span>
                 </button>
@@ -71,7 +71,7 @@ function SettingsSheet({ isOpen, onClose }) {
 
             {/* Version Details */}
             <div className="w-full text-center py-2">
-                <p className="text-xs text-zinc-400 dark:text-zinc-500 font-medium tracking-wide">GACHA HUB v1.0.0</p>
+                <p className="text-body-small text-text-default-secondary uppercase tracking-wide">GACHA HUB v1.0.0</p>
             </div>
         </div>
     );
@@ -137,7 +137,7 @@ export default function ClientLayout({ children }) {
                     onOpenMobileSheet={() => setIsMobileSheetOpen(true)}
                 />
 
-                <div className="flex-1 flex flex-col min-w-0 overflow-x-hidden overflow-y-auto bg-background">
+                <div className="flex-1 flex flex-col min-w-0 overflow-x-hidden overflow-y-auto bg-background-default">
                     <main className="w-full max-w-[3840px] mx-auto grid content-start grid-cols-4 sm:grid-cols-8 md:grid-cols-12 gap-[16px] sm:gap-[24px] p-6 xs:p-8 sm:p-12 md:px-24 md:py-12 2xl:px-[160px] 2xl:py-12">
                         {children}
                     </main>

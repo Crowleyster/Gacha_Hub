@@ -85,13 +85,13 @@ export default function NewsBentoGrid() {
                 lg:col-span-12
                 flex items-center justify-between
             ">
-                <h2 className="text-2xl font-bold text-foreground font-sans">
+                <h2 className="text-heading text-text-default-default font-sans">
                     Noticias Destacadas
                 </h2>
                 {/* Botón visible solo en Tablet/Desktop en Fila 1 */}
                 <Link
                     href="/noticias"
-                    className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-lg bg-secondary hover:bg-accent text-secondary-foreground transition-colors font-medium text-sm"
+                    className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-lg bg-background-secondary hover:bg-background-secondary-hover text-text-default-default transition-colors text-body-small-strong"
                 >
                     Ver todas las noticias
                     <ArrowRight className="w-4 h-4" />
@@ -170,8 +170,8 @@ export default function NewsBentoGrid() {
                 href="/noticias"
                 className="
                     sm:hidden col-span-full flex items-center justify-center gap-2 
-                    rounded-lg bg-secondary hover:bg-accent text-secondary-foreground 
-                    transition-colors font-medium text-sm w-full h-full
+                    rounded-lg bg-background-secondary hover:bg-background-secondary-hover text-text-default-default 
+                    transition-colors text-body-small-strong w-full h-full
                     row-start-7 xs:row-start-8
                 "
             >
