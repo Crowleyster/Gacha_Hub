@@ -37,13 +37,37 @@ export default function NewsBentoGrid() {
                 </Link>
             </div>
 
-            {/* 2. 6 Tarjetas (Placeholders) */}
-            <div className="bg-card border border-border rounded-xl w-full h-full col-span-4 row-span-2 min-[768px]:col-span-8 min-[768px]:row-span-1 min-[1024px]:col-span-8 min-[1024px]:row-span-2" />
-            <div className="bg-card border border-border rounded-xl w-full h-full col-span-2 row-span-1 min-[768px]:col-span-4" />
-            <div className="bg-card border border-border rounded-xl w-full h-full col-span-2 row-span-1 min-[768px]:col-span-4" />
-            <div className="bg-card border border-border rounded-xl w-full h-full col-span-4 row-span-1 min-[470px]:row-span-2 min-[768px]:col-span-8 min-[768px]:row-span-1 min-[1024px]:col-span-8 min-[1024px]:row-span-2 min-[1200px]:col-span-4 min-[1200px]:row-span-1 min-[1550px]:col-span-8 min-[1550px]:row-span-2" />
-            <div className="bg-card border border-border rounded-xl w-full h-full col-span-2 row-span-1 min-[768px]:col-span-4" />
-            <div className="bg-card border border-border rounded-xl w-full h-full col-span-2 row-span-1 min-[768px]:col-span-4" />
+            {/* 2. 6 Tarjetas (Placeholders con jerarquía visual de 4 niveles) */}
+
+            {/* Card 1: Noticia Nivel 1 - Hero/Grande */}
+            <div className="bg-red-500/5 border border-red-500/20 rounded-xl w-full h-full col-span-4 row-span-2 min-[768px]:col-span-8 min-[1024px]:col-span-12 min-[1200px]:col-span-6 flex items-center justify-center text-red-500/40 font-bold text-xl">
+                Tile 1
+            </div>
+
+            {/* Card 2: Noticia Nivel 2 - Mediana */}
+            <div className="bg-green-500/5 border border-green-500/20 rounded-xl w-full h-full col-span-4 row-span-1 min-[1024px]:col-span-6 flex items-center justify-center text-green-500/40 font-bold">
+                Tile 2
+            </div>
+
+            {/* Card 3: Noticia Nivel 3 - Pequeña 1 */}
+            <div className="bg-teal-500/5 border border-teal-500/20 rounded-xl w-full h-full col-span-2 row-span-1 min-[470px]:col-span-2 min-[470px]:row-span-2 min-[1024px]:col-span-3 flex items-center justify-center text-teal-500/40 font-bold">
+                Tile 3
+            </div>
+
+            {/* Card 4: Noticia Nivel 3 - Pequeña 2 */}
+            <div className="bg-yellow-500/5 border border-yellow-500/20 rounded-xl w-full h-full col-span-2 row-span-1 min-[470px]:col-span-2 min-[470px]:row-span-2 min-[1024px]:col-span-3 flex items-center justify-center text-yellow-500/40 font-bold">
+                Tile 4
+            </div>
+
+            {/* Card 5: Noticia Nivel 4 - Mini 1 */}
+            <div className="bg-amber-900/5 border border-amber-900/20 rounded-xl w-full h-full col-span-2 row-span-1 min-[1024px]:col-span-3 flex items-center justify-center text-amber-900/40 font-bold">
+                Tile 5
+            </div>
+
+            {/* Card 6: Noticia Nivel 4 - Mini 2 */}
+            <div className="bg-emerald-950/5 border border-emerald-950/20 rounded-xl w-full h-full col-span-2 row-span-1 min-[1024px]:col-span-3 flex items-center justify-center text-emerald-950/40 font-bold">
+                Tile 6
+            </div>
 
             {/* 3. Botón "Todas las noticias" (Mobile) */}
             {/* Ocupa Fila 7 en XXS y Fila 8 en XS */}
