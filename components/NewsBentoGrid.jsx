@@ -9,21 +9,30 @@ export default function NewsBentoGrid() {
     return (
         <section className="
             grid w-full font-sans
-            /* Mobile < 470px (XXS) */
+            /* Parent Grid Config (7 Breakpoints) */
+            /* XXS (Base < 540px) */
             grid-cols-4 gap-4 grid-rows-[29px_repeat(5,240px)_46px]
-            /* Mobile 470px - 767px (XS) */
+            /* XS (540px - 767px) */
             xs:grid-rows-[29px_repeat(6,240px)_46px]
-            /* Tablet 768px - 1023px (S) */
+            /* S (768px - 1023px) */
             sm:grid-cols-8 sm:gap-6 sm:grid-rows-[46px_repeat(4,240px)]
-            /* Tablet 1024px - 1199px (M) */
+            /* M (1024px - 1279px) */
             md:grid-cols-12 md:grid-rows-[46px_repeat(4,240px)]
-            /* Desktop 1200px - 1549px (L) */
+            /* L (1280px - 1535px) */
             lg:grid-rows-[46px_repeat(3,240px)]
-            /* Desktop >= 1550px (XL) */
-            xl:grid-rows-[46px_repeat(4,240px)]
+            /* XL (1536px - 1919px) */
+            xl:grid-rows-[46px_repeat(3,240px)]
+            /* XXL (>= 1920px) */
+            2xl:grid-rows-[46px_repeat(4,240px)]
+            grid-auto-rows-[240px]
         ">
-            {/* 1. Heading (Fila 1) */}
-            <div className="row-start-1 col-span-full flex items-center justify-between">
+            {/* 1. Header (Fila 1) */}
+            <div className="
+                row-start-1 col-start-1 col-span-4
+                sm:col-span-8 
+                md:col-span-12
+                flex items-center justify-between
+            ">
                 <h2 className="text-2xl font-bold text-foreground">
                     Noticias Destacadas
                 </h2>
@@ -37,40 +46,79 @@ export default function NewsBentoGrid() {
                 </Link>
             </div>
 
-            {/* 2. 6 Tarjetas (Placeholders con jerarquía visual de 4 niveles) */}
-
-            {/* Card 1: Noticia Nivel 1 - Hero/Grande */}
-            <div className="bg-red-500/5 border border-red-500/20 rounded-xl w-full h-full col-span-4 row-span-2 min-[768px]:col-span-8 min-[1024px]:col-span-12 min-[1200px]:col-span-6 flex items-center justify-center text-red-500/40 font-bold text-xl">
-                Tile 1
+            {/* 2. 6 Tarjetas (Priority Order: Card-1 to Card-6) */}
+            
+            {/* Card-1 (Red) */}
+            <div className="
+                bg-red-500/10 border border-red-500/20 rounded-xl w-full h-full flex items-center justify-center text-red-500/40 font-bold text-xl
+                col-start-1 col-span-4 row-start-2 row-span-2
+                sm:col-span-8
+                md:col-span-12
+                lg:col-span-6
+            ">
+                Card-1 (Red)
             </div>
 
-            {/* Card 2: Noticia Nivel 2 - Mediana */}
-            <div className="bg-green-500/5 border border-green-500/20 rounded-xl w-full h-full col-span-4 row-span-1 min-[1024px]:col-span-6 flex items-center justify-center text-green-500/40 font-bold">
-                Tile 2
+            {/* Card-2 (Yellow) */}
+            <div className="
+                bg-yellow-500/10 border border-yellow-500/20 rounded-xl w-full h-full flex items-center justify-center text-yellow-500/40 font-bold
+                col-start-1 col-span-4 row-start-5 row-span-1
+                xs:row-start-4
+                sm:col-start-5 sm:col-span-4 sm:row-start-4
+                md:col-start-7 md:col-span-6
+                lg:col-start-1 lg:col-span-6
+            ">
+                Card-2 (Yellow)
             </div>
 
-            {/* Card 3: Noticia Nivel 3 - Pequeña 1 */}
-            <div className="bg-teal-500/5 border border-teal-500/20 rounded-xl w-full h-full col-span-2 row-span-1 min-[470px]:col-span-2 min-[470px]:row-span-2 min-[1024px]:col-span-3 flex items-center justify-center text-teal-500/40 font-bold">
-                Tile 3
+            {/* Card-3 (Light green) */}
+            <div className="
+                bg-lime-500/10 border border-lime-500/20 rounded-xl w-full h-full flex items-center justify-center text-lime-500/40 font-bold
+                col-start-1 col-span-2 row-start-4 row-span-1
+                xs:row-start-6 xs:row-span-2
+                sm:row-start-4 sm:row-span-2
+                md:col-span-3
+                lg:col-start-7 lg:row-start-3
+            ">
+                Card-3 (Light green)
             </div>
 
-            {/* Card 4: Noticia Nivel 3 - Pequeña 2 */}
-            <div className="bg-yellow-500/5 border border-yellow-500/20 rounded-xl w-full h-full col-span-2 row-span-1 min-[470px]:col-span-2 min-[470px]:row-span-2 min-[1024px]:col-span-3 flex items-center justify-center text-yellow-500/40 font-bold">
-                Tile 4
+            {/* Card-4 (Base green) */}
+            <div className="
+                bg-green-500/10 border border-green-500/20 rounded-xl w-full h-full flex items-center justify-center text-green-500/40 font-bold
+                col-start-3 col-span-2 row-start-4 row-span-1
+                xs:row-start-5
+                sm:row-start-4
+                md:col-start-4 md:col-span-3
+                lg:col-start-10 lg:row-start-1 lg:row-span-2
+            ">
+                Card-4 (Base green)
             </div>
 
-            {/* Card 5: Noticia Nivel 4 - Mini 1 */}
-            <div className="bg-amber-900/5 border border-amber-900/20 rounded-xl w-full h-full col-span-2 row-span-1 min-[1024px]:col-span-3 flex items-center justify-center text-amber-900/40 font-bold">
-                Tile 5
+            {/* Card-5 (Dark green) */}
+            <div className="
+                bg-emerald-700/10 border border-emerald-700/20 rounded-xl w-full h-full flex items-center justify-center text-emerald-700/40 font-bold
+                col-start-1 col-span-2 row-start-6 row-span-1
+                xs:row-start-5
+                sm:col-start-5 sm:row-start-5
+                md:col-start-7 md:col-span-3
+                lg:row-start-2
+            ">
+                Card-5 (Dark green)
             </div>
 
-            {/* Card 6: Noticia Nivel 4 - Mini 2 */}
-            <div className="bg-emerald-950/5 border border-emerald-950/20 rounded-xl w-full h-full col-span-2 row-span-1 min-[1024px]:col-span-3 flex items-center justify-center text-emerald-950/40 font-bold">
-                Tile 6
+            {/* Card-6 (Brown) */}
+            <div className="
+                bg-amber-900/10 border border-amber-900/20 rounded-xl w-full h-full flex items-center justify-center text-amber-900/40 font-bold
+                col-start-3 col-span-2 row-start-6 row-span-1
+                sm:col-start-7 sm:row-start-5
+                md:col-start-10 md:col-span-3
+                lg:row-start-4 lg:row-span-3
+            ">
+                Card-6 (Brown)
             </div>
 
-            {/* 3. Botón "Todas las noticias" (Mobile) */}
-            {/* Ocupa Fila 7 en XXS y Fila 8 en XS */}
+            {/* 3. Button (Mobile only at the end) */}
             <Link
                 href="/noticias"
                 className="
