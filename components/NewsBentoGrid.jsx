@@ -3,127 +3,62 @@
 import { ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 
-const NEWS_DATA = [
-    {
-        id: 1,
-        title: "Wuthering Waves 1.1: 'Thaw of Eons' - Nuevos Personajes y Región",
-        category: "Actualización",
-        image: "https://images.unsplash.com/photo-1614728263952-84ea256f9679?auto=format&fit=crop&q=80&w=1200"
-    },
-    {
-        id: 2,
-        title: "Dev Log: Mejoras en el sistema de Echoes",
-        category: "Desarrollo",
-        image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=800"
-    },
-    {
-        id: 3,
-        title: "Guía: Mejores composiciones para el Abismo",
-        category: "Guía",
-        image: "https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&q=80&w=800"
-    },
-    {
-        id: 4,
-        title: "Evento: Festival de la Luna Llena",
-        category: "Evento",
-        image: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&q=80&w=800"
-    },
-    {
-        id: 5,
-        title: "Análisis: Jinhsi, la Magistrada de Jinzhou",
-        category: "Análisis",
-        image: "https://images.unsplash.com/photo-1534423861386-85a16f5d13fd?auto=format&fit=crop&q=80&w=800"
-    },
-    {
-        id: 6,
-        title: "Comunidad: Resumen del Mes de Junio",
-        category: "Comunidad",
-        image: "https://images.unsplash.com/photo-1515523110800-9415d13b84a8?auto=format&fit=crop&q=80&w=800"
-    }
-];
 
-function NewsCard({ news, className }) {
-    return (
-        <Link
-            href={`/noticias/${news.id}`}
-            className={`
-                group bg-card border border-border rounded-xl overflow-hidden relative block 
-                focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none transition-all duration-300
-                h-full ${className}
-            `}
-        >
-            {/* Background Image */}
-            <img 
-                src={news.image} 
-                alt={news.title}
-                className="object-cover w-full h-full absolute inset-0 group-hover:scale-105 transition-transform duration-300"
-            />
-            
-            {/* Gradient Overlay for legibility */}
-            <div className="absolute inset-0 bg-linear-to-t from-background/90 via-background/20 to-transparent z-0" />
-
-            {/* Content */}
-            <div className="flex flex-col justify-end p-4 relative z-10 h-full">
-                <span className="inline-block px-2 py-1 rounded bg-secondary text-secondary-foreground text-[10px] font-bold uppercase tracking-wider mb-2 w-fit">
-                    {news.category}
-                </span>
-                <h3 className={`font-bold text-card-foreground leading-tight ${news.id === 1 ? 'text-lg md:text-2xl' : 'text-sm md:text-lg'}`}>
-                    {news.title}
-                </h3>
-            </div>
-        </Link>
-    );
-}
 
 export default function NewsBentoGrid() {
     return (
-        <section className="col-span-full space-y-6 font-sans">
-            {/* Header */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <section className="
+            grid w-full font-sans
+            /* Mobile < 470px (XXS) */
+            grid-cols-4 gap-4 grid-rows-[29px_repeat(5,240px)_46px]
+            /* Mobile 470px - 767px (XS) */
+            xs:grid-rows-[29px_repeat(6,240px)_46px]
+            /* Tablet 768px - 1023px (S) */
+            sm:grid-cols-8 sm:gap-6 sm:grid-rows-[46px_repeat(4,240px)]
+            /* Tablet 1024px - 1199px (M) */
+            md:grid-cols-12 md:grid-rows-[46px_repeat(4,240px)]
+            /* Desktop 1200px - 1549px (L) */
+            lg:grid-rows-[46px_repeat(3,240px)]
+            /* Desktop >= 1550px (XL) */
+            xl:grid-rows-[46px_repeat(4,240px)]
+        ">
+            {/* 1. Heading (Fila 1) */}
+            <div className="row-start-1 col-span-full flex items-center justify-between">
                 <h2 className="text-2xl font-bold text-foreground">
                     Noticias Destacadas
                 </h2>
-                <Link 
+                {/* Botón visible solo en Tablet/Desktop en Fila 1 */}
+                <Link
                     href="/noticias"
-                    className="flex items-center gap-2 px-4 py-2 rounded-lg bg-secondary hover:bg-accent text-secondary-foreground transition-colors font-medium text-sm w-fit order-last sm:order-none"
+                    className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-lg bg-secondary hover:bg-accent text-secondary-foreground transition-colors font-medium text-sm"
                 >
                     Ver todas las noticias
                     <ArrowRight className="w-4 h-4" />
                 </Link>
             </div>
 
-            {/* Layout Grid Wrapper */}
-            <div className="grid grid-cols-4 md:grid-cols-8 xl:grid-cols-12 gap-4 md:gap-6 auto-rows-fr">
-                {/* 1. Card Hero */}
-                <NewsCard 
-                    news={NEWS_DATA[0]} 
-                    className="col-span-4 md:col-span-8 xl:col-span-8 xl:row-span-2 min-h-[300px] md:min-h-[400px]" 
-                />
+            {/* 2. 6 Tarjetas (Placeholders) */}
+            <div className="bg-card border border-border rounded-xl w-full h-full col-span-4 row-span-2 min-[768px]:col-span-8 min-[768px]:row-span-1 min-[1024px]:col-span-8 min-[1024px]:row-span-2" />
+            <div className="bg-card border border-border rounded-xl w-full h-full col-span-2 row-span-1 min-[768px]:col-span-4" />
+            <div className="bg-card border border-border rounded-xl w-full h-full col-span-2 row-span-1 min-[768px]:col-span-4" />
+            <div className="bg-card border border-border rounded-xl w-full h-full col-span-4 row-span-1 min-[470px]:row-span-2 min-[768px]:col-span-8 min-[768px]:row-span-1 min-[1024px]:col-span-8 min-[1024px]:row-span-2 min-[1200px]:col-span-4 min-[1200px]:row-span-1 min-[1550px]:col-span-8 min-[1550px]:row-span-2" />
+            <div className="bg-card border border-border rounded-xl w-full h-full col-span-2 row-span-1 min-[768px]:col-span-4" />
+            <div className="bg-card border border-border rounded-xl w-full h-full col-span-2 row-span-1 min-[768px]:col-span-4" />
 
-                {/* 2 & 3. Cards Secundarias (Lado derecho en XL) */}
-                <NewsCard 
-                    news={NEWS_DATA[1]} 
-                    className="col-span-2 md:col-span-4 xl:col-span-4 xl:row-span-1 min-h-[180px] md:min-h-0" 
-                />
-                <NewsCard 
-                    news={NEWS_DATA[2]} 
-                    className="col-span-2 md:col-span-4 xl:col-span-4 xl:row-span-1 min-h-[180px] md:min-h-0" 
-                />
-
-                {/* 4, 5 & 6. Fila inferior en XL */}
-                <NewsCard 
-                    news={NEWS_DATA[3]} 
-                    className="col-span-2 md:col-span-4 xl:col-span-4 xl:row-span-1 min-h-[180px] md:min-h-0" 
-                />
-                <NewsCard 
-                    news={NEWS_DATA[4]} 
-                    className="col-span-2 md:col-span-4 xl:col-span-4 xl:row-span-1 min-h-[180px] md:min-h-0" 
-                />
-                <NewsCard 
-                    news={NEWS_DATA[5]} 
-                    className="col-span-4 md:col-span-8 xl:col-span-4 xl:row-span-1 min-h-[180px] md:min-h-0" 
-                />
-            </div>
+            {/* 3. Botón "Todas las noticias" (Mobile) */}
+            {/* Ocupa Fila 7 en XXS y Fila 8 en XS */}
+            <Link
+                href="/noticias"
+                className="
+                    sm:hidden col-span-full flex items-center justify-center gap-2 
+                    rounded-lg bg-secondary hover:bg-accent text-secondary-foreground 
+                    transition-colors font-medium text-sm w-full h-full
+                    row-start-7 xs:row-start-8
+                "
+            >
+                Ver todas las noticias
+                <ArrowRight className="w-4 h-4" />
+            </Link>
         </section>
     );
 }
