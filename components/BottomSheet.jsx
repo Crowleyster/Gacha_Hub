@@ -80,8 +80,8 @@ export default function BottomSheet({ isOpen, onClose, title, children }) {
             {/* Bottom Sheet Modal */}
             <div
                 className={`
-                    relative w-full bg-white dark:bg-[#1A1A1A] rounded-t-3xl shadow-2xl
-                    border-t border-zinc-200 dark:border-white/10
+                    relative w-full bg-background-default rounded-t-3xl shadow-600
+                    border-t border-border-default-secondary
                     ${isOpen && !isDragging ? 'translate-y-0' : ''} 
                     ${!isOpen ? 'translate-y-full' : ''}
                 `}
@@ -89,7 +89,7 @@ export default function BottomSheet({ isOpen, onClose, title, children }) {
             >
                 {/* Drag handle / Header */}
                 <div
-                    className="flex items-center justify-between px-6 pt-4 pb-2 border-b border-zinc-100 dark:border-white/5 cursor-grab active:cursor-grabbing touch-none"
+                    className="flex items-center justify-between px-6 pt-4 pb-2 border-b border-border-default-secondary/50 cursor-grab active:cursor-grabbing touch-none"
                     onPointerDown={handlePointerDown}
                     onPointerMove={handlePointerMove}
                     onPointerUp={handlePointerUp}
@@ -99,17 +99,17 @@ export default function BottomSheet({ isOpen, onClose, title, children }) {
                     <div className="w-6" />
 
                     {/* Draggable indicator pill */}
-                    <div className="absolute left-1/2 -translate-x-1/2 top-3 w-12 h-1.5 rounded-full bg-zinc-300 dark:bg-zinc-700 pointer-events-none" />
+                    <div className="absolute left-1/2 -translate-x-1/2 top-3 w-12 h-1.5 rounded-full bg-background-tertiary pointer-events-none" />
 
                     {title && (
-                        <h2 className="text-xl font-bold text-zinc-900 dark:text-white">
+                        <h2 className="text-heading text-text-default-default">
                             {title}
                         </h2>
                     )}
 
                     <button
                         onClick={onClose}
-                        className="p-2 -mr-2 mt-4 text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors"
+                        className="p-2 -mr-2 mt-4 text-text-default-secondary hover:text-text-default-default transition-colors"
                         title="Cerrar"
                     >
                         <X className="w-6 h-6" />

@@ -3,60 +3,9 @@
 import { ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 import NewsCard from './NewsCard';
+import { newsData } from '@/lib/mock-data';
 
 export default function NewsBentoGrid() {
-    // Mock Data for demonstration (6 Diferentes Gachas)
-    const newsData = [
-        {
-            id: 1,
-            title: "¡Ya disponible la versión 3.2!",
-            tag: "Nueva versión",
-            gameIconUrl: "https://play-lh.googleusercontent.com/L0Dn7FRoGO0Ocxb3MidlNpv_DMehL8xlEkVJcnb2MaxtdhCKIBMOC0IfWmpr0okokXfwKKw-PSxcDnoJrJ2v",
-            imageUrl: "https://i.ytimg.com/vi/aMAJhkp0hlc/maxresdefault.jpg",
-            isHero: true
-        },
-        {
-            id: 2,
-            title: "¡Ya disponible la versión 3.2!",
-            tag: "Nueva versión",
-            gameIconUrl: "https://play-lh.googleusercontent.com/L0Dn7FRoGO0Ocxb3MidlNpv_DMehL8xlEkVJcnb2MaxtdhCKIBMOC0IfWmpr0okokXfwKKw-PSxcDnoJrJ2v",
-            imageUrl: "https://i.ytimg.com/vi/aMAJhkp0hlc/maxresdefault.jpg",
-            isHero: false
-        },
-        {
-            id: 3,
-            title: "¡Ya disponible la versión 3.2!",
-            tag: "Nueva versión",
-            gameIconUrl: "https://play-lh.googleusercontent.com/L0Dn7FRoGO0Ocxb3MidlNpv_DMehL8xlEkVJcnb2MaxtdhCKIBMOC0IfWmpr0okokXfwKKw-PSxcDnoJrJ2v",
-            imageUrl: "https://i.ytimg.com/vi/aMAJhkp0hlc/maxresdefault.jpg",
-            isHero: false
-        },
-        {
-            id: 4,
-            title: "¡Ya disponible la versión 3.2!",
-            tag: "Nueva versión",
-            gameIconUrl: "https://play-lh.googleusercontent.com/L0Dn7FRoGO0Ocxb3MidlNpv_DMehL8xlEkVJcnb2MaxtdhCKIBMOC0IfWmpr0okokXfwKKw-PSxcDnoJrJ2v",
-            imageUrl: "https://i.ytimg.com/vi/aMAJhkp0hlc/maxresdefault.jpg",
-            isHero: false
-        },
-        {
-            id: 5,
-            title: "¡Ya disponible la versión 3.2!",
-            tag: "Nueva versión",
-            gameIconUrl: "https://play-lh.googleusercontent.com/L0Dn7FRoGO0Ocxb3MidlNpv_DMehL8xlEkVJcnb2MaxtdhCKIBMOC0IfWmpr0okokXfwKKw-PSxcDnoJrJ2v",
-            imageUrl: "https://i.ytimg.com/vi/aMAJhkp0hlc/maxresdefault.jpg",
-            isHero: false
-        },
-        {
-            id: 6,
-            title: "¡Ya disponible la versión 3.2!",
-            tag: "Nueva versión",
-            gameIconUrl: "https://play-lh.googleusercontent.com/L0Dn7FRoGO0Ocxb3MidlNpv_DMehL8xlEkVJcnb2MaxtdhCKIBMOC0IfWmpr0okokXfwKKw-PSxcDnoJrJ2v",
-            imageUrl: "https://i.ytimg.com/vi/aMAJhkp0hlc/maxresdefault.jpg",
-            isHero: false
-        }
-    ];
-
     // Layout Configuration (Optimized for Tablet & Desktop)
     const BENTO_LAYOUT = [
         "col-span-4 row-span-2 sm:col-span-8 md:col-span-12 lg:col-span-6 lg:row-span-2", // Card-1 (Hero)
@@ -76,7 +25,7 @@ export default function NewsBentoGrid() {
                 </h2>
                 <Link
                     href="/noticias"
-                    className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-lg bg-background-secondary hover:bg-background-secondary-hover text-text-default-default transition-colors text-body-small-strong"
+                    className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-lg bg-background-secondary hover:bg-background-secondary-hover text-text-default-default hover:text-text-brand-default transition-colors text-body-small-strong"
                 >
                     Ver todas las noticias
                     <ArrowRight className="w-4 h-4" />
@@ -105,7 +54,8 @@ export default function NewsBentoGrid() {
                 href="/noticias"
                 className="
                     sm:hidden flex items-center justify-center gap-2 
-                    rounded-lg bg-background-secondary hover:bg-background-secondary-hover text-text-default-default 
+                    rounded-lg bg-background-secondary hover:bg-background-secondary-hover
+                    text-text-default-default hover:text-text-brand-default
                     transition-colors text-body-small-strong w-full h-[48px]
                 "
             >

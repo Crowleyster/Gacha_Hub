@@ -2,20 +2,7 @@
 
 import { useState } from 'react';
 import { Copy, Check, Ticket } from 'lucide-react';
-
-const CODES_DATA = {
-    "Wuthering Waves": [
-        { code: "WUTHERINGGIFT", rewards: "50 Astrite, 2 Premium Resonance Potion" },
-        { code: "WUTHERING2024", rewards: "10,000 Shell Credits" }
-    ],
-    "Genshin Impact": [
-        { code: "GENSHINGIFT", rewards: "50 Primogems, 3 Hero's Wit" },
-        { code: "BS3DLY6VARE9", rewards: "100 Primogems" }
-    ],
-    "Honkai Star Rail": [
-        { code: "STARRAILGIFT", rewards: "50 Stellar Jade" }
-    ]
-};
+import { CODES_DATA } from '@/lib/mock-data';
 
 export default function ActiveCodes() {
     const [selectedGame, setSelectedGame] = useState(Object.keys(CODES_DATA)[0]);
@@ -31,8 +18,8 @@ export default function ActiveCodes() {
         <section className="col-span-full space-y-6 font-sans">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div className="flex items-center gap-2">
-                    <Ticket className="w-6 h-6 text-primary" />
-                    <h2 className="text-2xl font-bold text-foreground tracking-tight">
+                    <Ticket className="w-6 h-6 text-brand-default" />
+                    <h2 className="text-heading text-text-default-default tracking-tight">
                         Códigos Activos
                     </h2>
                 </div>
@@ -41,8 +28,8 @@ export default function ActiveCodes() {
                 <select 
                     value={selectedGame}
                     onChange={(e) => setSelectedGame(e.target.value)}
-                    className="bg-card border border-border text-foreground px-4 py-2 rounded-lg 
-                               focus:ring-2 focus:ring-ring focus:outline-none cursor-pointer transition-colors"
+                    className="bg-background-secondary border border-border-default-default text-text-default-default px-4 py-2 rounded-lg 
+                               focus:ring-2 focus:ring-brand-default/20 focus:outline-none cursor-pointer transition-colors"
                 >
                     {Object.keys(CODES_DATA).map(game => (
                         <option key={game} value={game}>{game}</option>
@@ -55,13 +42,13 @@ export default function ActiveCodes() {
                 {CODES_DATA[selectedGame].map((item, idx) => (
                     <div 
                         key={idx}
-                        className="bg-secondary/50 rounded-lg p-3 flex justify-between items-center border border-border/50"
+                        className="bg-background-secondary hover:bg-background-secondary-hover rounded-lg p-3 flex justify-between items-center border border-border-default-secondary transition-colors"
                     >
                         <div className="flex flex-col gap-0.5 max-w-[70%]">
-                            <code className="font-mono font-bold text-foreground text-sm tracking-wider">
+                            <code className="font-mono text-body-strong text-text-default-default tracking-wider">
                                 {item.code}
                             </code>
-                            <span className="text-[10px] text-muted-foreground truncate">
+                            <span className="text-body-small text-text-default-secondary truncate">
                                 {item.rewards}
                             </span>
                         </div>
@@ -71,8 +58,8 @@ export default function ActiveCodes() {
                             className={`
                                 p-2 rounded-md transition-all duration-200
                                 ${copiedCode === item.code 
-                                    ? 'bg-accent text-accent-foreground scale-95' 
-                                    : 'bg-primary hover:bg-accent text-primary-foreground focus-visible:ring-2 focus-visible:ring-ring'}
+                                    ? 'bg-brand-default text-text-brand-on scale-95' 
+                                    : 'bg-background-tertiary hover:bg-background-secondary-hover text-text-default-default focus-visible:ring-2 focus-visible:ring-brand-default/20'}
                             `}
                             aria-label="Copiar código"
                         >

@@ -33,23 +33,23 @@ export default function RightSheet({ isOpen, onClose, title, children }) {
             {/* Right Sheet Modal */}
             <div
                 className={`
-                    relative h-full w-[280px] sm:w-[320px] bg-white dark:bg-[#1A1A1A] shadow-2xl
-                    border-l border-zinc-200 dark:border-white/10
+                    relative h-full w-[280px] sm:w-[320px] bg-background-default shadow-600
+                    border-l border-border-default-secondary
                     transition-transform duration-300 ease-in-out
                     ${isOpen ? 'translate-x-0' : 'translate-x-full'}
                 `}
             >
                 {/* Header */}
-                <div className="flex items-center justify-between px-6 py-4 border-b border-zinc-100 dark:border-white/5">
+                <div className="flex items-center justify-between px-6 py-4 border-b border-border-default-secondary/50">
                     {title && (
-                        <h2 className="text-xl font-bold text-zinc-900 dark:text-white">
+                        <h2 className="text-heading text-text-default-default">
                             {title}
                         </h2>
                     )}
 
                     <button
                         onClick={onClose}
-                        className="p-2 text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors"
+                        className="p-2 text-text-default-secondary hover:text-text-default-default transition-colors"
                         title="Cerrar"
                     >
                         <X className="w-6 h-6" />

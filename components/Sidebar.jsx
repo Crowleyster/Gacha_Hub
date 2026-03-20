@@ -32,7 +32,7 @@ export default function Sidebar({ isExpanded }) {
         <aside
             className={`
         fixed top-0 left-0 h-screen z-50 flex flex-col 
-        bg-[#F4F4F5] dark:bg-[#27272A] border-r border-zinc-200 dark:border-white/5 
+        bg-background-secondary border-r border-border-default-secondary
         transition-all duration-300 ease-in-out shadow-2xl shadow-black/10 dark:shadow-black/50
         hidden sm:flex p-2
         -translate-x-full sm:translate-x-0 ${isExpanded ? 'translate-x-0' : ''}
@@ -45,14 +45,14 @@ export default function Sidebar({ isExpanded }) {
                 style={{ height: '66px' }}
             >
                 <div className="shrink-0 flex items-center justify-center">
-                    <Compass className="w-8 h-8 text-zinc-900 dark:text-white transition-transform duration-500 hover:rotate-180 text-purple-500" />
+                    <Compass className="w-8 h-8 text-text-brand-default transition-transform duration-500 hover:rotate-180" />
                 </div>
 
                 <div className={`flex flex-col overflow-hidden transition-all duration-300 ${!isExpanded ? 'w-0 opacity-0' : 'w-full opacity-100'}`}>
-                    <span className="text-base font-semibold text-zinc-900 dark:text-white truncate whitespace-nowrap">
+                    <span className="text-body-strong text-text-default-default truncate whitespace-nowrap">
                         Gacha Hub
                     </span>
-                    <span className="text-sm text-zinc-500 dark:text-zinc-400 truncate whitespace-nowrap">
+                    <span className="text-body-small text-text-default-secondary truncate whitespace-nowrap">
                         Tu centro de juegos
                     </span>
                 </div>
@@ -75,8 +75,8 @@ export default function Sidebar({ isExpanded }) {
                 transition-all duration-200 group relative
                 ${isExpanded ? 'gap-4 px-4 justify-start' : 'justify-center'}
                 ${isActive
-                                    ? 'bg-[#27272A] text-white shadow-md dark:bg-white dark:text-zinc-900 font-semibold'
-                                    : 'text-zinc-700 hover:bg-zinc-200 dark:text-zinc-100 dark:hover:bg-zinc-700 font-medium'
+                                    ? 'bg-brand-default text-text-brand-on shadow-md'
+                                    : 'text-text-default-secondary hover:bg-background-secondary-hover'
                                 }
               `}
                             style={{ height: '54px' }}
@@ -84,7 +84,7 @@ export default function Sidebar({ isExpanded }) {
                         >
                             <item.icon className={`w-5 h-5 shrink-0 ${isActive ? 'scale-110' : 'group-hover:scale-110'} transition-transform`} />
 
-                            <span className={`whitespace-nowrap transition-all duration-300 overflow-hidden ${!isExpanded ? 'w-0 opacity-0' : 'w-full opacity-100'}`}>
+                            <span className={`text-body-strong whitespace-nowrap transition-all duration-300 overflow-hidden ${!isExpanded ? 'w-0 opacity-0' : 'w-full opacity-100'}`}>
                                 {item.name}
                             </span>
                         </Link>
@@ -94,7 +94,7 @@ export default function Sidebar({ isExpanded }) {
 
             {/* Bottom Navigation Links */}
             {!isLowHeight && (
-                <div className="flex flex-col border-t border-zinc-200 dark:border-white/5 pt-2 mt-auto shrink-0">
+                <div className="flex flex-col border-t border-border-default-secondary pt-2 mt-auto shrink-0">
                     {bottomNavItems.map((item) => {
                         const isActive = pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href));
 
@@ -107,8 +107,8 @@ export default function Sidebar({ isExpanded }) {
                     transition-all duration-200 group relative
                     ${isExpanded ? 'gap-4 px-4 justify-start' : 'justify-center'}
                     ${isActive
-                                        ? 'bg-[#27272A] text-white shadow-md dark:bg-white dark:text-zinc-900 font-semibold'
-                                        : 'text-zinc-700 hover:bg-zinc-200 dark:text-zinc-100 dark:hover:bg-zinc-700 font-medium'
+                                        ? 'bg-brand-default text-text-brand-on shadow-md'
+                                        : 'text-text-default-secondary hover:bg-background-secondary-hover'
                                     }
                   `}
                                 style={{ height: '54px' }}
@@ -116,7 +116,7 @@ export default function Sidebar({ isExpanded }) {
                             >
                                 <item.icon className={`w-5 h-5 shrink-0 ${isActive ? 'scale-110' : 'group-hover:scale-110'} transition-transform`} />
 
-                                <span className={`whitespace-nowrap transition-all duration-300 overflow-hidden ${!isExpanded ? 'w-0 opacity-0' : 'w-full opacity-100'}`}>
+                                <span className={`text-body-strong whitespace-nowrap transition-all duration-300 overflow-hidden ${!isExpanded ? 'w-0 opacity-0' : 'w-full opacity-100'}`}>
                                     {item.name}
                                 </span>
                             </Link>
