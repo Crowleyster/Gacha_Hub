@@ -41,14 +41,14 @@ export default function NewsCard({
             {/* 2. Scrims (Gradientes) */}
             <div className="
                 absolute inset-0 
-                bg-gradient-to-b from-transparent via-black/20 to-black/90
+                bg-gradient-to-t from-black/90 via-black/40 to-transparent
                 transition-opacity duration-500
                 group-hover:opacity-0
             " />
 
             <div className="
                 absolute inset-0 
-                bg-gradient-to-b from-transparent to-black/100
+                bg-gradient-to-t from-black via-black/80 to-transparent
                 opacity-0 transition-opacity duration-500
                 group-hover:opacity-100
             " />
@@ -56,7 +56,7 @@ export default function NewsCard({
             {/* 3. Contenido (UI Layer) */}
             <div className="
                 relative h-full w-full flex flex-col justify-end
-                p-3
+                p-6
                 gap-[4px]
                 transition-all duration-300
             ">
