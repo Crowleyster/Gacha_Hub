@@ -19,7 +19,7 @@ export default function Sidebar({ isExpanded }) {
     const topNavItems = [
         { name: 'Inicio', href: '/', icon: Home },
         { name: 'Noticias', href: '/noticias', icon: Newspaper },
-        { name: 'Eventos', href: '/eventos', icon: Calendar }, 
+        { name: 'Eventos', href: '/eventos', icon: Calendar },
         { name: 'Juegos', href: '/juegos', icon: Gamepad2 },
     ];
 
@@ -31,13 +31,12 @@ export default function Sidebar({ isExpanded }) {
     return (
         <aside
             className={`
-        fixed top-0 left-0 h-screen z-50 flex flex-col 
-        bg-background-secondary border-r border-border-default-secondary
-        transition-all duration-300 ease-in-out shadow-2xl shadow-black/10 dark:shadow-black/50
-        hidden sm:flex p-2
-        -translate-x-full sm:translate-x-0 ${isExpanded ? 'translate-x-0' : ''}
-        w-[68px] ${isExpanded ? 'sm:w-64' : 'sm:w-[68px]'}
-      `}
+                fixed top-0 left-0 h-screen z-50 flex flex-col 
+                bg-background-secondary border-r border-border-default-secondary
+                transition-all duration-300 ease-in-out shadow-2xl shadow-black/10 dark:shadow-black/50
+                hidden sm:flex p-2
+                ${isExpanded ? 'sm:translate-x-0 w-64' : 'sm:translate-x-0 sm:w-[68px]'}
+            `}
         >
             {/* Header / Logo */}
             <div
@@ -71,14 +70,14 @@ export default function Sidebar({ isExpanded }) {
                             key={item.href}
                             href={item.href}
                             className={`
-                flex items-center rounded-xl w-full shrink-0
-                transition-all duration-200 group relative
-                ${isExpanded ? 'gap-4 px-4 justify-start' : 'justify-center'}
-                ${isActive
+                                flex items-center rounded-xl w-full shrink-0
+                                transition-all duration-200 group relative
+                                ${isExpanded ? 'gap-4 px-4 justify-start' : 'justify-center'}
+                                ${isActive
                                     ? 'bg-brand-default text-text-brand-on shadow-md'
                                     : 'text-text-default-secondary hover:bg-background-secondary-hover'
                                 }
-              `}
+                            `}
                             style={{ height: '54px' }}
                             title={!isExpanded ? item.name : undefined}
                         >
@@ -103,14 +102,14 @@ export default function Sidebar({ isExpanded }) {
                                 key={item.href}
                                 href={item.href}
                                 className={`
-                    flex items-center rounded-xl w-full shrink-0
-                    transition-all duration-200 group relative
-                    ${isExpanded ? 'gap-4 px-4 justify-start' : 'justify-center'}
-                    ${isActive
+                                    flex items-center rounded-xl w-full shrink-0
+                                    transition-all duration-200 group relative
+                                    ${isExpanded ? 'gap-4 px-4 justify-start' : 'justify-center'}
+                                    ${isActive
                                         ? 'bg-brand-default text-text-brand-on shadow-md'
                                         : 'text-text-default-secondary hover:bg-background-secondary-hover'
                                     }
-                  `}
+                                `}
                                 style={{ height: '54px' }}
                                 title={!isExpanded ? item.name : undefined}
                             >
