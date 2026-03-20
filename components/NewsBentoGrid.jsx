@@ -68,19 +68,10 @@ export default function NewsBentoGrid() {
     ];
 
     return (
-        <section className="
-            grid w-full font-sans
-            grid-cols-4 sm:grid-cols-8 md:grid-cols-12
-            grid-flow-row-dense gap-4 sm:gap-6 
-            auto-rows-[240px]
-        ">
-            {/* 1. Header (Fila 1) */}
-            <div className="
-                col-span-full
-                flex items-center justify-between
-                h-[46px]
-            ">
-                <h2 className="text-heading text-text-default-default font-sans">
+        <section className="flex flex-col gap-6 w-full font-sans">
+            {/* 1. Header */}
+            <div className="flex items-center justify-between">
+                <h2 className="text-heading text-text-default-default">
                     Noticias Destacadas
                 </h2>
                 <Link
@@ -92,25 +83,30 @@ export default function NewsBentoGrid() {
                 </Link>
             </div>
 
-            {/* 2. Dynamic Bento Content */}
-            {newsData.slice(0, 6).map((news, index) => (
-                <div key={news.id} className={BENTO_LAYOUT[index]}>
-                    <NewsCard 
-                        {...news} 
-                        isHero={index === 0}
-                        isSmall={index >= 2} 
-                    />
-                </div>
-            ))}
+            {/* 2. Bento Grid (Solo para el contenido) */}
+            <div className="
+                grid grid-cols-4 sm:grid-cols-8 md:grid-cols-12
+                grid-flow-row-dense gap-4 sm:gap-6 
+                auto-rows-[240px]
+            ">
+                {newsData.slice(0, 6).map((news, index) => (
+                    <div key={news.id} className={BENTO_LAYOUT[index]}>
+                        <NewsCard 
+                            {...news} 
+                            isHero={index === 0}
+                            isSmall={index >= 2} 
+                        />
+                    </div>
+                ))}
+            </div>
 
             {/* 3. Mobile Button (at the end) */}
             <Link
                 href="/noticias"
                 className="
-                    sm:hidden col-span-full flex items-center justify-center gap-2 
+                    sm:hidden flex items-center justify-center gap-2 
                     rounded-lg bg-background-secondary hover:bg-background-secondary-hover text-text-default-default 
-                    transition-colors text-body-small-strong w-full h-full
-                    h-[46px]
+                    transition-colors text-body-small-strong w-full h-[48px]
                 "
             >
                 Ver todas las noticias
