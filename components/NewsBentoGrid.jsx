@@ -129,7 +129,7 @@ export default function NewsBentoGrid() {
                 md:col-span-3
                 lg:col-start-7 lg:col-span-3 lg:row-start-3 lg:row-span-2
             ">
-                <NewsCard {...newsData[2]} />
+                <NewsCard {...newsData[2]} isSmall={true} />
             </div>
 
             {/* Card-4 */}
@@ -140,7 +140,7 @@ export default function NewsBentoGrid() {
                 md:col-start-4 md:col-span-3 md:row-start-4 md:row-span-2
                 lg:col-start-10 lg:col-span-3 lg:row-start-2 lg:row-span-2
             ">
-                <NewsCard {...newsData[3]} />
+                <NewsCard {...newsData[3]} isSmall={true} />
             </div>
 
             {/* Card-5 */}
@@ -151,7 +151,7 @@ export default function NewsBentoGrid() {
                 md:col-start-7 md:col-span-3 md:row-start-5 md:row-span-1
                 lg:col-start-7 lg:col-span-3 lg:row-start-2 lg:row-span-1
             ">
-                <NewsCard {...newsData[4]} />
+                <NewsCard {...newsData[4]} isSmall={true} />
             </div>
 
             {/* Card-6 */}
@@ -162,7 +162,7 @@ export default function NewsBentoGrid() {
                 md:col-start-10 md:col-span-3
                 lg:col-start-10 lg:col-span-3 lg:row-start-4 lg:row-span-1
             ">
-                <NewsCard {...newsData[5]} />
+                <NewsCard {...newsData[5]} isSmall={true} />
             </div>
 
             {/* 3. Button (Mobile only at the end) */}
