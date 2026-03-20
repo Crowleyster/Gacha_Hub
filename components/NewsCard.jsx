@@ -58,7 +58,8 @@ export default function NewsCard({
                 relative h-full w-full flex flex-col justify-end
                 p-6
                 gap-[4px]
-                transition-all duration-300
+                transition-transform duration-300
+                group-hover:-translate-y-2
             ">
                 {/* Parte Inferior: Icono + Tag */}
                 <div className="flex items-center gap-3">
@@ -82,7 +83,7 @@ export default function NewsCard({
 
                 {/* Parte Inferior: Titular (Máximo 2 líneas) */}
                 <h3 className={`
-                    text-white transition-transform duration-300 group-hover:-translate-y-1
+                    text-white transition-colors duration-300
                     line-clamp-2
                     ${isHero 
                         ? 'text-heading md:text-subtitle lg:text-title-page' 
