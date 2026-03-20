@@ -56,7 +56,7 @@ export default function NewsCard({
             {/* 3. Contenido (UI Layer) */}
             <div className="
                 relative h-full w-full flex flex-col justify-end
-                p-6
+                p-4 sm:p-5 md:p-6
                 gap-[4px]
                 transition-transform duration-300
                 group-hover:-translate-y-2
