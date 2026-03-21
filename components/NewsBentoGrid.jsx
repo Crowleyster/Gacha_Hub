@@ -42,6 +42,7 @@ export default function NewsBentoGrid() {
                     <div key={news.id} className={BENTO_LAYOUT[index]}>
                         <NewsCard 
                             {...news} 
+                            href="/noticias"
                             isHero={index === 0}
                             isSmall={index >= 2} 
                         />
