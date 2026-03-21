@@ -1,40 +1,45 @@
-import { Inter } from "next/font/google";
-import "./globals.css";
-import ClientLayout from "@/components/ClientLayout";
+import { Inter } from 'next/font/google';
+import './globals.css';
+import ClientLayout from './ClientLayout';
 
-const inter = Inter({ subsets: ["latin"] });
-
-export const metadata = {
-  title: "Gacha Hub | Últimas novedades",
-  description: "Tu fuente principal de actualizaciones y eventos de juegos gacha.",
-  manifest: "/manifest.json",
-  appleWebApp: {
-    capable: true,
-    statusBarStyle: "default",
-    title: "Gacha Hub",
-  },
-  formatDetection: {
-    telephone: false,
-  },
-};
+const inter = Inter({ subsets: ['latin'] });
 
 export const viewport = {
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
-    { media: "(prefers-color-scheme: dark)", color: "#09090b" },
-  ],
-  width: "device-width",
+  width: 'device-width',
   initialScale: 1,
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#ffffff' },
+    { media: '(prefers-color-scheme: dark)',  color: '#09090b' },
+  ],
+};
+
+export const metadata = {
+  title: 'Gacha Hub | Últimas novedades',
+  description: 'Tu fuente principal de actualizaciones y eventos de juegos gacha.',
+  manifest: '/manifest.json',
+  formatDetection: { telephone: false },
+  appleWebApp: {
+    capable: true,
+    title: 'Gacha Hub',
+    statusBarStyle: 'default',
+  },
 };
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="es" className={`${inter.variable} scroll-smooth suppressHydrationWarning`}>
+    <html lang="es" className="scroll-smooth suppressHydrationWarning">
       <head>
-        {/* Apple touch icon */}
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
       </head>
-      <body className={`${inter.className} antialiased h-screen overflow-hidden flex`}>
+      {/*
+       * antialiased: suavizado de fuentes
+       * overflow-hidden: evita scroll en body — el scroll está en el contenedor interno
+       * flex: necesario para que ClientLayout ocupe todo el alto disponible
+       *
+       * ⚠️ Se eliminó h-screen (= 100vh fijo) que causaba el corte en PWA standalone.
+       *    El alto ahora viene de globals.css → html/body con dvh + -webkit-fill-available.
+       */}
+      <body className={`${inter.className} antialiased overflow-hidden flex min-h-dvh`}>
         <ClientLayout>{children}</ClientLayout>
       </body>
     </html>
