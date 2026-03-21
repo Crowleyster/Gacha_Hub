@@ -48,7 +48,7 @@ export default function ClientLayout({ children }) {
                 />
             )}
 
-            <div className={`flex flex-col h-screen overflow-hidden w-full pb-[calc(80px+env(safe-area-inset-bottom))] sm:pb-0 transition-all duration-300 ${isSidebarExpanded ? 'sm:ml-64 sm:w-[calc(100%-16rem)]' : 'sm:ml-[68px] sm:w-[calc(100%-68px)]'}`}>
+            <div className={`flex flex-col h-screen overflow-hidden w-full pb-content-safe sm:pb-0 transition-all duration-300 ${isSidebarExpanded ? 'sm:ml-64 sm:w-[calc(100%-16rem)]' : 'sm:ml-[68px] sm:w-[calc(100%-68px)]'}`}>
                 <Header
                     onToggleSidebar={() => setIsSidebarExpanded(!isSidebarExpanded)}
                     onOpenMobileSheet={() => setIsMobileSheetOpen(true)}
