@@ -1,4 +1,4 @@
-use client';
+'use client';
 
 import { useRef } from 'react';
 import { CalendarDays, ChevronLeft, ChevronRight, Clock, ArrowRight } from 'lucide-react';
