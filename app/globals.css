@@ -164,8 +164,13 @@
  * Se usa en el <nav> de MobileNav y en cualquier contenedor
  * que necesite respetar el espacio del home indicator.
  */
-@utility pb-safe {
+@utility pb-content-safe {
   padding-bottom: calc(var(--mobile-nav-height) + env(safe-area-inset-bottom));
+}
+
+/* Para el nav mismo — solo compensa el home indicator de iOS */
+@utility pb-safe {
+  padding-bottom: env(safe-area-inset-bottom);
 }
 
 /* ── Viewport height para PWA standalone ─────────────────── */
