@@ -32,7 +32,7 @@ export default function Header({ onToggleSidebar, onOpenMobileSheet }) {
   const pageTitle = getPageTitle(pathname);
 
   return (
-    <header className="sticky top-0 z-40 w-full flex-shrink-0 flex items-center justify-between pt-[max(0.75rem,env(safe-area-inset-top))] pb-3 px-4 md:px-6 border-b bg-background-default/80 backdrop-blur-md border-border-default-secondary transition-colors duration-300 shadow-sm dark:shadow-black/20">
+    <header className="fixed top-0 left-0 right-0 z-40 flex-shrink-0 flex items-center justify-between pt-[max(0.75rem,env(safe-area-inset-top))] pb-3 px-4 md:px-6 border-b bg-background-default/70 backdrop-blur-md saturate-150 border-border-default-secondary transition-colors duration-300 dark:shadow-black/20">
 
       {/* Left: Toggle + Title */}
       <div className="flex items-center gap-3">

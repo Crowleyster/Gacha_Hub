@@ -54,7 +54,7 @@ export default function ClientLayout({ children }) {
                     onOpenMobileSheet={() => setIsMobileSheetOpen(true)}
                 />
 
-                <div className="flex-1 overflow-y-auto overflow-x-hidden custom-scrollbar pb-content-safe sm:pb-12">
+                <div className="flex-1 overflow-y-auto overflow-x-hidden custom-scrollbar pb-content-safe sm:pb-12 pt-[57px]">
                     <main className="w-full max-w-[3840px] mx-auto grid content-start grid-cols-4 sm:grid-cols-8 md:grid-cols-12 gap-[16px] sm:gap-[24px] p-6 xs:p-8 sm:p-12 md:px-24 md:py-12 2xl:px-[160px] 2xl:py-12">
                         {children}
                     </main>
