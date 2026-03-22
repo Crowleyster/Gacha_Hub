@@ -1,111 +1,125 @@
 'use client';
 
 import { useRef } from 'react';
-import { CalendarDays, ChevronLeft, ChevronRight, Clock, ArrowRight } from 'lucide-react';
+import { CalendarDays, ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 import { EVENTS_DATA } from '@/lib/mock-data';
+import { GAMES_DATA } from '@/lib/games-data';
 
 // ── Helpers ──────────────────────────────────────────────
 
-function formatDate(dateStr) {
+function formatDateShort(dateStr) {
   const [year, month, day] = dateStr.split('-').map(Number);
   return new Date(year, month - 1, day).toLocaleDateString('es-ES', {
     day: 'numeric',
     month: 'short',
-    year: 'numeric',
   });
 }
 
-function getDaysLeft(endDateStr) {
-  const [year, month, day] = endDateStr.split('-').map(Number);
-  const end = new Date(year, month - 1, day);
-  const now = new Date();
-  now.setHours(0, 0, 0, 0);
-  const diff = Math.ceil((end - now) / (1000 * 60 * 60 * 24));
-  return diff;
-}
-
-function StatusBadge({ status, endDate }) {
-  const daysLeft = getDaysLeft(endDate);
+function getTimeInfo(event) {
+  const { status, startDate, endDate } = event;
 
   if (status === 'upcoming') {
-    return (
-      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-body-small bg-background-tertiary text-text-default-secondary border border-border-default-secondary">
-        Próximamente
-      </span>
-    );
+    return { label: 'Próximamente', color: 'bg-white/20 text-white' };
   }
 
-  if (daysLeft <= 3) {
-    return (
-      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-body-small bg-red-500/10 text-red-500 border border-red-500/20">
-        <Clock className="w-3 h-3" aria-hidden="true" />
-        {daysLeft === 0 ? 'Termina hoy' : `${daysLeft}d restante${daysLeft > 1 ? 's' : ''}`}
-      </span>
-    );
-  }
+  const [ey, em, ed] = endDate.split('-').map(Number);
+  const end = new Date(ey, em - 1, ed);
+  const now = new Date();
+  now.setHours(0, 0, 0, 0);
+  const diffMs = end - now;
+  const diffHours = Math.ceil(diffMs / (1000 * 60 * 60));
+  const diffDays = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
 
-  if (daysLeft <= 7) {
-    return (
-      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-body-small bg-amber-500/10 text-amber-500 border border-amber-500/20">
-        <Clock className="w-3 h-3" aria-hidden="true" />
-        {`${daysLeft}d restantes`}
-      </span>
-    );
+  // Nivel 1: 24h o menos
+  if (diffHours <= 24) {
+    return {
+      label: `${diffHours} ${diffHours === 1 ? 'Hora' : 'Hrs'}`,
+      color: 'bg-red-500 text-white',
+    };
   }
-
-  return (
-    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-body-small bg-brand-default/10 text-text-brand-default border border-brand-default/20">
-      En curso
-    </span>
-  );
+  // Nivel 2: 7 días o menos (y más de 24h)
+  if (diffDays <= 7) {
+    return {
+      label: `${diffDays} ${diffDays === 1 ? 'Día' : 'Días'}`,
+      color: 'bg-amber-500 text-white',
+    };
+  }
+  // Nivel 3: 8+ días
+  return {
+    label: `${diffDays} Días`,
+    color: 'bg-emerald-500 text-white',
+  };
 }
 
 // ── EventCard ─────────────────────────────────────────────
 
 function EventCard({ event }) {
-  const { gameIconUrl, gameName, title, type, startDate, endDate, status } = event;
+  const { gameId, gameIconUrl, gameName, title, type, startDate, endDate, status } = event;
+  const game = GAMES_DATA[gameId];
+  const bannerUrl = game?.bannerUrl;
+  const { label, color } = getTimeInfo(event);
 
   return (
     <article className="
+      group
       flex-shrink-0 snap-start
       w-[280px] sm:w-auto
-      bg-background-secondary border border-border-default-secondary rounded-xl
-      p-4 flex flex-col gap-3
-      hover:bg-background-secondary-hover hover:border-border-default-default
-      transition-all duration-200
+      relative rounded-2xl overflow-hidden
+      border border-white/10 hover:border-white/30
+      transition-all duration-300
+      cursor-pointer
+      h-[220px]
     ">
-      {/* Header: ícono + juego + tipo */}
-      <div className="flex items-center gap-3">
-        {gameIconUrl && (
-          <div className="w-9 h-9 rounded-lg overflow-hidden border border-border-default-secondary shrink-0 bg-background-tertiary">
-            <img
-              src={gameIconUrl}
-              alt={gameName}
-              className="w-full h-full object-cover"
-            />
-          </div>
-        )}
-        <div className="flex flex-col min-w-0">
-          <span className="text-body-small-strong text-text-default-default truncate">{gameName}</span>
-          <span className="text-body-small text-text-default-tertiary truncate">{type}</span>
-        </div>
-      </div>
+      {/* Banner background */}
+      {bannerUrl && (
+        <img
+          src={bannerUrl}
+          alt=""
+          aria-hidden="true"
+          className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+        />
+      )}
 
-      {/* Título del evento */}
-      <h3 className="text-body-strong text-text-default-default line-clamp-2 leading-snug">
-        {title}
-      </h3>
+      {/* Scrim permanente — más denso que NewsCard para legibilidad */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/60 to-black/30" />
 
-      {/* Footer: fechas + badge */}
-      <div className="flex items-center justify-between gap-2 mt-auto pt-3 border-t border-border-default-secondary">
-        <div className="flex items-center gap-1.5 text-text-default-tertiary min-w-0">
-          <CalendarDays className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />
-          <span className="text-body-small truncate">
-            {formatDate(startDate)} — {formatDate(endDate)}
+      {/* Contenido */}
+      <div className="relative h-full w-full flex flex-col p-4 gap-2">
+
+        {/* Fila superior: ícono + badge */}
+        <div className="flex items-start justify-between">
+          {gameIconUrl && (
+            <div className="w-9 h-9 rounded-full overflow-hidden border-2 border-white/20 shrink-0 shadow-400">
+              <img
+                src={gameIconUrl}
+                alt={gameName}
+                className="w-full h-full object-cover"
+              />
+            </div>
+          )}
+          <span className={`${color} text-body-small-strong px-3 py-1 rounded-full shadow-400 ml-auto`}>
+            {label}
           </span>
         </div>
-        <StatusBadge status={status} endDate={endDate} />
+
+        {/* Título */}
+        <h3 className="text-white text-heading font-bold line-clamp-2 leading-snug mt-1">
+          {title}
+        </h3>
+
+        {/* Descripción / tipo */}
+        <p className="text-white/60 text-body-small line-clamp-2 leading-snug flex-1">
+          {type}
+        </p>
+
+        {/* Footer: fechas */}
+        <div className="flex items-center gap-1.5 text-white/50 mt-auto">
+          <CalendarDays className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />
+          <span className="text-body-small">
+            {formatDateShort(startDate)} — {formatDateShort(endDate)}
+          </span>
+        </div>
       </div>
     </article>
   );
@@ -140,10 +154,10 @@ export default function EventsTimeline() {
         </Link>
       </div>
 
-      {/* Contenedor: carrusel en mobile, grid en M+ */}
+      {/* Contenedor responsive */}
       <div className="relative">
 
-        {/* Flechas de navegación — solo visibles en md (tablet) */}
+        {/* Flechas tablet */}
         {hasMany && (
           <>
             <button
@@ -171,12 +185,7 @@ export default function EventsTimeline() {
           </>
         )}
 
-        {/*
-          Mobile (< sm): carrusel horizontal con snap
-          sm–md: carrusel horizontal (scroll natural con grid implícito)
-          lg+: grid 2 columnas
-          xl+: grid 3 columnas
-        */}
+        {/* Carrusel mobile → grid desktop */}
         <div
           ref={scrollRef}
           className="
@@ -191,11 +200,11 @@ export default function EventsTimeline() {
           ))}
         </div>
 
-        {/* Fade gradient derecha — solo en mobile/tablet */}
+        {/* Fade lateral mobile */}
         <div className="pointer-events-none absolute right-0 top-0 h-full w-12 bg-gradient-to-l from-background-default to-transparent lg:hidden" />
       </div>
 
-      {/* Botón "Ver todos" mobile */}
+      {/* Botón mobile */}
       <Link
         href="/eventos"
         className="sm:hidden flex items-center justify-center gap-2 rounded-lg
