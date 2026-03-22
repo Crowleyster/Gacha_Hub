@@ -16,48 +16,62 @@ function formatDateShort(dateStr) {
   });
 }
 
+function getEndMs(dateStr) {
+  const [y, m, d] = dateStr.split('-').map(Number);
+  return new Date(y, m - 1, d).getTime();
+}
+
 function getTimeInfo(event) {
-  const { status, startDate, endDate } = event;
+  const { status, endDate } = event;
 
   if (status === 'upcoming') {
-    return { label: 'Próximamente', color: 'bg-white/20 text-white' };
+    return { label: 'Próximamente', color: 'bg-black/50 backdrop-blur-sm text-white' };
   }
 
-  const [ey, em, ed] = endDate.split('-').map(Number);
-  const end = new Date(ey, em - 1, ed);
+  const end = new Date(...endDate.split('-').map((n, i) => i === 1 ? Number(n) - 1 : Number(n)));
   const now = new Date();
   now.setHours(0, 0, 0, 0);
   const diffMs = end - now;
   const diffHours = Math.ceil(diffMs / (1000 * 60 * 60));
   const diffDays = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
 
-  // Nivel 1: 24h o menos
+  // Nivel 1: 24h o menos → Últimas horas
   if (diffHours <= 24) {
     return {
       label: `${diffHours} ${diffHours === 1 ? 'Hora' : 'Hrs'}`,
       color: 'bg-red-500 text-white',
     };
   }
-  // Nivel 2: 7 días o menos (y más de 24h)
+  // Nivel 2: 7 días o menos → Últimos días
   if (diffDays <= 7) {
     return {
       label: `${diffDays} ${diffDays === 1 ? 'Día' : 'Días'}`,
       color: 'bg-amber-500 text-white',
     };
   }
-  // Nivel 3: 8+ días
+  // Nivel 3: 8+ días → Nuevo evento
   return {
     label: `${diffDays} Días`,
     color: 'bg-emerald-500 text-white',
   };
 }
 
+function sortedEvents() {
+  return [...EVENTS_DATA].sort((a, b) => {
+    // Próximamente siempre al final
+    if (a.status === 'upcoming' && b.status !== 'upcoming') return 1;
+    if (b.status === 'upcoming' && a.status !== 'upcoming') return -1;
+    if (a.status === 'upcoming' && b.status === 'upcoming') return 0;
+    // Ascendente por tiempo restante
+    return getEndMs(a.endDate) - getEndMs(b.endDate);
+  });
+}
+
 // ── EventCard ─────────────────────────────────────────────
 
 function EventCard({ event }) {
-  const { gameId, gameIconUrl, gameName, title, type, startDate, endDate, status } = event;
-  const game = GAMES_DATA[gameId];
-  const bannerUrl = game?.bannerUrl;
+  const { gameId, gameIconUrl, gameName, title, type, startDate, endDate } = event;
+  const bannerUrl = GAMES_DATA[gameId]?.bannerUrl;
   const { label, color } = getTimeInfo(event);
 
   return (
@@ -81,7 +95,7 @@ function EventCard({ event }) {
         />
       )}
 
-      {/* Scrim permanente — más denso que NewsCard para legibilidad */}
+      {/* Scrim */}
       <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/60 to-black/30" />
 
       {/* Contenido */}
@@ -101,6 +115,7 @@ function EventCard({ event }) {
           <span className={`${color} text-body-small-strong px-3 py-1 rounded-full shadow-400 ml-auto`}>
             {label}
           </span>
+
         </div>
 
         {/* Título */}
@@ -108,12 +123,12 @@ function EventCard({ event }) {
           {title}
         </h3>
 
-        {/* Descripción / tipo */}
+        {/* Tipo / descripción */}
         <p className="text-white/60 text-body-small line-clamp-2 leading-snug flex-1">
           {type}
         </p>
 
-        {/* Footer: fechas */}
+        {/* Fechas */}
         <div className="flex items-center gap-1.5 text-white/50 mt-auto">
           <CalendarDays className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />
           <span className="text-body-small">
@@ -134,7 +149,8 @@ export default function EventsTimeline() {
     scrollRef.current?.scrollBy({ left: 296 * dir, behavior: 'smooth' });
   };
 
-  const hasMany = EVENTS_DATA.length > 3;
+  const events = sortedEvents();
+  const hasMany = events.length > 3;
 
   return (
     <section className="col-span-full flex flex-col gap-6 font-sans">
@@ -195,7 +211,7 @@ export default function EventsTimeline() {
             xl:grid-cols-3
           "
         >
-          {EVENTS_DATA.map((event) => (
+          {events.map((event) => (
             <EventCard key={event.id} event={event} />
           ))}
         </div>

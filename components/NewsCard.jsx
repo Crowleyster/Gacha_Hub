@@ -75,11 +75,7 @@ export default function NewsCard({
                                 />
                             </div>
                         )}
-                        <span className="
-                            bg-background-secondary 
-                            text-white text-body-small-strong
-                            p-1.5 px-2 rounded-md leading-none
-                        ">
+                        <span className="bg-black/50 backdrop-blur-sm text-white text-body-small-strong p-1.5 px-2 rounded-md leading-none">
                             {tag}
                         </span>
                     </div>
@@ -88,9 +84,9 @@ export default function NewsCard({
                     <h3 className={`
                         text-white transition-colors duration-300
                         line-clamp-2
-                        ${isHero 
-                            ? 'text-heading md:text-subtitle lg:text-title-page' 
-                            : isSmall 
+                        ${isHero
+                            ? 'text-heading md:text-subtitle lg:text-title-page'
+                            : isSmall
                                 ? 'text-body-strong lg:text-subheading-strong'
                                 : 'text-body-strong md:text-subheading-strong'
                         }

@@ -183,7 +183,7 @@ export default function ActiveCodes() {
     const carouselRef = useRef(null);
 
     const handleCopy = (code) => {
-        navigator.clipboard.writeText(code).catch(() => {});
+        navigator.clipboard.writeText(code).catch(() => { });
         setCopiedCode(code);
         setTimeout(() => setCopiedCode(null), 2000);
     };
