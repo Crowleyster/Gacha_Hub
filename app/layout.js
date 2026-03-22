@@ -39,7 +39,7 @@ export default function RootLayout({ children }) {
        * ⚠️ Se eliminó h-screen (= 100vh fijo) que causaba el corte en PWA standalone.
        *    El alto ahora viene de globals.css → html/body con dvh + -webkit-fill-available.
        */}
-      <body className={`${inter.className} antialiased overflow-hidden flex min-h-dvh`}>
+      <body className={`${inter.className} antialiased overflow-hidden flex h-dvh animate-in fade-in duration-500`}>
         <ClientLayout>{children}</ClientLayout>
       </body>
     </html>
