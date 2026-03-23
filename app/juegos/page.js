@@ -2,16 +2,16 @@ import Link from 'next/link';
 import { Gamepad2, Monitor, Smartphone } from 'lucide-react';
 import { GAMES_DATA } from '@/lib/games-data';
 
-/* ─── Helper: Icono de Plataforma (Versión Minimalista) ─────────── */
-// Devuelve iconos simplificados para integrarse sobre la imagen
+/* ─── Helper: Icono de Plataforma ─────────── */
 function PlatformIcon({ platform }) {
     if (platform === 'PC' || platform.includes('PS')) {
-        return <Monitor className="w-4 h-4 text-white/70" />;
+        // En lugar de text-white/70, forzamos blanco base para overlays
+        return <Monitor className="w-4 h-4 text-white" />;
     }
-    return <Smartphone className="w-4 h-4 text-white/70" />;
+    return <Smartphone className="w-4 h-4 text-white" />;
 }
 
-/* ─── Componente: Tarjeta de Juego (Rediseño Altamente Visual) ─── */
+/* ─── Componente: Tarjeta de Juego ─── */
 function GameCard({ game }) {
     return (
         <Link
@@ -20,13 +20,13 @@ function GameCard({ game }) {
                 group relative 
                 aspect-[16/10] sm:aspect-[16/11] md:aspect-[16/10]
                 overflow-hidden rounded-2xl 
-                border border-white/10 dark:border-white/5
+                border border-border-default-secondary
                 transition-all duration-300 
                 shadow-200 hover:shadow-400
                 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-default
             "
         >
-            {/* 1. Imagen de Fondo (Cubre el 100% de la tarjeta) */}
+            {/* Imagen de Fondo */}
             {game.bannerUrl && (
                 <img
                     src={game.bannerUrl}
@@ -35,18 +35,20 @@ function GameCard({ game }) {
                 />
             )}
 
-            {/* 2. Scrim (Degradado oscuro inferior para garantizar lectura) */}
+            {/* Scrim: Usamos negro puro para garantizar contraste bajo texto blanco */}
             <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent" />
 
-            {/* 3. Capa de Contenido (Superpuesta sobre la imagen) */}
+            {/* Capa de Contenido */}
             <div className="absolute inset-0 z-10 flex flex-col justify-between p-4">
                 
                 {/* Fila Superior: Desarrollador y Versión */}
-                <div className="flex items-center justify-between gap-3 text-white/90 text-body-small">
-                    <span className="truncate pr-2 font-medium drop-shadow-md">
+                <div className="flex items-center justify-between gap-3 text-white">
+                    {/* Se eliminó font-medium arbitrario, se usa preset body-small */}
+                    <span className="truncate pr-2 text-body-small">
                         {game.developer}
                     </span>
-                    <div className="shrink-0 px-2 py-0.5 rounded-md bg-black/50 backdrop-blur-md border border-white/10 text-body-small-strong font-mono drop-shadow-md">
+                    {/* Se eliminó font-mono, se usa text-body-code del SDS */}
+                    <div className="shrink-0 px-2 py-0.5 rounded-md bg-black/60 backdrop-blur-md border border-border-default-secondary text-body-code text-white">
                         v{game.currentVersion}
                     </div>
                 </div>
@@ -60,18 +62,20 @@ function GameCard({ game }) {
                             <img
                                 src={game.iconUrl}
                                 alt={`${game.name} icon`}
-                                className="w-11 h-11 rounded-xl shrink-0 object-cover border-2 border-white/20 shadow-black/50 drop-shadow-lg"
+                                /* Se reemplazó shadow-black por shadow-400 del SDS */
+                                className="w-11 h-11 rounded-xl shrink-0 object-cover shadow-400"
                             />
                         )}
-                        <h2 className="text-white text-heading font-bold line-clamp-2 leading-tight drop-shadow-xl shadow-black/80">
+                        {/* Se eliminó font-bold, el preset text-heading ya lo cubre */}
+                        <h2 className="text-white text-heading line-clamp-2 leading-tight">
                             {game.name}
                         </h2>
                     </div>
 
-                    {/* Grupo Derecho: Plataformas Simplificadas */}
+                    {/* Grupo Derecho: Plataformas */}
                     <div className="flex items-center gap-2 shrink-0 pb-1">
                         {game.platforms.slice(0, 3).map(p => (
-                            <span key={p} title={p} className="drop-shadow-lg">
+                            <span key={p} title={p}>
                                 <PlatformIcon platform={p} />
                             </span>
                         ))}
@@ -85,7 +89,6 @@ function GameCard({ game }) {
 
 /* ─── Página Principal de Juegos ──────────────────────────────────── */
 export default function Juegos() {
-    // Convertimos el objeto GAMES_DATA en un array para poder iterarlo
     const gamesList = Object.values(GAMES_DATA);
 
     return (
@@ -94,7 +97,8 @@ export default function Juegos() {
             {/* Encabezado de la página */}
             <div className="flex flex-col gap-2">
                 <div className="flex items-center gap-3">
-                    <div className="p-2 bg-brand-default/10 rounded-xl dark:bg-white/10">
+                    {/* Se eliminó el modificador bg-brand-default/10 y dark:bg-white/10 prohibidos */}
+                    <div className="p-2 bg-background-secondary rounded-xl">
                         <Gamepad2 className="w-6 h-6 text-text-brand-default" />
                     </div>
                     <h1 className="text-title-page text-text-default-default">
@@ -106,7 +110,7 @@ export default function Juegos() {
                 </p>
             </div>
 
-            {/* Cuadrícula Automatizada (Diferentes columnas según tamaño de pantalla) */}
+            {/* Cuadrícula Automatizada */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 {gamesList.map((game) => (
                     <GameCard key={game.id} game={game} />
