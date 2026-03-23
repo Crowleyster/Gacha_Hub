@@ -253,12 +253,13 @@ export default function ActiveCodes() {
                     </>
                 )}
 
-                {/* Carrusel alineado a la izquierda */}
+                {/* Carrusel alineado a la izquierda con sangrado completo (Full-Bleed) */}
                 <div
                     ref={carouselRef}
                     className="
                         flex gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-none pb-4
-                        lg:grid lg:grid-cols-3 lg:pb-0 lg:overflow-x-visible
+                        -mx-4 px-4 scroll-pl-4 md:-mx-6 md:px-6 md:scroll-pl-6
+                        lg:mx-0 lg:px-0 lg:scroll-pl-0 lg:grid lg:grid-cols-3 lg:pb-0 lg:overflow-x-visible
                         xl:grid-cols-4
                     "
                 >
@@ -270,14 +271,9 @@ export default function ActiveCodes() {
                             onCopy={handleCopy}
                         />
                     ))}
+                    {/* Espaciador invisible para que la última tarjeta respete el margen derecho */}
+                    <div className="w-1 shrink-0 lg:hidden" aria-hidden="true" />
                 </div>
-
-                {/* Gradient edge hint (mobile/tablet only) */}
-                <div className="
-                    pointer-events-none absolute right-0 top-0 h-full w-12
-                    bg-gradient-to-l from-background-default to-transparent
-                    lg:hidden
-                " />
             </div>
 
             {/* ── Empty state ── */}
