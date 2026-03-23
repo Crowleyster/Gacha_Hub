@@ -253,21 +253,15 @@ export default function ActiveCodes() {
                     </>
                 )}
 
-                {/*
-                    < lg  → horizontal snap carousel
-                    lg+   → 3-col grid
-                    xl+   → 4-col grid
-                */}
-                <{/* Carrusel alineado a la izquierda */}
-<div
-    ref={carouselRef}
-    className="
-        flex gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-none pb-4
-        lg:grid lg:grid-cols-3 lg:pb-0 lg:overflow-x-visible
-        xl:grid-cols-4
-    "
->
-
+                {/* Carrusel alineado a la izquierda */}
+                <div
+                    ref={carouselRef}
+                    className="
+                        flex gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-none pb-4
+                        lg:grid lg:grid-cols-3 lg:pb-0 lg:overflow-x-visible
+                        xl:grid-cols-4
+                    "
+                >
                     {codes.map((item, idx) => (
                         <CodeCard
                             key={`${selectedGame}-${idx}`}
