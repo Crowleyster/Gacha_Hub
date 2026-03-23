@@ -4,6 +4,8 @@ import { ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 import NewsCard from './NewsCard';
 import { newsData } from '@/lib/mock-data';
+import { GAMES_DATA } from '@/lib/games-data'; // <- Añadir esta línea arriba
+
 
 export default function NewsBentoGrid() {
     // Layout Configuration (Optimized for Tablet & Desktop)
@@ -33,22 +35,31 @@ export default function NewsBentoGrid() {
             </div>
 
             {/* 2. Bento Grid (Solo para el contenido) */}
-            <div className="
-                grid grid-cols-4 sm:grid-cols-8 md:grid-cols-12
-                grid-flow-row-dense gap-4 sm:gap-6 
-                auto-rows-[240px]
-            ">
-                {newsData.slice(0, 6).map((news, index) => (
-                    <div key={news.id} className={BENTO_LAYOUT[index]}>
-                        <NewsCard 
-                            {...news} 
-                            href="/noticias"
-                            isHero={index === 0}
-                            isSmall={index >= 2} 
-                        />
-                    </div>
-                ))}
+<div className="
+    grid grid-cols-4 sm:grid-cols-8 md:grid-cols-12
+    grid-flow-row-dense gap-4 sm:gap-6 
+    auto-rows-[240px]
+">
+    {newsData.slice(0, 6).map((news, index) => {
+        
+        // 🛠️ LÓGICA DE RESPALDO (FALLBACK)
+        // Si la noticia tiene imagen, la usa. Si no, busca el banner del juego.
+        const fallbackImage = news.imageUrl || GAMES_DATA[news.gameId]?.bannerUrl;
+
+        return (
+            <div key={news.id} className={BENTO_LAYOUT[index]}>
+                <NewsCard 
+                    {...news} 
+                    imageUrl={fallbackImage} // <- Sobrescribimos la imagen aquí
+                    href="/noticias"
+                    isHero={index === 0}
+                    isSmall={index >= 2} 
+                />
             </div>
+        );
+    })}
+</div>
+
 
             {/* 3. Mobile Button (at the end) */}
             <Link
