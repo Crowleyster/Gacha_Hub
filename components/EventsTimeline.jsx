@@ -201,20 +201,15 @@ export default function EventsTimeline() {
           </>
         )}
 
-        {/* Carrusel mobile → grid desktop */}
-        <div
-          ref={scrollRef}
-          className="
-            flex gap-3 overflow-x-auto snap-x snap-mandatory scrollbar-none
-            -mx-4 px-4 pb-2
-            lg:grid lg:grid-cols-2 lg:mx-0 lg:px-0 lg:pb-0 lg:overflow-x-visible
-            xl:grid-cols-3
-          "
-        >
-          {events.map((event) => (
-            <EventCard key={event.id} event={event} />
-          ))}
-        </div>
+        {/* Carrusel alineado a la izquierda */}
+<div
+    ref={scrollRef}
+    className="
+        flex gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-none pb-4
+        lg:grid lg:grid-cols-2 lg:pb-0 lg:overflow-x-visible
+        xl:grid-cols-3
+    "
+>
 
         {/* Fade lateral mobile */}
         <div className="pointer-events-none absolute right-0 top-0 h-full w-12 bg-gradient-to-l from-background-default to-transparent lg:hidden" />
