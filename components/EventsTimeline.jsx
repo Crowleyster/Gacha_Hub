@@ -201,22 +201,22 @@ export default function EventsTimeline() {
           </>
         )}
 
-        {/* Carrusel alineado a la izquierda */}
+        {/* Carrusel alineado a la izquierda con sangrado completo (Full-Bleed) */}
         <div
           ref={scrollRef}
           className="
             flex gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-none pb-4
-            lg:grid lg:grid-cols-2 lg:pb-0 lg:overflow-x-visible
+            -mx-4 px-4 scroll-pl-4 md:-mx-6 md:px-6 md:scroll-pl-6
+            lg:mx-0 lg:px-0 lg:scroll-pl-0 lg:grid lg:grid-cols-2 lg:pb-0 lg:overflow-x-visible
             xl:grid-cols-3
           "
         >
           {events.map((event) => (
             <EventCard key={event.id} event={event} />
           ))}
+          {/* Espaciador invisible para el margen final */}
+          <div className="w-1 shrink-0 lg:hidden" aria-hidden="true" />
         </div>
-
-        {/* Fade lateral mobile */}
-        <div className="pointer-events-none absolute right-0 top-0 h-full w-12 bg-gradient-to-l from-background-default to-transparent lg:hidden" />
       </div>
 
       {/* Botón mobile */}
