@@ -33,7 +33,7 @@ export default function Sidebar({ isExpanded }) {
             className={`
                 fixed top-0 left-0 h-screen z-50 flex flex-col 
                 bg-background-secondary border-r border-border-default-secondary
-                transition-all duration-300 ease-in-out shadow-2xl shadow-black/10 dark:shadow-black/50
+                transition-all duration-300 ease-in-out shadow-600 dark:shadow-black/50
                 hidden sm:flex p-2
                 ${isExpanded ? 'sm:translate-x-0 w-64' : 'sm:translate-x-0 sm:w-[68px]'}
             `}
@@ -74,8 +74,8 @@ export default function Sidebar({ isExpanded }) {
                                 transition-all duration-200 group relative
                                 ${isExpanded ? 'gap-4 px-4 justify-start' : 'justify-center'}
                                 ${isActive
-                                    ? 'bg-brand-default text-text-brand-on shadow-md'
-                                    : 'text-text-default-secondary hover:bg-background-secondary-hover'
+                                    ? 'bg-brand-default text-text-brand-on shadow-200'
+                                    : 'text-text-default-secondary hover:bg-background-secondary-hover hover:text-text-default-default'
                                 }
                             `}
                             style={{ height: '54px' }}
@@ -106,8 +106,8 @@ export default function Sidebar({ isExpanded }) {
                                     transition-all duration-200 group relative
                                     ${isExpanded ? 'gap-4 px-4 justify-start' : 'justify-center'}
                                     ${isActive
-                                        ? 'bg-brand-default text-text-brand-on shadow-md'
-                                        : 'text-text-default-secondary hover:bg-background-secondary-hover'
+                                        ? 'bg-brand-default text-text-brand-on shadow-200'
+                                        : 'text-text-default-secondary hover:bg-background-secondary-hover hover:text-text-default-default'
                                     }
                                 `}
                                 style={{ height: '54px' }}
@@ -123,7 +123,6 @@ export default function Sidebar({ isExpanded }) {
                     })}
                 </div>
             )}
-
         </aside>
     );
 }
