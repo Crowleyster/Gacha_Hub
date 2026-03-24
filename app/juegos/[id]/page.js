@@ -98,10 +98,10 @@ export default function GameHub() {
                         <h3 className="text-body-strong text-text-default-default">Comunidad</h3>
                         <div className="flex gap-2">
                             {game.socialLinks?.twitter && (
-                                <a href={game.socialLinks.twitter} target="_blank" rel="noopener noreferrer" className="p-3 bg-background-default border border-border-default-default rounded-xl text-text-default-secondary hover:text-[#1DA1F2] transition-colors"><Twitter className="w-5 h-5" /></a>
+                                <a href={game.socialLinks.twitter} target="_blank" rel="noopener noreferrer" className="p-3 bg-background-default border border-border-default-default rounded-xl text-text-default-secondary hover:text-text-default-default transition-colors"><Twitter className="w-5 h-5" /></a>
                             )}
                             {game.socialLinks?.discord && (
-                                <a href={game.socialLinks.discord} target="_blank" rel="noopener noreferrer" className="p-3 bg-background-default border border-border-default-default rounded-xl text-text-default-secondary hover:text-[#5865F2] transition-colors"><MessageSquare className="w-5 h-5" /></a>
+                                <a href={game.socialLinks.discord} target="_blank" rel="noopener noreferrer" className="p-3 bg-background-default border border-border-default-default rounded-xl text-text-default-secondary hover:text-text-default-default transition-colors"><MessageSquare className="w-5 h-5" /></a>
                             )}
                             {game.socialLinks?.officialSite && (
                                 <a href={game.socialLinks.officialSite} target="_blank" rel="noopener noreferrer" className="p-3 bg-background-default border border-border-default-default rounded-xl text-text-default-secondary hover:text-text-default-default transition-colors"><Globe className="w-5 h-5" /></a>

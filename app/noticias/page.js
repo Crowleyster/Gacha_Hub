@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Newspaper, Search, FilterX, X } from 'lucide-react';
 import { GAMES_DATA } from '@/lib/games-data';
 
@@ -17,7 +18,7 @@ function NewsCard({ news }) {
         >
             <div className="relative aspect-video w-full overflow-hidden bg-background-tertiary">
                 {fallbackImage && (
-                    <img src={fallbackImage} alt={news.title} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                    <Image src={fallbackImage} alt={news.title} fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover transition-transform duration-700 group-hover:scale-105" />
                 )}
                 <div className="absolute top-3 left-3 px-2 py-1 bg-black/60 backdrop-blur-md border border-border-default-secondary rounded-md text-white text-body-small-strong drop-shadow-md">
                     {news.tag}

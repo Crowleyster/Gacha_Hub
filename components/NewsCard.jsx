@@ -67,7 +67,7 @@ export default function NewsCard({
                     {/* Parte Inferior: Icono + Tag */}
                     <div className="flex items-center gap-3">
                         {gameIconUrl && (
-                            <div className="w-[32px] h-[32px] rounded-full overflow-hidden border border-border-default-default/20 shadow-400 shrink-0">
+                            <div className="w-8 h-8 rounded-full overflow-hidden border border-border-default-default/20 shadow-400 shrink-0">
                                 <img
                                     src={gameIconUrl}
                                     alt="Game Icon"

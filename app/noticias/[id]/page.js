@@ -28,8 +28,8 @@ function RelatedNewsCard({ news, game }) {
             </div>
             <div className="flex flex-col p-4 gap-2 flex-1">
                 {/* Solución Error 418 de fechas */}
-                <span suppressHydrationWarning className="text-body-small text-text-default-tertiary">
-                    {new Date(news.date).toLocaleDateString('es-ES', { day: '2-digit', month: 'short' })}
+                <span className="text-body-small text-text-default-tertiary">
+                    {new Date(news.date).toLocaleDateString('es-ES', { day: '2-digit', month: 'short', timeZone: 'UTC' })}
                 </span>
                 <h3 className="text-body-strong text-text-default-default line-clamp-2 leading-tight group-hover:text-text-brand-default transition-colors">
                     {news.title}
@@ -98,9 +98,9 @@ export default async function NewsArticle({ params }) {
                             {article.tag}
                         </span>
                         {/* Solución Error 418 de fechas */}
-                        <div suppressHydrationWarning className="flex items-center gap-1.5 text-text-default-secondary text-body-small">
+                        <div className="flex items-center gap-1.5 text-text-default-secondary text-body-small">
                             <Calendar className="w-4 h-4" />
-                            {new Date(article.date).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' })}
+                            {new Date(article.date).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' })}
                         </div>
                     </div>
 

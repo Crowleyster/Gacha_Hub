@@ -42,7 +42,7 @@ export default function SettingsSheet({ isOpen, onClose }) {
                         key={item.href}
                         href={item.href}
                         onClick={onClose}
-                        className="flex items-center gap-4 w-full h-[54px] px-4 rounded-xl border border-border-default-secondary bg-background-secondary hover:bg-background-secondary-hover transition-colors"
+                        className="flex items-center gap-4 w-full h-14 px-4 rounded-xl border border-border-default-secondary bg-background-secondary hover:bg-background-secondary-hover transition-colors"
                     >
                         <div className="flex items-center justify-center w-10 h-10 rounded-full bg-background-tertiary text-text-default-secondary">
                             <item.icon className="w-5 h-5" />
@@ -59,7 +59,7 @@ export default function SettingsSheet({ isOpen, onClose }) {
                 <span className="text-body-small text-text-default-secondary ml-1">Preferencia</span>
                 <button
                     onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-                    className="flex items-center gap-4 w-full h-[54px] px-4 rounded-xl border border-border-default-secondary bg-background-secondary hover:bg-background-secondary-hover transition-colors"
+                    className="flex items-center gap-4 w-full h-14 px-4 rounded-xl border border-border-default-secondary bg-background-secondary hover:bg-background-secondary-hover transition-colors"
                 >
                     <div className="flex items-center justify-center w-10 h-10 rounded-full bg-background-tertiary text-text-default-secondary">
                         {theme === 'dark' ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />}

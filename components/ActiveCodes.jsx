@@ -8,7 +8,7 @@ import { CODES_DATA } from '@/lib/mock-data';
 /* ─── Code Card ─────────────────────────────────────────────────────── */
 function CodeCard({ item, onCopy, isCopied }) {
     return (
-        <div className="flex-shrink-0 snap-start w-[260px] sm:w-auto bg-background-secondary border border-border-default-secondary rounded-xl p-4 flex flex-col gap-3 hover:bg-background-secondary-hover hover:border-border-default-default transition-all duration-200">
+        <div className="flex-shrink-0 snap-start w-64 sm:w-auto bg-background-secondary border border-border-default-secondary rounded-xl p-4 flex flex-col gap-3 hover:bg-background-secondary-hover hover:border-border-default-default transition-all duration-200">
             <div className="flex items-center justify-between gap-3">
                 <code className="font-mono text-body-strong text-text-default-default tracking-wider truncate">
                     {item.code}

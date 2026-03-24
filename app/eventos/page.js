@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from 'react';
+import Image from 'next/image';
 import { CalendarDays, ChevronDown, Clock } from 'lucide-react';
 import { EVENTS_DATA } from '@/lib/mock-data';
 import { GAMES_DATA } from '@/lib/games-data';
@@ -9,9 +10,9 @@ import { GAMES_DATA } from '@/lib/games-data';
 function EventCard({ event }) {
     const game = GAMES_DATA[event.gameId];
     return (
-        <div className="flex flex-col p-4 bg-background-secondary border border-border-default-secondary rounded-2xl gap-3 shrink-0 w-[280px] sm:w-auto snap-start">
+        <div className="flex flex-col p-4 bg-background-secondary border border-border-default-secondary rounded-2xl gap-3 shrink-0 w-72 sm:w-auto snap-start">
             <div className="flex items-center gap-2">
-                {game?.iconUrl && <img src={game.iconUrl} alt="" className="w-6 h-6 rounded-full" />}
+                {game?.iconUrl && <Image src={game.iconUrl} alt="" width={24} height={24} className="rounded-full" />}
                 <span className="text-body-small-strong text-text-default-secondary">{game?.shortName}</span>
                 <span className="ml-auto px-2 py-0.5 bg-background-tertiary rounded-md text-body-small">{event.type}</span>
             </div>

@@ -58,7 +58,7 @@ function GameCard({ game }) {
                     </div>
                 ))}
                 {extraPlatforms > 0 && (
-                    <div className="flex items-center justify-center h-7 min-w-[28px] px-1.5 bg-white/95 rounded-md shadow-sm text-[12px] font-bold text-black">
+                    <div className="flex items-center justify-center h-7 min-w-7 px-1.5 bg-white/95 rounded-md shadow-sm text-xs font-bold text-black">
                         +{extraPlatforms}
                     </div>
                 )}
@@ -178,7 +178,7 @@ export default function Juegos() {
             <div className="flex flex-col lg:flex-row gap-8 items-start">
 
                 {/* SIDEBAR ESCRITORIO */}
-                <aside className="hidden lg:flex flex-col w-[260px] shrink-0 sticky top-4">
+                <aside className="hidden lg:flex flex-col w-64 shrink-0 sticky top-4">
                     <div className="bg-background-secondary border border-border-default-secondary rounded-2xl flex flex-col overflow-hidden">
                         <div className="px-4 py-4 border-b border-border-default-secondary">
                             <h3 className="text-body-strong text-text-default-default text-lg">Filtros de búsqueda</h3>

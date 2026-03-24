@@ -78,12 +78,12 @@ function EventCard({ event }) {
     <article className="
       group
       flex-shrink-0 snap-start
-      w-[280px] sm:w-auto
+      w-72 sm:w-auto
       relative rounded-2xl overflow-hidden
       border border-white/10 hover:border-white/30
       transition-all duration-300
       cursor-pointer
-      h-[220px]
+      h-56
     ">
       {/* Banner background */}
       {bannerUrl && (
@@ -225,7 +225,7 @@ export default function EventsTimeline() {
         className="sm:hidden flex items-center justify-center gap-2 rounded-lg
                    bg-background-secondary hover:bg-background-secondary-hover
                    text-text-default-default hover:text-text-brand-default
-                   transition-colors text-body-small-strong w-full h-[48px]"
+                   transition-colors text-body-small-strong w-full h-12"
       >
         Ver todos los eventos
         <ArrowRight className="w-4 h-4" aria-hidden="true" />

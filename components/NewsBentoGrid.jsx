@@ -68,7 +68,7 @@ export default function NewsBentoGrid() {
                     sm:hidden flex items-center justify-center gap-2 
                     rounded-lg bg-background-secondary hover:bg-background-secondary-hover
                     text-text-default-default hover:text-text-brand-default
-                    transition-colors text-body-small-strong w-full h-[48px]
+                    transition-colors text-body-small-strong w-full h-12
                 "
             >
                 Ver todas las noticias

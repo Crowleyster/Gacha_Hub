@@ -33,7 +33,7 @@ export default function RightSheet({ isOpen, onClose, title, children }) {
             {/* Right Sheet Modal */}
             <div
                 className={`
-                    relative h-full w-[280px] sm:w-[320px] bg-background-default shadow-600
+                    relative h-full w-72 sm:w-80 bg-background-default shadow-600
                     border-l border-border-default-secondary
                     transition-transform duration-300 ease-in-out
                     ${isOpen ? 'translate-x-0' : 'translate-x-full'}
