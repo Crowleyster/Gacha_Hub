@@ -254,3 +254,17 @@ body {
 ::after {
   border-color: var(--color-border-default-default);
 }
+
+@layer utilities {
+
+  /* Ocultar scrollbar en Chrome, Safari y Opera */
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Ocultar scrollbar en Firefox, IE y Edge */
+  .scrollbar-none {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
