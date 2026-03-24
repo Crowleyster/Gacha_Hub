@@ -27,7 +27,8 @@ function RelatedNewsCard({ news, game }) {
                 </div>
             </div>
             <div className="flex flex-col p-4 gap-2 flex-1">
-                <span className="text-body-small text-text-default-tertiary">
+                {/* Solución Error 418 de fechas */}
+                <span suppressHydrationWarning className="text-body-small text-text-default-tertiary">
                     {new Date(news.date).toLocaleDateString('es-ES', { day: '2-digit', month: 'short' })}
                 </span>
                 <h3 className="text-body-strong text-text-default-default line-clamp-2 leading-tight group-hover:text-text-brand-default transition-colors">
@@ -38,8 +39,10 @@ function RelatedNewsCard({ news, game }) {
     );
 }
 
-export default function NewsArticle({ params }) {
-    const { id } = params;
+// 🛠️ SOLUCIÓN: Agregamos "async" aquí para que pueda leer URLs dinámicas en Next.js 15+
+export default async function NewsArticle({ params }) {
+    // 🛠️ SOLUCIÓN: Agregamos "await" para esperar a que el ID esté disponible
+    const { id } = await params;
 
     // 1. Buscar la noticia actual y su juego
     let article = null;
@@ -54,7 +57,7 @@ export default function NewsArticle({ params }) {
         }
     }
 
-    // Estado vacío (404)
+    // Estado vacío (404) si sigue sin encontrarla
     if (!article) {
         return (
             <main className="col-span-full flex flex-col items-center justify-center py-20 gap-4 font-sans">
@@ -94,7 +97,8 @@ export default function NewsArticle({ params }) {
                         <span className="px-3 py-1 bg-brand-default/10 text-text-brand-default rounded-md text-body-small-strong">
                             {article.tag}
                         </span>
-                        <div className="flex items-center gap-1.5 text-text-default-secondary text-body-small">
+                        {/* Solución Error 418 de fechas */}
+                        <div suppressHydrationWarning className="flex items-center gap-1.5 text-text-default-secondary text-body-small">
                             <Calendar className="w-4 h-4" />
                             {new Date(article.date).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' })}
                         </div>
