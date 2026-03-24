@@ -1,25 +1,21 @@
-"use client";
-
-import { useMemo } from 'react';
-import { useParams } from 'next/navigation';
 import Link from 'next/link';
-import { ArrowLeft, ExternalLink, Calendar, Tag } from 'lucide-react';
+import Image from 'next/image';
+import { ExternalLink, Calendar } from 'lucide-react';
 import { GAMES_DATA } from '@/lib/games-data';
 
-export default function NewsArticle() {
-    const { id } = useParams();
+// Al ser un Server Component, Next.js inyecta los "params" directamente
+export default function NewsArticle({ params }) {
+    const { id } = params;
 
-    // Buscar la noticia específica en todos los juegos
-    const article = useMemo(() => {
-        let foundNews = null;
-        Object.values(GAMES_DATA).forEach(game => {
-            const newsItem = game.news?.find(n => n.id === id);
-            if (newsItem) {
-                foundNews = { ...newsItem, gameId: game.id, gameName: game.name, gameShort: game.shortName };
-            }
-        });
-        return foundNews;
-    }, [id]);
+    // Buscar la noticia específica (sin necesidad de hooks)
+    let article = null;
+    for (const game of Object.values(GAMES_DATA)) {
+        const newsItem = game.news?.find(n => n.id === id);
+        if (newsItem) {
+            article = { ...newsItem, gameId: game.id, gameName: game.name, gameShort: game.shortName };
+            break;
+        }
+    }
 
     if (!article) {
         return (
@@ -49,7 +45,6 @@ export default function NewsArticle() {
             {/* ─── Contenedor Principal de Lectura ─── */}
             <article className="w-full max-w-4xl flex flex-col gap-6 px-4 sm:px-0">
                 
-                {/* Cabecera del Artículo */}
                 <header className="flex flex-col gap-4">
                     <div className="flex items-center gap-3 flex-wrap">
                         <span className="px-3 py-1 bg-brand-default/10 text-text-brand-default rounded-md text-body-small-strong">
@@ -66,23 +61,26 @@ export default function NewsArticle() {
                     </h1>
                 </header>
 
-                {/* Imagen Principal */}
-                <div className="w-full aspect-video rounded-3xl overflow-hidden bg-background-tertiary border border-border-default-secondary shadow-200">
+                {/* Imagen Principal Optimizada */}
+                <div className="relative w-full aspect-video rounded-3xl overflow-hidden bg-background-tertiary border border-border-default-secondary shadow-200">
                     {fallbackImage && (
-                        <img src={fallbackImage} alt={article.title} className="w-full h-full object-cover" />
+                        <Image 
+                            src={fallbackImage} 
+                            alt={article.title} 
+                            fill
+                            sizes="(max-width: 1024px) 100vw, 1024px"
+                            priority // Esta imagen es vital para la vista, se carga inmediatamente
+                            className="object-cover" 
+                        />
                     )}
                 </div>
 
-                {/* Cuerpo del Artículo (Mockup de Lectura) */}
                 <div className="max-w-3xl w-full mx-auto flex flex-col gap-6 py-6 text-body-base text-text-default-secondary leading-relaxed">
                     <p>
                         Esta es una vista previa simulada del contenido de la noticia. Una vez que la API y el scraper estén en funcionamiento, este bloque inyectará los párrafos extraídos directamente de la fuente oficial.
                     </p>
-                    <p>
-                        El diseño de esta columna central está limitado a un ancho óptimo para garantizar que la vista no se canse al recorrer largas líneas de texto de izquierda a derecha en pantallas grandes.
-                    </p>
-
-                    {/* Botón hacia fuente original */}
+                    
+                    {/* Botón hacia fuente original SEGURO */}
                     <div className="mt-8 p-6 bg-background-secondary border border-border-default-secondary rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                         <div className="flex flex-col">
                             <h3 className="text-body-strong text-text-default-default">Lee la nota original</h3>
@@ -91,7 +89,7 @@ export default function NewsArticle() {
                         <a 
                             href={article.url} 
                             target="_blank" 
-                            rel="noreferrer" 
+                            rel="noopener noreferrer" 
                             className="shrink-0 flex items-center gap-2 px-6 py-3 bg-background-default border border-border-default-default text-text-default-default rounded-xl hover:bg-background-secondary-hover transition-colors text-body-strong"
                         >
                             Sitio Oficial <ExternalLink className="w-4 h-4" />
