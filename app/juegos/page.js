@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
+import Image from 'next/image'; // 1. Importación del componente optimizado
 import { Gamepad2, Monitor, Smartphone, Search, FilterX, X } from 'lucide-react';
 import { GAMES_DATA } from '@/lib/games-data';
 
@@ -28,12 +29,15 @@ function GameCard({ game }) {
                 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-default
             "
         >
-            {/* Imagen de Fondo */}
+            {/* 2. Implementación de <Image /> para el Banner (Full Cover) */}
             {game.bannerUrl && (
-                <img
+                <Image
                     src={game.bannerUrl}
                     alt={game.name}
-                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    fill // Reemplaza a w-full h-full absoluto
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    className="object-cover transition-transform duration-700 group-hover:scale-105"
+                    priority={false} // Lazy loading activado por defecto
                 />
             )}
 
@@ -56,11 +60,14 @@ function GameCard({ game }) {
                 {/* Fila Inferior */}
                 <div className="flex items-end justify-between gap-4 mt-auto">
                     <div className="flex items-center gap-3">
+                        {/* 3. Implementación de <Image /> para el Icono (Tamaño Fijo) */}
                         {game.iconUrl && (
-                            <img
+                            <Image
                                 src={game.iconUrl}
                                 alt={`${game.name} icon`}
-                                className="w-11 h-11 rounded-xl shrink-0 object-cover shadow-400"
+                                width={44}  // Equivale a w-11
+                                height={44} // Equivale a h-11
+                                className="rounded-xl shrink-0 object-cover shadow-400"
                             />
                         )}
                         <h2 className="text-white text-heading line-clamp-2 leading-tight">
@@ -83,10 +90,8 @@ function GameCard({ game }) {
 
 /* ─── Página Principal de Juegos con Filtros ───────────────────────── */
 export default function Juegos() {
-    // 1. Preparar los datos
     const gamesList = Object.values(GAMES_DATA);
 
-    // 2. Extraer géneros y plataformas únicos automáticamente de los datos
     const allGenres = useMemo(() => {
         const genres = new Set();
         gamesList.forEach(game => game.genre.forEach(g => genres.add(g)));
@@ -99,29 +104,21 @@ export default function Juegos() {
         return ['Todas', ...Array.from(platforms).sort()];
     }, [gamesList]);
 
-    // 3. Estados para los filtros
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedGenre, setSelectedGenre] = useState('Todos');
     const [selectedPlatform, setSelectedPlatform] = useState('Todas');
 
-    // 4. Lógica de Filtrado (se ejecuta automáticamente cuando cambia un estado)
     const filteredGames = useMemo(() => {
         return gamesList.filter(game => {
-            // Filtro por búsqueda de texto
             const matchesSearch = game.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
                                   game.shortName.toLowerCase().includes(searchQuery.toLowerCase());
-            
-            // Filtro por género
             const matchesGenre = selectedGenre === 'Todos' || game.genre.includes(selectedGenre);
-            
-            // Filtro por plataforma
             const matchesPlatform = selectedPlatform === 'Todas' || game.platforms.includes(selectedPlatform);
 
             return matchesSearch && matchesGenre && matchesPlatform;
         });
     }, [gamesList, searchQuery, selectedGenre, selectedPlatform]);
 
-    // 5. Función para limpiar filtros
     const clearFilters = () => {
         setSearchQuery('');
         setSelectedGenre('Todos');
@@ -172,7 +169,6 @@ export default function Juegos() {
                 {/* Contenedor de "Chips" (Géneros y Plataformas) */}
                 <div className="flex flex-col gap-3">
                     
-                    {/* Chips de Género */}
                     <div className="flex items-center gap-2 overflow-x-auto scrollbar-none pb-1 -mx-4 px-4 sm:mx-0 sm:px-0">
                         <span className="text-body-small-strong text-text-default-secondary shrink-0 mr-2">Género:</span>
                         {allGenres.map(genre => (
@@ -192,7 +188,6 @@ export default function Juegos() {
                         ))}
                     </div>
 
-                    {/* Chips de Plataforma */}
                     <div className="flex items-center gap-2 overflow-x-auto scrollbar-none pb-1 -mx-4 px-4 sm:mx-0 sm:px-0">
                         <span className="text-body-small-strong text-text-default-secondary shrink-0 mr-2">Plataforma:</span>
                         {allPlatforms.map(platform => (
@@ -223,7 +218,7 @@ export default function Juegos() {
                     ))}
                 </div>
             ) : (
-                /* ─── Empty State (Sin Resultados) ─── */
+                /* ─── Empty State ─── */
                 <div className="flex flex-col items-center justify-center py-20 gap-4 text-center border-2 border-dashed border-border-default-secondary rounded-2xl">
                     <div className="p-4 bg-background-secondary rounded-full">
                         <FilterX className="w-8 h-8 text-text-default-tertiary" />
