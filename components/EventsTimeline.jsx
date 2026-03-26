@@ -207,8 +207,8 @@ export default function EventsTimeline() {
           className="
             flex gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-none pb-4
             -mx-4 px-4 scroll-pl-4 md:-mx-6 md:px-6 md:scroll-pl-6
-            lg:mx-0 lg:px-0 lg:scroll-pl-0 lg:grid lg:grid-cols-2 lg:pb-0 lg:overflow-x-visible
-            xl:grid-cols-3
+            lg:mx-0 lg:px-0 lg:scroll-pl-0 lg:grid lg:grid-cols-3 lg:pb-0 lg:overflow-x-visible
+            xl:grid-cols-4
           "
         >
           {events.map((event) => (

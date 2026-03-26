@@ -12,7 +12,7 @@ function NewsCard({ news }) {
     const fallbackImage = news.imageUrl || game?.bannerUrl;
 
     return (
-        <Link 
+        <Link
             href={`/noticias/${news.id}`}
             className="group flex flex-col bg-background-secondary border border-border-default-secondary rounded-2xl overflow-hidden hover:border-border-default-default transition-all shadow-100 hover:shadow-300"
         >

@@ -10,6 +10,7 @@ import Link from 'next/link';
  * @param {string} tag - category/type of news (e.g. "EVENTO", "UPDATE")
  * @param {string} gameIconUrl - URL for the small circular game avatar
  * @param {string} imageUrl - Main background image URL
+ * @param {string} date - ISO date string for news metadata
  * @param {boolean} isHero - Whether this is the main Card-1 (affects typography)
  * @param {boolean} isSmall - Whether this is a small card (affects typography)
  * @param {string} href - Destination URL (defaults to /noticias)
@@ -19,6 +20,7 @@ export default function NewsCard({
     tag,
     gameIconUrl,
     imageUrl,
+    date,
     isHero = false,
     isSmall = false,
     href = "/noticias"
@@ -64,7 +66,7 @@ export default function NewsCard({
                     transition-transform duration-300
                     group-hover:-translate-y-2
                 ">
-                    {/* Parte Inferior: Icono + Tag */}
+                    {/* Parte Inferior: Icono + Tag + Fecha */}
                     <div className="flex items-center gap-3">
                         {gameIconUrl && (
                             <div className="w-8 h-8 rounded-full overflow-hidden border border-border-default-default/20 shadow-400 shrink-0">
@@ -75,9 +77,11 @@ export default function NewsCard({
                                 />
                             </div>
                         )}
-                        <span className="bg-black/50 backdrop-blur-sm text-white text-body-small-strong p-1.5 px-2 rounded-md leading-none">
-                            {tag}
-                        </span>
+                        <div className="flex items-center gap-2">
+                            <span className="bg-black/50 backdrop-blur-sm text-white text-[10px] sm:text-body-small-strong p-1.5 px-2 rounded-md leading-none uppercase tracking-wider">
+                                {tag}
+                            </span>
+                        </div>
                     </div>
 
                     {/* Parte Inferior: Titular (Máximo 2 líneas) */}
@@ -93,6 +97,12 @@ export default function NewsCard({
                     `}>
                         {title}
                     </h3>
+                    
+                    {date && (
+                        <div className="text-white/60 text-[10px] sm:text-body-small font-medium drop-shadow-sm mt-1">
+                            {new Date(date).toLocaleDateString('es-ES', { day: '2-digit', month: 'long', year: 'numeric', timeZone: 'UTC' })}
+                        </div>
+                    )}
                 </div>
             </article>
         </Link>

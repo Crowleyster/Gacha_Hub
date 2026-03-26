@@ -54,7 +54,33 @@ No definas tamaños de fuente arbitrarios. Utiliza los siguientes **Presets**, q
 
 ---
 
-## 🌑 3. Elevación (Shadow Scale)
+## 📐 3. Grid y Responsividad
+
+Gacha Hub utiliza un sistema de grid fluido basado en breakpoints estándar de Tailwind v4 y una estructura de columnas dinámica.
+
+### Breakpoints
+
+| Punto de Corte | Clase CSS | Ancho Mínimo | Dispositivo Común |
+| :--- | :--- | :--- | :--- |
+| **Mobile** | (default) | 0px | Smartphones |
+| **Small** | `sm:` | 640px | Tablets (Portrait) |
+| **Medium** | `md:` | 768px | Tablets (Landscape) / Laptops |
+| **Large** | `lg:` | 1024px | Monitores Estándar |
+| **Extra Large** | `xl:` | 1280px | Pantallas HD |
+
+### Sistema de Columnas (Main Grid)
+
+La aplicación utiliza un layout de 12 columnas en escritorio, que se adapta según el viewport:
+
+- **4 Columnas**: Móvil (0px - 639px).
+- **8 Columnas**: Tablet (`sm:` 640px - 767px).
+- **12 Columnas**: Desktop/Tablet L (`md:` 768px+).
+
+*Uso*: `grid-cols-4 sm:grid-cols-8 md:grid-cols-12`.
+
+---
+
+## 🌑 4. Elevación (Shadow Scale)
 
 Hemos implementado una escala de sombras multi-capa para mayor realismo:
 
@@ -65,15 +91,61 @@ Hemos implementado una escala de sombras multi-capa para mayor realismo:
 
 ---
 
-## 📐 4. Reglas de Implementación (DOs and DON'Ts)
+## 📐 5. Reglas de Implementación (DOs and DON'Ts)
 
-- ✅ **SIEMPRE** usa clases de la paleta SDS.
+- ✅ **SIEMPRE** usa clases de la paleta SDS (ej. `bg-background-default`).
 - ✅ **SIEMPRE** usa los presets de texto en lugar de `text-[size]`.
-- ❌ **NUNCA** uses colores hexadecimales en el código.
-- ❌ **NUNCA** uses `font-bold` de forma aislada si el preset ya lo cubre.
-- ❌ **CERO Scroll Horizontal**: Garantiza que los contenedores usen `w-full` y `flex-wrap` para evitar desbordes en móviles.
+- ✅ **SIEMPRE** usa la escala de Tailwind (múltiplos de 4px) para `w-`, `h-`, `p-`, `m-`.
+- ✅ **SIEMPRE** usa `next/image` con `remotePatterns` configurados para optimización automática.
+- ❌ **CERO Magic Numbers**: Prohibido usar anchos o altos arbitrarios como `w-[280px]` si existe un equivalente en la escala (ej. `w-70` o `w-72`).
+- ❌ **CERO Colores Hexadecimales**: Prohibido usar `text-[#hex]` o `bg-[#hex]`.
+- ❌ **CERO Hydration Errors**: Asegura que las fechas generadas en el servidor usen `timeZone: 'UTC'` para coincidir con el cliente.
+
+---
+
+## 🧩 6. Galería de Componentes
+
+### Header (Navegación Superior)
+
+- **Glassmorphism**: `.bg-background-default/70 .backdrop-blur-md .saturate-150`.
+- **Safe Area**: Debe incluir `pt-[env(safe-area-inset-top)]` para evitar colisiones con el Notch/Dynamic Island en móviles.
+
+### Sidebar (Navegación Lateral)
+
+- **Dimensiones**: `w-64` (Expandido) / `w-16` (Colapsado).
+- **Layout**: Utiliza `ml-64` o `ml-16` en el contenedor principal para desplazar el contenido.
+
+### NewsCard & Bento Grid
+
+- **Ratio**: Siempre `aspect-video` para miniaturas de noticias.
+- **Imagen**: Usar `fill` y `object-cover` dentro de un contenedor relativo.
+- **Elevación**: `shadow-100` base, `hover:shadow-300`.
+
+### EventsTimeline
+
+- **Grid de Escritorio**: `lg:grid-cols-3 xl:grid-cols-4`.
+- **Carousel Mobile**: `flex gap-4 overflow-x-auto snap-x snap-mandatory`.
+
+---
+
+## 📱 7. PWA y Layout Awareness
+
+- **Height Chain**: Para asegurar el scroll correcto en PWA, el `html` y `body` deben tener `h-dvh`.
+- **Bottom Tabs**: El contenido principal debe tener `pb-content-safe` (clase personalizada) o `pb-20` para no quedar oculto detrás de la barra de navegación móvil.
+- **Scroll**: Prefiere `overflow-y-auto` en el contenedor `main` sobre el `body` para mayor control en vistas fijas.
+
+---
+
+## 🧪 8. Estrategia de Verificación
+
+Para mantener la calidad visual, cada cambio debe verificarse con:
+
+1. **Test de Breakpoints**: Verificar Mobile (375px), Tablet (800px) y Desktop (1280px+).
+2. **Notch Check**: Simular `safe-area-inset-top` para confirmar que el Header no se corta.
+3. **PWA Vertical Test**: Asegurar que en `h-dvh` el footer/nav-bar no se solape con el contenido final.
+4. **Hydration Check**: Abrir la consola para asegurar que no hay warnings de "Text content did not match".
 
 ---
 
 > [!NOTE]
-> Esta guía se irá actualizando con ejemplos de componentes específicos (Buttons, Cards, Inputs) a medida que se estandarice su desarrollo.
+> Esta guía es un documento vivo. Si detectas un patrón repetitivo que no está aquí, documéntalo para mantener la coherencia del ecosistema Gacha Hub.
