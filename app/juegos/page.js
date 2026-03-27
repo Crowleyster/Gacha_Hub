@@ -213,7 +213,7 @@ export default function Juegos() {
                                     placeholder="Buscar..."
                                     value={searchQuery}
                                     onChange={(e) => setSearchQuery(e.target.value)}
-                                    className="w-full h-12 pl-12 pr-12 rounded-full border border-border-default-secondary bg-background-secondary text-text-default-default text-body-base focus:outline-none focus:border-border-default-default transition-all"
+                                    className="w-full h-12 pl-12 pr-12 rounded-full border border-border-default-secondary bg-background-tertiary text-text-default-default text-body-base focus:outline-none focus:border-border-default-default transition-all"
                                 />
                                 {searchQuery.length > 0 && (
                                     <button
@@ -247,7 +247,7 @@ export default function Juegos() {
                                             snap-start shrink-0 flex items-center gap-1.5 px-4 py-2 rounded-full text-body-small-strong transition-all
                                             ${isActive
                                                 ? 'bg-text-default-default text-background-default'
-                                                : 'bg-background-secondary text-text-default-secondary border border-border-default-secondary hover:text-text-default-default'
+                                                : 'bg-background-tertiary text-text-default-secondary border border-border-default-secondary hover:text-text-default-default'
                                             }
                                         `}
                                     >

@@ -3,10 +3,10 @@
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Newspaper, Search, FilterX, X } from 'lucide-react';
+import { Search, SlidersHorizontal, ChevronDown, Check, Calendar, RotateCcw } from 'lucide-react';
 import { GAMES_DATA } from '@/lib/games-data';
 
-/* ─── Placeholder: News Card (16:9 Uniforme) ─── */
+/* ─── News Card (16:9 Uniforme) ─── */
 function NewsCard({ news }) {
     const game = GAMES_DATA[news.gameId];
     const fallbackImage = news.imageUrl || game?.bannerUrl;
@@ -27,7 +27,10 @@ function NewsCard({ news }) {
             <div className="flex flex-col p-4 gap-2 flex-1">
                 <div className="flex items-center justify-between text-body-small text-text-default-tertiary">
                     <span className="font-medium text-text-brand-default">{game?.shortName || 'General'}</span>
-                    <span>{new Date(news.date).toLocaleDateString('es-ES', { day: '2-digit', month: 'short' })}</span>
+                    <div className="flex items-center gap-1">
+                        <Calendar className="w-3 h-3" />
+                        <span>{new Date(news.date).toLocaleDateString('es-ES', { day: '2-digit', month: 'short' })}</span>
+                    </div>
                 </div>
                 <h3 className="text-body-strong text-text-default-default line-clamp-2 leading-tight group-hover:text-text-brand-default transition-colors">
                     {news.title}
@@ -38,7 +41,15 @@ function NewsCard({ news }) {
 }
 
 export default function Noticias() {
-    // Aplanar todas las noticias de todos los juegos
+    // 1. Estados
+    const [searchQuery, setSearchQuery] = useState('');
+    const [selectedGame, setSelectedGame] = useState('Todos');
+    const [selectedTag, setSelectedTag] = useState('Todas');
+    const [viewMode, setViewMode] = useState('nuevos'); // 'nuevos' | 'populares'
+    const [isFilterExpanded, setIsFilterExpanded] = useState(false);
+    const [visibleCount, setVisibleCount] = useState(6);
+
+    // 2. Data
     const allNews = useMemo(() => {
         const newsArray = [];
         Object.values(GAMES_DATA).forEach(game => {
@@ -46,52 +57,176 @@ export default function Noticias() {
                 game.news.forEach(n => newsArray.push({ ...n, gameId: game.id }));
             }
         });
-        // Ordenar de más nueva a más antigua
-        return newsArray.sort((a, b) => new Date(b.date) - new Date(a.date));
+        return newsArray;
     }, []);
 
-    const [selectedGame, setSelectedGame] = useState('Todos');
+    const allTags = useMemo(() => {
+        const tags = new Set();
+        allNews.forEach(news => {
+            if (news.tag) tags.add(news.tag);
+        });
+        return ['Todas', ...Array.from(tags)];
+    }, [allNews]);
 
-    const filteredNews = useMemo(() => {
-        return allNews.filter(news => selectedGame === 'Todos' || news.gameId === selectedGame);
-    }, [allNews, selectedGame]);
+    // 3. Filtrado y Ordenamiento
+    const filteredAndSortedNews = useMemo(() => {
+        let result = allNews.filter(news => {
+            const matchesSearch = news.title.toLowerCase().includes(searchQuery.toLowerCase());
+            const matchesGame = selectedGame === 'Todos' || news.gameId === selectedGame;
+            const matchesTag = selectedTag === 'Todas' || news.tag === selectedTag;
+            return matchesSearch && matchesGame && matchesTag;
+        });
+
+        // Ordenamiento
+        if (viewMode === 'nuevos') {
+            result.sort((a, b) => new Date(b.date) - new Date(a.date));
+        } else {
+            // Mock de populares: Orden determinista por longitud de título
+            result.sort((a, b) => b.title.length - a.title.length);
+        }
+
+        return result;
+    }, [allNews, searchQuery, selectedGame, selectedTag, viewMode]);
+
+    const visibleNews = filteredAndSortedNews.slice(0, visibleCount);
+
+    const clearFilters = () => {
+        setSearchQuery('');
+        setSelectedGame('Todos');
+        setSelectedTag('Todas');
+        setViewMode('nuevos');
+    };
+
+    const hasActiveFilters = searchQuery !== '' || selectedGame !== 'Todos' || selectedTag !== 'Todas' || viewMode !== 'nuevos';
 
     return (
-        <main className="col-span-full space-y-8 pb-content-safe font-sans">
-            <div className="flex flex-col gap-2">
-                <div className="flex items-center gap-3">
-                    <div className="p-2 bg-background-secondary rounded-xl">
-                        <Newspaper className="w-6 h-6 text-text-brand-default" />
+        <main className="col-span-full space-y-8 pb-content-safe font-sans text-text-default-default">
+            {/* Header */}
+            <h1 className="text-title-page">Todas las noticias</h1>
+
+            {/* Barra de Filtros PREMIUM */}
+            <div className="space-y-4">
+                {/* Desktop: Fila Única | Mobile: Grid */}
+                <div className="flex flex-col lg:flex-row lg:items-end gap-4 bg-background-secondary border border-border-default-secondary p-4 rounded-2xl transition-all shadow-sm">
+                    
+                    {/* Buscador & Mobile Filter Toggle */}
+                    <div className="flex items-center gap-3 flex-1 lg:max-w-md">
+                        <button 
+                            onClick={() => setIsFilterExpanded(!isFilterExpanded)}
+                            className="lg:hidden p-2.5 bg-background-tertiary border border-border-default-secondary rounded-full shadow-sm hover:bg-background-secondary-hover transition-colors"
+                        >
+                            <SlidersHorizontal className="w-5 h-5" />
+                        </button>
+                        
+                        <div className="relative flex-1 group">
+                            <input
+                                type="text"
+                                placeholder="Search"
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                                className="w-full h-[42px] bg-background-tertiary border border-border-default-secondary rounded-xl px-4 text-body-base focus:border-border-default-default outline-none transition-all placeholder:text-text-default-tertiary"
+                            />
+                            <Search className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-default-tertiary group-focus-within:text-text-default-default transition-colors" />
+                        </div>
                     </div>
-                    <h1 className="text-title-page text-text-default-default">Portal de Noticias</h1>
+
+                    {/* Filtros Expandibles (Desktop siempre visible, Mobile toggleable) */}
+                    <div className={`${isFilterExpanded ? 'flex' : 'hidden'} lg:flex flex-col sm:flex-row items-stretch gap-4 flex-1`}>
+                        {/* Selector de Juego */}
+                        <div className="flex flex-col gap-1.5 flex-1 min-w-[140px]">
+                            <span className="text-[10px] uppercase tracking-wider font-bold text-text-default-tertiary px-1">Juego</span>
+                            <div className="relative">
+                                <select
+                                    value={selectedGame}
+                                    onChange={(e) => setSelectedGame(e.target.value)}
+                                    className="w-full h-[42px] appearance-none bg-background-tertiary border border-border-default-secondary rounded-xl px-3 text-body-small-strong outline-none cursor-pointer focus:border-border-default-default transition-all"
+                                >
+                                    <option value="Todos">Todos</option>
+                                    {Object.values(GAMES_DATA).map(game => (
+                                        <option key={game.id} value={game.id}>{game.name}</option>
+                                    ))}
+                                </select>
+                                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-default-tertiary pointer-events-none" />
+                            </div>
+                        </div>
+
+                        {/* Selector de Tipo */}
+                        <div className="flex flex-col gap-1.5 flex-1 min-w-[140px]">
+                            <span className="text-[10px] uppercase tracking-wider font-bold text-text-default-tertiary px-1">Tipo de contenido</span>
+                            <div className="relative">
+                                <select
+                                    value={selectedTag}
+                                    onChange={(e) => setSelectedTag(e.target.value)}
+                                    className="w-full h-[42px] appearance-none bg-background-tertiary border border-border-default-secondary rounded-xl px-3 text-body-small-strong outline-none cursor-pointer focus:border-border-default-default transition-all"
+                                >
+                                    {allTags.map(tag => (
+                                        <option key={tag} value={tag}>{tag}</option>
+                                    ))}
+                                </select>
+                                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-default-tertiary pointer-events-none" />
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Toggles y Limpiar */}
+                    <div className="flex items-center gap-3 mt-auto lg:mt-0 w-full lg:w-auto">
+                        <div className="flex items-center bg-background-tertiary p-1 rounded-xl border border-border-default-secondary h-[42px] flex-1 lg:flex-none">
+                            <button
+                                onClick={() => setViewMode('nuevos')}
+                                className={`flex items-center justify-center gap-2 flex-1 lg:flex-none px-4 h-full rounded-lg transition-all ${viewMode === 'nuevos' ? 'bg-background-default text-text-default-default shadow-sm' : 'text-text-default-tertiary hover:text-text-default-default'}`}
+                            >
+                                {viewMode === 'nuevos' && <Check className="w-3.5 h-3.5" />}
+                                <span className="text-body-small-strong">Nuevos</span>
+                            </button>
+                            <button
+                                onClick={() => setViewMode('populares')}
+                                className={`flex items-center justify-center gap-2 flex-1 lg:flex-none px-4 h-full rounded-lg transition-all ${viewMode === 'populares' ? 'bg-background-default text-text-default-default shadow-sm' : 'text-text-default-tertiary hover:text-text-default-default'}`}
+                            >
+                                {viewMode === 'populares' && <Check className="w-3.5 h-3.5" />}
+                                <span className="text-body-small-strong">Populares</span>
+                            </button>
+                        </div>
+
+                        {hasActiveFilters && (
+                            <button
+                                onClick={clearFilters}
+                                className="flex items-center justify-center gap-2 h-[42px] px-4 bg-background-tertiary border border-border-default-secondary rounded-xl text-body-small-strong hover:bg-background-secondary-hover transition-all flex-1 sm:flex-none"
+                            >
+                                <RotateCcw className="w-4 h-4" />
+                                <span>Limpiar</span>
+                            </button>
+                        )}
+                    </div>
                 </div>
-                <p className="text-body-base text-text-default-secondary max-w-2xl">
-                    Mantente al día con las últimas actualizaciones, banners y anuncios oficiales.
-                </p>
             </div>
 
-            {/* Filtros rápidos por juego */}
-            <div className="flex items-center gap-2 overflow-x-auto scrollbar-none pb-2">
-                <button
-                    onClick={() => setSelectedGame('Todos')}
-                    className={`shrink-0 px-4 py-1.5 rounded-full text-body-small-strong transition-colors ${selectedGame === 'Todos' ? 'bg-brand-default text-text-brand-on' : 'bg-background-secondary text-text-default-secondary'}`}
-                >
-                    Todos
-                </button>
-                {Object.values(GAMES_DATA).map(game => (
-                    <button
-                        key={game.id}
-                        onClick={() => setSelectedGame(game.id)}
-                        className={`shrink-0 px-4 py-1.5 rounded-full text-body-small-strong transition-colors ${selectedGame === game.id ? 'bg-brand-default text-text-brand-on' : 'bg-background-secondary text-text-default-secondary'}`}
-                    >
-                        {game.shortName}
+            {/* Grid de Resultados */}
+            {visibleNews.length > 0 ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {visibleNews.map(news => <NewsCard key={`${news.gameId}-${news.id}`} news={news} />)}
+                </div>
+            ) : (
+                <div className="flex flex-col items-center justify-center py-24 text-text-default-tertiary italic gap-4">
+                    <p className="text-body-base">No se encontraron resultados para los filtros seleccionados.</p>
+                    <button onClick={clearFilters} className="text-text-brand-default not-italic font-medium hover:underline">
+                        Limpiar todos los filtros
                     </button>
-                ))}
-            </div>
+                </div>
+            )}
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                {filteredNews.map(news => <NewsCard key={news.id} news={news} />)}
-            </div>
+            {/* Botón Cargar Más */}
+            {visibleCount < filteredAndSortedNews.length && (
+                <div className="flex justify-center pt-8">
+                    <button
+                        onClick={() => setVisibleCount(prev => prev + 6)}
+                        className="group w-full max-w-2xl bg-background-secondary border border-border-default-secondary rounded-xl py-3 text-body-small-strong hover:bg-background-tertiary transition-all flex items-center justify-center gap-2 shadow-sm"
+                    >
+                        Cargar más noticias
+                        <ChevronDown className="w-4 h-4 transition-transform group-hover:translate-y-0.5" />
+                    </button>
+                </div>
+            )}
         </main>
     );
 }
+
