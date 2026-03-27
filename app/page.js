@@ -1,13 +1,14 @@
-import NewsBentoGrid from "@/components/NewsBentoGrid";
-import ActiveCodes from "@/components/ActiveCodes";
+import NewsBentoGrid from '@/components/NewsBentoGrid';
+import ActiveCodes   from '@/components/ActiveCodes';
 import EventsTimeline from '@/components/EventsTimeline';
 
-export default function Home() {
+export default function HomePage() {
   return (
-    <main className="col-span-full space-y-16 pb-content-safe">
+    // div en lugar de main — el <main> ya lo provee ClientLayout
+    <div className="col-span-full space-y-16">
       <NewsBentoGrid />
       <ActiveCodes />
       <EventsTimeline />
-    </main>
+    </div>
   );
 }
