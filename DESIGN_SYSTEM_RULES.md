@@ -78,6 +78,21 @@ La aplicación utiliza un layout de 12 columnas en escritorio, que se adapta seg
 
 *Uso*: `grid-cols-4 sm:grid-cols-8 md:grid-cols-12`.
 
+### Espaciado y Márgenes (Main Content)
+
+El contenedor principal (`main`) utiliza un sistema de espaciado progresivo para garantizar el aire visual correcto en todas las resoluciones.
+
+- **Gaps (Espacio entre columnas/filas)**:
+  - Móvil: `gap-4` (16px)
+  - Tablet/Desktop (`sm:`): `gap-6` (24px)
+- **Paddings (Márgenes Externos del Contenedor Principal)**:
+  - **Móvil (default)**: `p-6` (24px).
+  - **Móvil L (`xs:`)**: `p-8` (32px).
+  - **Tablet (`sm:`)**: `p-12` (48px).
+  - **Desktop (`md:`)**: `px-24 py-12` (Eje X: 96px, Eje Y: 48px).
+  - **Ultra-Wide (`2xl:`)**: `px-40 py-12` (Eje X: 160px, Eje Y: 48px).
+- **Ancho Máximo**: `max-w-[3840px]` asegura que en pantallas ultra-wide el contenido no se estire de forma incontrolable.
+
 ---
 
 ## 🌑 4. Elevación (Shadow Scale)
@@ -104,6 +119,9 @@ Hemos implementado una escala de sombras multi-capa para mayor realismo:
 ---
 
 ## 🧩 6. Galería de Componentes
+
+> [!NOTE]
+> Para ver las especificaciones técnicas completas (tamaños, paddings, gaps y breakpoints específicos) de cada componente, consulta el documento **[COMPONENT_SPECS.md](./COMPONENT_SPECS.md)**.
 
 ### Header (Navegación Superior)
 
