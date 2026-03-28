@@ -40,6 +40,11 @@ export function getTimeInfo(event) {
     return { label: 'Finalizado', color: 'bg-white/10 text-white/50 border-white/10', expired: true };
   }
 
+  // Permanente
+  if (diffDays > 365 || event.category === 'Permanente') {
+    return { label: 'Permanente', color: 'bg-indigo-500 text-white border-indigo-400/20', expired: false };
+  }
+
   // Últimas horas (≤ 24h)
   if (diffHours <= 24) {
     return { label: `${diffHours} ${diffHours === 1 ? 'Hora' : 'Hrs'}`, color: 'bg-red-500 text-white border-red-400/20', expired: false };

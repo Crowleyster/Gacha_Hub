@@ -3,16 +3,22 @@
 import { useState, useMemo, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Search, Filter, Check, X, ChevronDown, RotateCcw } from 'lucide-react';
+import { Search, Filter, Check, X, ChevronDown, RotateCcw, Star } from 'lucide-react';
 import { GAMES_DATA } from '@/lib/games-data';
 import PlatformIcon from '@/components/PlatformIcon';
-
-
+import { useFavorites } from '@/hooks/useFavorites';
 
 /* ─── Componente: Tarjeta de Juego ─── */
 function GameCard({ game }) {
     const displayPlatforms = game.platforms.slice(0, 2);
     const extraPlatforms = game.platforms.length > 2 ? game.platforms.length - 2 : 0;
+    const { toggleFavorite, isFavorite } = useFavorites();
+    const isFav = isFavorite(game.id);
+
+    const handleFavoriteClick = (e) => {
+        e.preventDefault();
+        toggleFavorite(game.id);
+    };
 
     return (
         <Link
@@ -46,17 +52,27 @@ function GameCard({ game }) {
                 }}
             />
 
-            <div className="relative z-10 flex flex-col items-start gap-1.5 p-3">
-                {displayPlatforms.map(p => (
-                    <div key={p} className="flex items-center justify-center w-7 h-7 bg-white/95 rounded-md shadow-sm">
-                        <PlatformIcon platform={p} className="w-4 h-4 text-black" />
-                    </div>
-                ))}
-                {extraPlatforms > 0 && (
-                    <div className="flex items-center justify-center h-7 min-w-7 px-1.5 bg-white/95 rounded-md shadow-sm text-xs font-bold text-black">
-                        +{extraPlatforms}
-                    </div>
-                )}
+            <div className="relative z-10 flex items-start justify-between p-3 w-full">
+                <div className="flex flex-col items-start gap-1.5">
+                    {displayPlatforms.map(p => (
+                        <div key={p} className="flex items-center justify-center w-7 h-7 bg-white/95 rounded-md shadow-sm">
+                            <PlatformIcon platform={p} className="w-4 h-4 text-black" />
+                        </div>
+                    ))}
+                    {extraPlatforms > 0 && (
+                        <div className="flex items-center justify-center h-7 min-w-7 px-1.5 bg-white/95 rounded-md shadow-sm text-xs font-bold text-black">
+                            +{extraPlatforms}
+                        </div>
+                    )}
+                </div>
+                
+                <button 
+                    onClick={handleFavoriteClick}
+                    className={`p-1.5 rounded-lg flex items-center justify-center transition-all duration-300 ${isFav ? 'bg-amber-500/90 text-white shadow-lg scale-105' : 'bg-black/30 backdrop-blur-md text-white/70 hover:bg-black/50 hover:text-white border border-white/10'}`}
+                    title={isFav ? "Quitar de favoritos" : "Añadir a favoritos"}
+                >
+                    <Star className="w-5 h-5" fill={isFav ? "currentColor" : "none"} strokeWidth={isFav ? 2 : 1.5} />
+                </button>
             </div>
 
             <div className="relative z-10 flex flex-col p-4 mt-auto">

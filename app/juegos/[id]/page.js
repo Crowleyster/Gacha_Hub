@@ -4,16 +4,24 @@ import { useState } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowLeft, Globe, Twitter, MessageSquare, Download } from 'lucide-react';
+import { ArrowLeft, Globe, Twitter, MessageSquare, Download, Star } from 'lucide-react';
 import { GAMES_DATA } from '@/lib/games-data';
+import { newsData, EVENTS_DATA } from '@/lib/mock-data';
 import PlatformIcon from '@/components/PlatformIcon';
-
-
+import NewsCard from '@/components/NewsCard';
+import EventCard from '@/components/EventCard';
+import { useFavorites } from '@/hooks/useFavorites';
 
 export default function GameHub() {
     const { id } = useParams();
     const game = GAMES_DATA[id];
     const [activeTab, setActiveTab] = useState('resumen');
+    const { toggleFavorite, isFavorite } = useFavorites();
+
+    const gameNews = newsData.filter(news => news.gameId === id);
+    const gameEvents = EVENTS_DATA.filter(event => event.gameId === id);
+
+    const isFav = isFavorite(id);
 
     if (!game) {
         return (
@@ -64,8 +72,17 @@ export default function GameHub() {
                 </div>
 
                 <div className="flex flex-col md:flex-row md:items-end justify-between w-full gap-4 mt-2 md:mt-16">
-                    <div className="flex flex-col">
-                        <h1 className="text-title-hero text-text-default-default line-clamp-2">{game.name}</h1>
+                    <div className="flex flex-col gap-1">
+                        <div className="flex items-center gap-3">
+                            <h1 className="text-title-hero text-text-default-default line-clamp-2">{game.name}</h1>
+                            <button
+                                onClick={() => toggleFavorite(id)}
+                                className={`p-2 shrink-0 rounded-xl border transition-all duration-300 hover:scale-105 ${isFav ? 'bg-amber-500/10 border-amber-500/50 text-amber-500 shadow-[0_0_15px_rgba(245,158,11,0.2)]' : 'bg-background-secondary border-border-default-secondary text-text-default-tertiary hover:text-text-default-default hover:bg-background-tertiary shadow-sm'}`}
+                                aria-label={isFav ? "Quitar de favoritos" : "Añadir a favoritos"}
+                            >
+                                <Star className="w-5 h-5 sm:w-6 sm:h-6" fill={isFav ? "currentColor" : "none"} />
+                            </button>
+                        </div>
                         <span className="text-body-strong text-text-default-secondary">{game.developer} • v{game.currentVersion}</span>
                     </div>
                     
@@ -132,13 +149,41 @@ export default function GameHub() {
                             </div>
                         )}
                         {activeTab === 'noticias' && (
-                            <div className="text-body-base text-text-default-secondary p-8 text-center border-2 border-dashed border-border-default-secondary rounded-2xl">
-                                Cuadrícula de noticias específicas de {game.shortName} irá aquí.
+                            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 auto-rows-[280px]">
+                                {gameNews.length > 0 ? (
+                                    gameNews.map(newsItem => (
+                                        <NewsCard 
+                                            key={newsItem.id} 
+                                            title={newsItem.title}
+                                            tag={newsItem.tag}
+                                            gameIconUrl={game.iconUrl}
+                                            imageUrl={newsItem.imageUrl || game.bannerUrl}
+                                            date={newsItem.date}
+                                            isSmall={true}
+                                            href={`/noticias/${newsItem.id}`}
+                                        />
+                                    ))
+                                ) : (
+                                    <div className="col-span-full py-12 text-center text-text-default-tertiary border-2 border-dashed border-border-default-secondary rounded-2xl">
+                                        No hay noticias recientes para este juego.
+                                    </div>
+                                )}
                             </div>
                         )}
                         {activeTab === 'eventos' && (
-                            <div className="text-body-base text-text-default-secondary p-8 text-center border-2 border-dashed border-border-default-secondary rounded-2xl">
-                                Línea de tiempo de eventos de {game.shortName} irá aquí.
+                            <div className="flex flex-col gap-4">
+                                {gameEvents.length > 0 ? (
+                                    gameEvents.map(eventItem => (
+                                        <EventCard 
+                                            key={eventItem.id}
+                                            event={{...eventItem, gameId: game.id}}
+                                        />
+                                    ))
+                                ) : (
+                                    <div className="py-12 text-center text-text-default-tertiary border-2 border-dashed border-border-default-secondary rounded-2xl">
+                                        No hay eventos activos para este juego.
+                                    </div>
+                                )}
                             </div>
                         )}
                     </div>

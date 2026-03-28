@@ -5,6 +5,7 @@ import { CalendarDays, ChevronLeft, ChevronRight, ArrowRight } from 'lucide-reac
 import Link from 'next/link';
 import { EVENTS_DATA } from '@/lib/mock-data';
 import EventCard from '@/components/EventCard';
+import { useFavorites } from '@/hooks/useFavorites';
 
 // ── Helpers ──────────────────────────────────────────────
 
@@ -14,15 +15,21 @@ function getEndMs(dateStr) {
   return new Date(y, m - 1, d).getTime();
 }
 
-function sortedEvents() {
+function sortedEvents(favorites = []) {
   return [...EVENTS_DATA].sort((a, b) => {
-    // Próximamente siempre al final
+    // 1. Prioridad: ¿Es favorito? (Aparecen primero)
+    const aFav = favorites.includes(a.gameId);
+    const bFav = favorites.includes(b.gameId);
+    if (aFav && !bFav) return -1;
+    if (!aFav && bFav) return 1;
+
+    // 2. Prioridad: 'Próximamente' van al final
     const aUpcoming = a.status === 'upcoming' || a.statusLabel === 'Próximos';
     const bUpcoming = b.status === 'upcoming' || b.statusLabel === 'Próximos';
     if (aUpcoming && !bUpcoming) return 1;
     if (bUpcoming && !aUpcoming) return -1;
-    if (aUpcoming && bUpcoming) return 0;
-    // Ascendente por tiempo restante
+
+    // 3. Prioridad: Ascendente por tiempo restante (los que vencen antes van primero)
     return getEndMs(a.endDate) - getEndMs(b.endDate);
   });
 }
@@ -31,12 +38,13 @@ function sortedEvents() {
 
 export default function EventsTimeline() {
   const scrollRef = useRef(null);
+  const { favorites } = useFavorites();
 
   const scroll = (dir) => {
     scrollRef.current?.scrollBy({ left: 296 * dir, behavior: 'smooth' });
   };
 
-  const events = sortedEvents();
+  const events = sortedEvents(favorites);
   const hasMany = events.length > 3;
 
   return (
