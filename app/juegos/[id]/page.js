@@ -4,13 +4,11 @@ import { useState } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowLeft, Monitor, Smartphone, Globe, Twitter, MessageSquare, Download } from 'lucide-react';
+import { ArrowLeft, Globe, Twitter, MessageSquare, Download } from 'lucide-react';
 import { GAMES_DATA } from '@/lib/games-data';
+import PlatformIcon from '@/components/PlatformIcon';
 
-function PlatformIcon({ platform }) {
-    if (platform === 'PC' || platform.includes('PS')) return <Monitor className="w-5 h-5" />;
-    return <Smartphone className="w-5 h-5" />;
-}
+
 
 export default function GameHub() {
     const { id } = useParams();
@@ -87,8 +85,8 @@ export default function GameHub() {
                         <h3 className="text-body-strong text-text-default-default">Plataformas</h3>
                         <div className="flex items-center gap-3 text-text-default-secondary flex-wrap">
                             {game.platforms.map(p => (
-                                <div key={p} className="flex items-center gap-2 px-3 py-1.5 bg-background-default border border-border-default-default rounded-lg text-body-small">
-                                    <PlatformIcon platform={p} /> {p}
+                                <div key={p} className="flex items-center gap-2.5 px-3 py-1.5 bg-background-tertiary border border-border-default-secondary rounded-xl text-body-small-strong text-text-default-default">
+                                    <PlatformIcon platform={p} className="w-4 h-4 text-text-default-default" /> {p}
                                 </div>
                             ))}
                         </div>

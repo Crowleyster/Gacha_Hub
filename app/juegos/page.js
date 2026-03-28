@@ -3,16 +3,11 @@
 import { useState, useMemo, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Search, Monitor, Smartphone, Filter, Check, X, ChevronDown, RotateCcw } from 'lucide-react';
+import { Search, Filter, Check, X, ChevronDown, RotateCcw } from 'lucide-react';
 import { GAMES_DATA } from '@/lib/games-data';
+import PlatformIcon from '@/components/PlatformIcon';
 
-/* ─── Helper: Icono de Plataforma ─── */
-function PlatformIcon({ platform }) {
-    if (platform === 'PC' || platform.includes('PS')) {
-        return <Monitor className="w-3.5 h-3.5 text-black" />;
-    }
-    return <Smartphone className="w-3.5 h-3.5 text-black" />;
-}
+
 
 /* ─── Componente: Tarjeta de Juego ─── */
 function GameCard({ game }) {
@@ -54,7 +49,7 @@ function GameCard({ game }) {
             <div className="relative z-10 flex flex-col items-start gap-1.5 p-3">
                 {displayPlatforms.map(p => (
                     <div key={p} className="flex items-center justify-center w-7 h-7 bg-white/95 rounded-md shadow-sm">
-                        <PlatformIcon platform={p} />
+                        <PlatformIcon platform={p} className="w-4 h-4 text-black" />
                     </div>
                 ))}
                 {extraPlatforms > 0 && (
