@@ -2,21 +2,15 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, Gamepad2, Newspaper, Calendar } from 'lucide-react';
+import { TOP_NAV_ITEMS } from '@/lib/nav-items';
 
 export default function MobileNav() {
     const pathname = usePathname();
 
-    const navItems = [
-        { name: 'Inicio', href: '/', icon: Home },
-        { name: 'Noticias', href: '/noticias', icon: Newspaper },
-        { name: 'Eventos', href: '/eventos', icon: Calendar },
-        { name: 'Juegos', href: '/juegos', icon: Gamepad2 },
-    ];
 
     return (
         <nav className="fixed bottom-0 left-0 w-full z-50 grid grid-cols-4 items-center px-2 py-4 bg-background-default/80 backdrop-blur-md border-t border-border-default-secondary sm:hidden pb-safe">
-            {navItems.map((item) => {
+            {TOP_NAV_ITEMS.map((item) => {
                 const isActive = pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href));
 
                 return (

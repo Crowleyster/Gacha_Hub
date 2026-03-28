@@ -6,43 +6,10 @@ import Image from 'next/image';
 import { Search, SlidersHorizontal, ChevronDown, Check, Calendar, RotateCcw } from 'lucide-react';
 import { GAMES_DATA } from '@/lib/games-data';
 
-/* ─── News Card (16:9 Uniforme) ─── */
-function NewsCard({ news }) {
-    const game = GAMES_DATA[news.gameId];
-    const fallbackImage = news.imageUrl || game?.bannerUrl;
-
-    return (
-        <Link
-            href={`/noticias/${news.id}`}
-            className="group flex flex-col bg-background-secondary border border-border-default-secondary rounded-2xl overflow-hidden hover:border-border-default-default transition-all shadow-100 hover:shadow-300"
-        >
-            <div className="relative aspect-video w-full overflow-hidden bg-background-tertiary">
-                {fallbackImage && (
-                    <Image src={fallbackImage} alt={news.title} fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover transition-transform duration-700 group-hover:scale-105" />
-                )}
-                <div className="absolute top-3 left-3 px-2 py-1 bg-black/60 backdrop-blur-md border border-border-default-secondary rounded-md text-white text-body-small-strong drop-shadow-md">
-                    {news.tag}
-                </div>
-            </div>
-            <div className="flex flex-col p-4 gap-2 flex-1">
-                <div className="flex items-center justify-between text-body-small text-text-default-tertiary">
-                    <span className="font-medium text-text-brand-default">{game?.shortName || 'General'}</span>
-                    <div className="flex items-center gap-1">
-                        <Calendar className="w-3 h-3" />
-                        <span>{new Date(news.date).toLocaleDateString('es-ES', { day: '2-digit', month: 'short' })}</span>
-                    </div>
-                </div>
-                <h3 className="text-body-strong text-text-default-default line-clamp-2 leading-tight group-hover:text-text-brand-default transition-colors">
-                    {news.title}
-                </h3>
-            </div>
-        </Link>
-    );
-}
+import NewsCard from '@/components/NewsCard';
 
 export default function Noticias() {
     // 1. Estados
-    const [searchQuery, setSearchQuery] = useState('');
     const [selectedGame, setSelectedGame] = useState('Todos');
     const [selectedTag, setSelectedTag] = useState('Todas');
     const [viewMode, setViewMode] = useState('nuevos'); // 'nuevos' | 'populares'
@@ -71,10 +38,9 @@ export default function Noticias() {
     // 3. Filtrado y Ordenamiento
     const filteredAndSortedNews = useMemo(() => {
         let result = allNews.filter(news => {
-            const matchesSearch = news.title.toLowerCase().includes(searchQuery.toLowerCase());
             const matchesGame = selectedGame === 'Todos' || news.gameId === selectedGame;
             const matchesTag = selectedTag === 'Todas' || news.tag === selectedTag;
-            return matchesSearch && matchesGame && matchesTag;
+            return matchesGame && matchesTag;
         });
 
         // Ordenamiento
@@ -86,18 +52,17 @@ export default function Noticias() {
         }
 
         return result;
-    }, [allNews, searchQuery, selectedGame, selectedTag, viewMode]);
+    }, [allNews, selectedGame, selectedTag, viewMode]);
 
     const visibleNews = filteredAndSortedNews.slice(0, visibleCount);
 
     const clearFilters = () => {
-        setSearchQuery('');
         setSelectedGame('Todos');
         setSelectedTag('Todas');
         setViewMode('nuevos');
     };
 
-    const hasActiveFilters = searchQuery !== '' || selectedGame !== 'Todos' || selectedTag !== 'Todas' || viewMode !== 'nuevos';
+    const hasActiveFilters = selectedGame !== 'Todos' || selectedTag !== 'Todas' || viewMode !== 'nuevos';
 
     return (
         <main className="col-span-full space-y-8 pb-content-safe font-sans text-text-default-default">
@@ -109,26 +74,13 @@ export default function Noticias() {
                 {/* Desktop: Fila Única | Mobile: Grid */}
                 <div className="flex flex-col lg:flex-row lg:items-end gap-4 bg-background-secondary border border-border-default-secondary p-4 rounded-2xl transition-all shadow-sm">
                     
-                    {/* Buscador & Mobile Filter Toggle */}
-                    <div className="flex items-center gap-3 flex-1 lg:max-w-md">
-                        <button 
-                            onClick={() => setIsFilterExpanded(!isFilterExpanded)}
-                            className="lg:hidden p-2.5 bg-background-tertiary border border-border-default-secondary rounded-full shadow-sm hover:bg-background-secondary-hover transition-colors"
-                        >
-                            <SlidersHorizontal className="w-5 h-5" />
-                        </button>
-                        
-                        <div className="relative flex-1 group">
-                            <input
-                                type="text"
-                                placeholder="Search"
-                                value={searchQuery}
-                                onChange={(e) => setSearchQuery(e.target.value)}
-                                className="w-full h-[42px] bg-background-tertiary border border-border-default-secondary rounded-xl px-4 text-body-base focus:border-border-default-default outline-none transition-all placeholder:text-text-default-tertiary"
-                            />
-                            <Search className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-default-tertiary group-focus-within:text-text-default-default transition-colors" />
-                        </div>
-                    </div>
+                    {/* Mobile Filter Toggle Button */}
+                    <button 
+                        onClick={() => setIsFilterExpanded(!isFilterExpanded)}
+                        className="lg:hidden flex items-center justify-center gap-2 h-[42px] px-4 w-full sm:w-auto bg-background-tertiary border border-border-default-secondary rounded-xl shadow-sm hover:bg-background-secondary-hover transition-colors text-body-small-strong text-text-default-secondary"
+                    >
+                        <SlidersHorizontal className="w-5 h-5" /> Combinar Filtros
+                    </button>
 
                     {/* Filtros Expandibles (Desktop siempre visible, Mobile toggleable) */}
                     <div className={`${isFilterExpanded ? 'flex' : 'hidden'} lg:flex flex-col sm:flex-row items-stretch gap-4 flex-1`}>
@@ -202,8 +154,22 @@ export default function Noticias() {
 
             {/* Grid de Resultados */}
             {visibleNews.length > 0 ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {visibleNews.map(news => <NewsCard key={`${news.gameId}-${news.id}`} news={news} />)}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-[280px]">
+                    {visibleNews.map(news => {
+                        const game = GAMES_DATA[news.gameId];
+                        return (
+                            <NewsCard 
+                                key={`${news.gameId}-${news.id}`} 
+                                title={news.title}
+                                tag={news.tag}
+                                gameIconUrl={game?.iconUrl}
+                                imageUrl={news.imageUrl || game?.bannerUrl}
+                                date={news.date}
+                                isSmall={true}
+                                href={`/noticias/${news.id}`}
+                            />
+                        );
+                    })}
                 </div>
             ) : (
                 <div className="flex flex-col items-center justify-center py-24 text-text-default-tertiary italic gap-4">

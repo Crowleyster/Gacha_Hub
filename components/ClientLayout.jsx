@@ -7,10 +7,12 @@ import Sidebar from '@/components/Sidebar';
 import Header from '@/components/Header';
 import MobileNav from '@/components/MobileNav';
 import SettingsSheet from '@/components/SettingsSheet';
+import GlobalSearch from '@/components/GlobalSearch';
 
 export default function ClientLayout({ children }) {
     const [isSidebarExpanded, setIsSidebarExpanded] = useState(true);
     const [isMobileSheetOpen, setIsMobileSheetOpen] = useState(false);
+    const [isGlobalSearchOpen, setIsGlobalSearchOpen] = useState(false);
     const pathname = usePathname();
 
     // Initialize sidebar state based on screen size
@@ -53,6 +55,7 @@ export default function ClientLayout({ children }) {
                     <Header
                         onToggleSidebar={() => setIsSidebarExpanded(!isSidebarExpanded)}
                         onOpenMobileSheet={() => setIsMobileSheetOpen(true)}
+                        onOpenSearch={() => setIsGlobalSearchOpen(true)}
                     />
                 </div>
 
@@ -68,6 +71,13 @@ export default function ClientLayout({ children }) {
             {/* Application Mobile Sheet (Settings & Help) */}
             {/* The BottomSheet component seems to be imported inside MobileNav currently, we should handle that correctly or create a quick SettingsSheet here if BottomSheet is generic */}
             <SettingsSheet isOpen={isMobileSheetOpen} onClose={() => setIsMobileSheetOpen(false)} />
+
+            {/* Global Spotlight Search */}
+            <GlobalSearch 
+                isOpen={isGlobalSearchOpen} 
+                onClose={() => setIsGlobalSearchOpen(false)} 
+                onOpen={() => setIsGlobalSearchOpen(true)} 
+            />
         </ThemeProvider>
     );
 }

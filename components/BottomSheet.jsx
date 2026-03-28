@@ -55,11 +55,10 @@ export default function BottomSheet({ isOpen, onClose, title, children }) {
         setCurrentY(0);
     };
 
-    // Calculate dynamic transform based on drag distance
-    const dragOffset = isDragging && currentY > startY ? currentY - startY : 0;
-    // Base translate class handles the CSS animation, inline style handles the real-time drag
     const transformStyle = {
-        transform: `translateY(${isOpen ? dragOffset : 100}%) translateY(${isOpen && dragOffset > 0 ? 'px' : ''})`,
+        transform: isOpen
+            ? `translateY(${dragOffset}px)`
+            : 'translateY(100%)',
         // Disable CSS transition while actively dragging for 1:1 finger tracking
         transition: isDragging ? 'none' : 'transform 300ms cubic-bezier(0.32, 0.72, 0, 1)'
     };

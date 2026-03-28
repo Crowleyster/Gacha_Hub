@@ -11,7 +11,7 @@ export default function Ajustes() {
     useEffect(() => setMounted(true), []);
 
     return (
-        <main className="col-span-full space-y-8 pb-content-safe font-sans max-w-3xl">
+        <main className="col-span-full space-y-8 pb-content-safe font-sans max-w-4xl mx-auto w-full">
             <div className="flex flex-col gap-2">
                 <div className="flex items-center gap-3">
                     <div className="p-2 bg-background-secondary rounded-xl">

@@ -91,6 +91,30 @@ function FilterSelect({ label, options, value, onChange, defaultLabel = "Todos" 
     );
 }
 
+/* ─── Componente: Panel de Filtros ─── */
+function FiltersContent({ filters, updateFilter, hasActiveFilters, clearAllFilters, allPlatforms, allGenres, allDevs }) {
+    return (
+        <div className="flex flex-col gap-6">
+            <FilterSelect label="Región" options={['Global', 'Asia', 'CN']} value={filters.region} onChange={(v) => updateFilter('region', v)} defaultLabel="Todas" />
+            <FilterSelect label="Estado" options={['Lanzado', 'Beta', 'Próximamente']} value={filters.estado} onChange={(v) => updateFilter('estado', v)} defaultLabel="Todos" />
+            <FilterSelect label="Plataforma" options={allPlatforms} value={filters.plataforma} onChange={(v) => updateFilter('plataforma', v)} defaultLabel="Todas" />
+            <FilterSelect label="Género" options={allGenres} value={filters.genero} onChange={(v) => updateFilter('genero', v)} defaultLabel="Todos" />
+            <FilterSelect label="Desarrollador" options={allDevs} value={filters.desarrollador} onChange={(v) => updateFilter('desarrollador', v)} defaultLabel="Todos" />
+            <FilterSelect label="Publisher" options={allDevs} value={filters.publisher} onChange={(v) => updateFilter('publisher', v)} defaultLabel="Todos" />
+
+            {hasActiveFilters && (
+                <button
+                    onClick={clearAllFilters}
+                    className="flex items-center justify-center gap-2 w-full py-2.5 mt-2 bg-background-tertiary border border-border-default-secondary rounded-lg text-body-small-strong text-text-default-default hover:bg-background-secondary-hover transition-colors"
+                >
+                    <RotateCcw className="w-4 h-4" />
+                    Limpiar filtros
+                </button>
+            )}
+        </div>
+    );
+}
+
 /* ─── Página Principal de Juegos ───────────────────────── */
 export default function Juegos() {
     const gamesList = Object.values(GAMES_DATA);
@@ -99,7 +123,6 @@ export default function Juegos() {
     const allPlatforms = useMemo(() => Array.from(new Set(gamesList.flatMap(g => g.platforms))).sort(), [gamesList]);
     const allDevs = useMemo(() => Array.from(new Set(gamesList.map(g => g.developer))).sort(), [gamesList]);
 
-    const [searchQuery, setSearchQuery] = useState('');
     const [selectedSort, setSelectedSort] = useState('Nuevos');
     const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
 
@@ -128,42 +151,20 @@ export default function Juegos() {
 
     useEffect(() => {
         if (isMobileFilterOpen) document.body.style.overflow = 'hidden';
-        else document.body.style.overflow = 'auto';
-        return () => { document.body.style.overflow = 'auto'; };
+        else document.body.style.overflow = '';
+        return () => { document.body.style.overflow = ''; };
     }, [isMobileFilterOpen]);
 
     const sortOptions = ['Nuevos', 'Populares', 'Actualizados', 'A-Z'];
 
     const filteredGames = useMemo(() => {
         return gamesList.filter(game => {
-            const matchesSearch = game.name.toLowerCase().includes(searchQuery.toLowerCase());
             const matchesGenre = filters.genero === 'Todos' || game.genre.includes(filters.genero);
             const matchesPlatform = filters.plataforma === 'Todos' || game.platforms.includes(filters.plataforma);
             const matchesDev = filters.desarrollador === 'Todos' || game.developer === filters.desarrollador;
-            return matchesSearch && matchesGenre && matchesPlatform && matchesDev;
+            return matchesGenre && matchesPlatform && matchesDev;
         });
-    }, [gamesList, searchQuery, filters]);
-
-    const FiltersContent = () => (
-        <div className="flex flex-col gap-6">
-            <FilterSelect label="Región" options={['Global', 'Asia', 'CN']} value={filters.region} onChange={(v) => updateFilter('region', v)} defaultLabel="Todas" />
-            <FilterSelect label="Estado" options={['Lanzado', 'Beta', 'Próximamente']} value={filters.estado} onChange={(v) => updateFilter('estado', v)} defaultLabel="Todos" />
-            <FilterSelect label="Plataforma" options={allPlatforms} value={filters.plataforma} onChange={(v) => updateFilter('plataforma', v)} defaultLabel="Todas" />
-            <FilterSelect label="Género" options={allGenres} value={filters.genero} onChange={(v) => updateFilter('genero', v)} defaultLabel="Todos" />
-            <FilterSelect label="Desarrollador" options={allDevs} value={filters.desarrollador} onChange={(v) => updateFilter('desarrollador', v)} defaultLabel="Todos" />
-            <FilterSelect label="Publisher" options={allDevs} value={filters.publisher} onChange={(v) => updateFilter('publisher', v)} defaultLabel="Todos" />
-
-            {hasActiveFilters && (
-                <button
-                    onClick={clearAllFilters}
-                    className="flex items-center justify-center gap-2 w-full py-2.5 mt-2 bg-background-tertiary border border-border-default-secondary rounded-lg text-body-small-strong text-text-default-default hover:bg-background-secondary-hover transition-colors"
-                >
-                    <RotateCcw className="w-4 h-4" />
-                    Limpiar filtros
-                </button>
-            )}
-        </div>
-    );
+    }, [gamesList, filters]);
 
     return (
         <main className="col-span-full pb-content-safe font-sans flex flex-col gap-6">
@@ -179,7 +180,15 @@ export default function Juegos() {
                             <h3 className="text-body-strong text-text-default-default text-lg">Filtros de búsqueda</h3>
                         </div>
                         <div className="p-4">
-                            <FiltersContent />
+                            <FiltersContent
+                                filters={filters}
+                                updateFilter={updateFilter}
+                                hasActiveFilters={hasActiveFilters}
+                                clearAllFilters={clearAllFilters}
+                                allPlatforms={allPlatforms}
+                                allGenres={allGenres}
+                                allDevs={allDevs}
+                            />
                         </div>
                     </div>
                 </aside>
@@ -189,37 +198,18 @@ export default function Juegos() {
 
                     <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
 
-                        {/* Buscador y Botón de Filtro Móvil */}
-                        <div className="flex items-center gap-3 w-full lg:w-auto lg:flex-1 lg:max-w-sm xl:max-w-md shrink-0">
+                        {/* Botón de Filtro Móvil */}
+                        <div className="flex items-center lg:hidden shrink-0">
                             <button
                                 onClick={() => setIsMobileFilterOpen(true)}
-                                className="lg:hidden shrink-0 flex items-center justify-center w-12 h-12 rounded-full bg-background-secondary border border-border-default-secondary text-text-default-default hover:bg-background-secondary-hover relative"
+                                aria-label="Abrir filtros"
+                                className="flex items-center justify-center gap-2 p-3 px-4 rounded-xl bg-background-secondary border border-border-default-secondary text-text-default-default hover:bg-background-secondary-hover relative text-body-small-strong"
                             >
-                                <Filter className="w-5 h-5" />
+                                <Filter className="w-5 h-5" /> Filtrar
                                 {hasActiveFilters && (
                                     <span className="absolute top-0 right-0 w-3 h-3 bg-brand-default rounded-full border-2 border-background-default"></span>
                                 )}
                             </button>
-
-                            <div className="relative w-full">
-                                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-default-tertiary" />
-                                <input
-                                    type="text"
-                                    placeholder="Buscar..."
-                                    value={searchQuery}
-                                    onChange={(e) => setSearchQuery(e.target.value)}
-                                    className="w-full h-12 pl-12 pr-12 rounded-full border border-border-default-secondary bg-background-tertiary text-text-default-default text-body-base focus:outline-none focus:border-border-default-default transition-all"
-                                />
-                                {searchQuery.length > 0 && (
-                                    <button
-                                        onClick={() => setSearchQuery('')}
-                                        aria-label="Borrar búsqueda"
-                                        className="absolute right-4 top-1/2 -translate-y-1/2 p-1 text-text-default-secondary hover:text-text-default-default transition-colors rounded-full"
-                                    >
-                                        <X className="w-4 h-4" />
-                                    </button>
-                                )}
-                            </div>
                         </div>
 
                         {/* Chips de Ordenamiento (Full-Bleed en Mobile/Tablet) */}
@@ -302,7 +292,15 @@ export default function Juegos() {
                             </button>
                         </div>
                         <div className="flex-1 overflow-y-auto p-4 custom-scrollbar">
-                            <FiltersContent />
+                            <FiltersContent
+                                filters={filters}
+                                updateFilter={updateFilter}
+                                hasActiveFilters={hasActiveFilters}
+                                clearAllFilters={clearAllFilters}
+                                allPlatforms={allPlatforms}
+                                allGenres={allGenres}
+                                allDevs={allDevs}
+                            />
                         </div>
                         <div className="p-4 border-t border-border-default-secondary bg-background-default pb-safe">
                             <button

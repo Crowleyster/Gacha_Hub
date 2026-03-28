@@ -70,7 +70,7 @@ export default function GameHub() {
                     </div>
                     
                     <div className="flex items-center gap-3 shrink-0">
-                        <a href={game.socialLinks?.officialSite || '#'} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-4 py-2 bg-brand-default text-text-brand-on rounded-xl text-body-strong hover:opacity-90 transition-opacity">
+                        <a href={game.officialSite || '#'} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-4 py-2 bg-brand-default text-text-brand-on rounded-xl text-body-strong hover:opacity-90 transition-opacity">
                             <Download className="w-5 h-5" /> Sitio Oficial
                         </a>
                     </div>

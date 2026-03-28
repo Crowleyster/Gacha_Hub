@@ -5,7 +5,7 @@ import { useTheme } from 'next-themes';
 import { PanelLeft, Search, Moon, Sun, MoreVertical } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
-export default function Header({ onToggleSidebar, onOpenMobileSheet }) {
+export default function Header({ onToggleSidebar, onOpenMobileSheet, onOpenSearch }) {
   const pathname = usePathname();
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
@@ -54,23 +54,26 @@ export default function Header({ onToggleSidebar, onOpenMobileSheet }) {
 
         {/* Búsqueda mobile — solo debajo de sm */}
         <button
-          className="flex sm:hidden items-center justify-center w-10 h-10 rounded-lg border border-border-default-secondary bg-background-default text-text-default-secondary shadow-sm transition-colors"
+          onClick={onOpenSearch}
+          className="flex sm:hidden items-center justify-center w-10 h-10 rounded-lg border border-border-default-secondary bg-background-default text-text-default-secondary hover:bg-background-secondary-hover shadow-sm transition-colors"
           title="Buscar"
         >
           <Search className="w-5 h-5" />
         </button>
 
         {/* Búsqueda desktop — sm en adelante */}
-        <div className="hidden sm:flex relative items-center">
-          <input
-            type="text"
-            placeholder="Buscar"
-            className="w-64 rounded-lg py-2 pl-4 pr-10 border border-border-default-secondary bg-background-tertiary text-text-default-default placeholder:text-text-default-tertiary focus:outline-none focus:ring-2 focus:ring-brand-default/20 shadow-sm transition-colors"
-          />
-          <button className="absolute right-3 text-text-default-tertiary hover:text-text-brand-default transition-colors">
-            <Search className="w-4 h-4" />
-          </button>
-        </div>
+        <button 
+          onClick={onOpenSearch}
+          className="hidden sm:flex group relative items-center w-64 rounded-lg py-2 pl-4 pr-3 border border-border-default-secondary bg-background-tertiary hover:bg-background-secondary-hover transition-colors shadow-sm text-left"
+        >
+          <span className="flex-1 text-text-default-tertiary text-body-base group-hover:text-text-default-secondary transition-colors">
+            Buscar...
+          </span>
+          <div className="flex items-center gap-1 text-[10px] font-bold text-text-default-tertiary tracking-widest bg-background-default border border-border-default-secondary px-1.5 py-0.5 rounded shadow-sm">
+            <span>CTRL</span>
+            <span>K</span>
+          </div>
+        </button>
 
         {/* Dark mode — sm en adelante */}
         <button

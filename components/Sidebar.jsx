@@ -3,7 +3,8 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Calendar, Home, Gamepad2, Newspaper, Settings, CircleHelp, Compass } from 'lucide-react';
+import { Compass } from 'lucide-react';
+import { TOP_NAV_ITEMS, BOTTOM_NAV_ITEMS } from '@/lib/nav-items';
 
 export default function Sidebar({ isExpanded }) {
     const pathname = usePathname();
@@ -16,17 +17,6 @@ export default function Sidebar({ isExpanded }) {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
-    const topNavItems = [
-        { name: 'Inicio', href: '/', icon: Home },
-        { name: 'Noticias', href: '/noticias', icon: Newspaper },
-        { name: 'Eventos', href: '/eventos', icon: Calendar },
-        { name: 'Juegos', href: '/juegos', icon: Gamepad2 },
-    ];
-
-    const bottomNavItems = [
-        { name: 'Ajustes', href: '/ajustes', icon: Settings },
-        { name: 'Ayuda', href: '/ayuda', icon: CircleHelp },
-    ];
 
     return (
         <aside
@@ -62,7 +52,7 @@ export default function Sidebar({ isExpanded }) {
                 className="flex-1 overflow-y-auto overflow-x-hidden min-h-0 custom-scrollbar flex flex-col pt-2 pb-4"
                 style={{ marginTop: '6px' }}
             >
-                {topNavItems.map((item) => {
+                {TOP_NAV_ITEMS.map((item) => {
                     const isActive = pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href));
 
                     return (
@@ -94,7 +84,7 @@ export default function Sidebar({ isExpanded }) {
             {/* Bottom Navigation Links */}
             {!isLowHeight && (
                 <div className="flex flex-col border-t border-border-default-secondary pt-2 mt-auto shrink-0">
-                    {bottomNavItems.map((item) => {
+                    {BOTTOM_NAV_ITEMS.map((item) => {
                         const isActive = pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href));
 
                         return (

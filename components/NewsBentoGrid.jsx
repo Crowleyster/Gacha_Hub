@@ -4,7 +4,7 @@ import { ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 import NewsCard from './NewsCard';
 import { newsData } from '@/lib/mock-data';
-import { GAMES_DATA } from '@/lib/games-data'; // <- Añadir esta línea arriba
+import { GAMES_DATA } from '@/lib/games-data';
 
 
 export default function NewsBentoGrid() {

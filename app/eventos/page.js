@@ -81,7 +81,6 @@ function MultiSelectDropdown({ label, options, selected, onChange, displayFormat
 }
 
 export default function Eventos() {
-    const [searchQuery, setSearchQuery] = useState('');
     const [selectedGames, setSelectedGames] = useState([]);
     const [selectedTypes, setSelectedTypes] = useState([]);
     const [selectedStatuses, setSelectedStatuses] = useState([]);
@@ -104,20 +103,18 @@ export default function Eventos() {
     // Filter Logic
     const filteredEvents = useMemo(() => {
         return EVENTS_DATA.filter(event => {
-            const matchesSearch = event.title.toLowerCase().includes(searchQuery.toLowerCase());
             const matchesGame = selectedGames.length === 0 || selectedGames.includes(event.gameId);
             const matchesType = selectedTypes.length === 0 || selectedTypes.includes(event.type);
             const matchesStatus = selectedStatuses.length === 0 || selectedStatuses.includes(event.statusLabel);
             const matchesCategory = selectedCategories.length === 0 || selectedCategories.includes(event.category);
             
-            return matchesSearch && matchesGame && matchesType && matchesStatus && matchesCategory;
+            return matchesGame && matchesType && matchesStatus && matchesCategory;
         });
-    }, [searchQuery, selectedGames, selectedTypes, selectedStatuses, selectedCategories]);
+    }, [selectedGames, selectedTypes, selectedStatuses, selectedCategories]);
 
-    const hasActiveFilters = searchQuery !== '' || selectedGames.length > 0 || selectedTypes.length > 0 || selectedStatuses.length > 0 || selectedCategories.length > 0;
+    const hasActiveFilters = selectedGames.length > 0 || selectedTypes.length > 0 || selectedStatuses.length > 0 || selectedCategories.length > 0;
 
     const clearFilters = () => {
-        setSearchQuery('');
         setSelectedGames([]);
         setSelectedTypes([]);
         setSelectedStatuses([]);
@@ -143,29 +140,16 @@ export default function Eventos() {
             <div className="space-y-4">
                 <div className="flex flex-col lg:flex-row lg:items-end gap-3 bg-background-secondary border border-border-default-secondary p-4 rounded-2xl transition-all shadow-sm">
                     
-                    {/* Buscador & Mobile Toggle */}
-                    <div className="flex items-center gap-3 flex-1 lg:max-w-xs">
-                        <button 
-                            onClick={() => setIsFilterExpanded(!isFilterExpanded)}
-                            className="lg:hidden p-2.5 bg-background-tertiary border border-border-default-secondary rounded-xl shadow-sm hover:bg-background-secondary-hover transition-colors"
-                        >
-                            <SlidersHorizontal className="w-5 h-5" />
-                        </button>
-                        
-                        <div className="relative flex-1 group">
-                            <input
-                                type="text"
-                                placeholder="Search events..."
-                                value={searchQuery}
-                                onChange={(e) => setSearchQuery(e.target.value)}
-                                className="w-full h-[42px] bg-background-tertiary border border-border-default-secondary rounded-xl px-4 text-body-base focus:border-border-default-default outline-none transition-all placeholder:text-text-default-tertiary"
-                            />
-                            <Search className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-default-tertiary group-focus-within:text-text-default-default transition-colors" />
-                        </div>
-                    </div>
+                    {/* Mobile Toggle Button */}
+                    <button 
+                        onClick={() => setIsFilterExpanded(!isFilterExpanded)}
+                        className="lg:hidden flex items-center justify-center gap-2 h-[42px] px-4 w-full sm:w-auto bg-background-tertiary border border-border-default-secondary rounded-xl shadow-sm hover:bg-background-secondary-hover transition-colors text-body-small-strong text-text-default-secondary"
+                    >
+                        <SlidersHorizontal className="w-5 h-5" /> Mostrar Filtros
+                    </button>
 
-                    {/* Filtros Expandibles (TODOS Multi-select) */}
-                    <div className={`${isFilterExpanded ? 'flex' : 'hidden'} lg:flex flex-col lg:flex-row items-stretch gap-3 flex-1`}>
+                    {/* Contenedor de Selects (Scrollable en móvil) */}
+                    <div className={`${isFilterExpanded ? 'flex' : 'hidden'} lg:flex flex-col sm:flex-row items-stretch gap-3 w-full overflow-x-auto pb-2 lg:pb-0 scrollbar-none`}>
                         {/* Selector de Juego */}
                         <MultiSelectDropdown 
                             label="Juego" 
