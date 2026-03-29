@@ -32,7 +32,7 @@ export default function Header({ onToggleSidebar, onOpenMobileSheet, onOpenSearc
           <PanelLeft className="w-5 h-5" />
         </button>
 
-        <h1 className="text-body-strong md:text-subheading-strong text-text-default-default lg:hidden">
+        <h1 className="text-body-strong sm:text-subheading-strong font-bold text-text-default-default lg:hidden tracking-tight select-none">
           Gacha Hub
         </h1>
       </div>
@@ -57,7 +57,7 @@ export default function Header({ onToggleSidebar, onOpenMobileSheet, onOpenSearc
           <span className="flex-1 text-text-default-tertiary text-body-base group-hover:text-text-default-secondary transition-colors">
             Buscar...
           </span>
-          <div className="flex items-center gap-1 text-[10px] font-bold text-text-default-tertiary tracking-widest bg-background-default border border-border-default-secondary px-1.5 py-0.5 rounded shadow-sm">
+          <div className="flex items-center gap-1 text-badge text-text-default-tertiary bg-background-default border border-border-default-secondary px-1.5 py-0.5 rounded shadow-sm">
             <span>CTRL</span>
             <span>K</span>
           </div>
@@ -67,7 +67,7 @@ export default function Header({ onToggleSidebar, onOpenMobileSheet, onOpenSearc
         <button
           onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
           className="hidden sm:flex items-center justify-center w-10 h-10 rounded-lg border border-border-default-secondary bg-background-default text-text-default-secondary hover:bg-background-secondary-hover shadow-sm transition-colors"
-          title={theme === 'dark' ? "Cambiar a Modo Claro" : "Cambiar a Modo Oscuro"}
+          title={mounted ? (theme === 'dark' ? "Cambiar a Modo Claro" : "Cambiar a Modo Oscuro") : "Alternar Tema"}
         >
           {mounted && (theme === 'dark' ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />)}
         </button>

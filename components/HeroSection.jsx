@@ -15,7 +15,7 @@ export default function HeroSection() {
            style={{ backgroundImage: 'radial-gradient(circle, var(--sds-color-text-default-default) 1px, transparent 1px)', backgroundSize: '16px 16px md:24px 24px' }} />
 
       <div className="relative z-10 flex flex-col gap-4 md:gap-6 max-w-4xl">
-        <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-brand-default text-text-brand-on text-[10px] font-bold uppercase tracking-widest w-fit animate-pulse">
+        <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-brand-default text-text-brand-on text-badge w-fit animate-pulse">
            <span className="w-1.5 h-1.5 rounded-full bg-current animate-ping" aria-hidden="true" />
            Actualizaciones en vivo
         </div>

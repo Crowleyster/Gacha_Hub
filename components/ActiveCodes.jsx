@@ -9,7 +9,7 @@ import SectionHeader from './SectionHeader';
 /* ─── Code Card ─────────────────────────────────────────────────────── */
 function CodeCard({ item, onCopy, isCopied }) {
     return (
-        <div className="flex-shrink-0 snap-start w-[85vw] min-[480px]:w-72 md:w-80 bg-background-secondary border border-border-default-secondary rounded-xl p-4 flex flex-col gap-3 hover:bg-background-secondary-hover hover:border-border-default-default transition-all duration-300 group/card">
+        <div className="flex-shrink-0 snap-start w-[calc(100vw-2rem)] sm:w-72 md:w-80 bg-background-secondary border border-border-default-secondary rounded-xl p-4 flex flex-col gap-3 hover:bg-background-secondary-hover hover:border-border-default-default transition-all duration-300 group/card">
 
             <div className="flex items-center justify-between gap-3">
                 <div className="flex items-center gap-2 overflow-hidden">
@@ -25,7 +25,7 @@ function CodeCard({ item, onCopy, isCopied }) {
                 <button
                     onClick={() => onCopy(item.code)}
                     aria-label={isCopied ? "Código copiado con éxito" : `Copiar código: ${item.code}`}
-                    className={`shrink-0 flex items-center justify-center w-10 h-10 rounded-lg transition-all duration-300 relative overflow-hidden ${isCopied ? 'bg-emerald-500 text-white scale-95' : 'bg-background-tertiary hover:bg-brand-default hover:text-text-brand-on text-text-default-secondary shadow-sm'}`}
+                    className={`shrink-0 flex items-center justify-center w-10 h-10 rounded-lg transition-all duration-300 relative overflow-hidden ${isCopied ? 'bg-status-success text-white scale-95' : 'bg-background-tertiary hover:bg-brand-default hover:text-text-brand-on text-text-default-secondary shadow-sm'}`}
                 >
                     {isCopied ? (
                         <Check className="w-5 h-5" />
@@ -34,7 +34,7 @@ function CodeCard({ item, onCopy, isCopied }) {
                     )}
                     
                     {isCopied && (
-                        <span className="absolute inset-0 flex items-center justify-center bg-emerald-500 text-[8px] font-bold uppercase tracking-tighter animate-out fade-out slide-out-to-top-4 fill-mode-forwards duration-700">
+                        <span className="absolute inset-0 flex items-center justify-center bg-status-success text-badge animate-out fade-out slide-out-to-top-4 fill-mode-forwards duration-700">
                             Copiado
                         </span>
                     )}

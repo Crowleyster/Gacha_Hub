@@ -21,71 +21,15 @@ import EventCard from '@/components/EventCard';
 const STATUS_OPTIONS = ["Ultimas horas", "Últimos días", "Nuevos", "Próximos"];
 const CATEGORY_OPTIONS = ["Permanente", "Recurrente", "Limitado"];
 
-/* ─── Multi-select Dropdown Component ─── */
-function MultiSelectDropdown({ label, options, selected, onChange, displayFormatter }) {
-    const [isOpen, setIsOpen] = useState(false);
-    const dropdownRef = useRef(null);
-
-    useEffect(() => {
-        const handleClickOutside = (event) => {
-            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-                setIsOpen(false);
-            }
-        };
-        document.addEventListener('mousedown', handleClickOutside);
-        return () => document.removeEventListener('mousedown', handleClickOutside);
-    }, []);
-
-    const toggleOption = (option) => {
-        const newSelected = selected.includes(option)
-            ? selected.filter(item => item !== option)
-            : [...selected, option];
-        onChange(newSelected);
-    };
-
-    return (
-        <div className="flex flex-col gap-1.5 flex-1 min-w-[140px] relative" ref={dropdownRef}>
-            <span className="text-[10px] uppercase tracking-wider font-bold text-text-default-tertiary px-1">{label}</span>
-            <button 
-                onClick={() => setIsOpen(!isOpen)}
-                className={`w-full h-[42px] flex items-center justify-between bg-background-tertiary border rounded-xl px-3 transition-all ${isOpen ? 'border-border-default-default ring-1 ring-border-default-default/20' : 'border-border-default-secondary'}`}
-            >
-                <span className={`text-body-small-strong truncate ${selected.length > 0 ? 'text-text-default-default' : 'text-text-default-tertiary'}`}>
-                    {selected.length === 0 ? "Todos" : `${label} (${selected.length})`}
-                </span>
-                <ChevronDown className={`w-4 h-4 text-text-default-tertiary transition-transform ${isOpen ? 'rotate-180' : ''}`} />
-            </button>
-
-            {isOpen && (
-                <div className="absolute top-[calc(100%+8px)] left-0 w-full bg-background-secondary border border-border-default-secondary rounded-xl shadow-xl z-50 p-2 overflow-hidden animate-in fade-in zoom-in duration-150">
-                    <div className="space-y-1 max-h-60 overflow-y-auto pr-1">
-                        {options.map(option => (
-                            <button
-                                key={option}
-                                onClick={() => toggleOption(option)}
-                                className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-background-tertiary transition-colors text-left group"
-                            >
-                                <div className={`w-4 h-4 rounded border flex items-center justify-center transition-all ${selected.includes(option) ? 'bg-text-brand-default border-text-brand-default' : 'border-border-default-secondary group-hover:border-text-default-tertiary'}`}>
-                                    {selected.includes(option) && <Check className="w-3 h-3 text-white" strokeWidth={4} />}
-                                </div>
-                                <span className={`text-body-small font-medium ${selected.includes(option) ? 'text-text-default-default' : 'text-text-default-secondary'}`}>
-                                    {displayFormatter ? displayFormatter(option) : option}
-                                </span>
-                            </button>
-                        ))}
-                    </div>
-                </div>
-            )}
-        </div>
-    );
-}
+import FilterDropdown from '@/components/ui/FilterDropdown';
+import MobileFilterModal from '@/components/ui/MobileFilterModal';
 
 export default function Eventos() {
     const [selectedGames, setSelectedGames] = useState([]);
     const [selectedTypes, setSelectedTypes] = useState([]);
     const [selectedStatuses, setSelectedStatuses] = useState([]);
     const [selectedCategories, setSelectedCategories] = useState([]);
-    const [isFilterExpanded, setIsFilterExpanded] = useState(false);
+    const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
 
     // Get unique types from data
     const allTypes = useMemo(() => {
@@ -121,6 +65,46 @@ export default function Eventos() {
         setSelectedCategories([]);
     };
 
+    const FiltersContent = () => (
+        <div className="flex flex-col lg:flex-row items-stretch gap-3 w-full">
+            <FilterDropdown 
+                label="Juego" 
+                options={gameOptions} 
+                selected={selectedGames} 
+                onChange={setSelectedGames}
+                displayFormatter={getGameName}
+            />
+            <FilterDropdown 
+                label="Tipo de Evento" 
+                options={allTypes} 
+                selected={selectedTypes} 
+                onChange={setSelectedTypes} 
+            />
+            <FilterDropdown 
+                label="Estado" 
+                options={STATUS_OPTIONS} 
+                selected={selectedStatuses} 
+                onChange={setSelectedStatuses} 
+            />
+            <FilterDropdown 
+                label="Categoría" 
+                options={CATEGORY_OPTIONS} 
+                selected={selectedCategories} 
+                onChange={setSelectedCategories} 
+            />
+            
+            {hasActiveFilters && (
+                <button
+                    onClick={clearFilters}
+                    className="flex items-center justify-center gap-2 h-[42px] px-4 shrink-0 bg-background-tertiary border border-border-default-secondary rounded-xl text-body-small-strong uppercase tracking-wider text-text-default-secondary hover:bg-background-secondary-hover hover:text-brand-default transition-all mt-auto"
+                >
+                    <RotateCcw className="w-3.5 h-3.5" />
+                    <span className="lg:hidden">Limpiar filtros</span>
+                </button>
+            )}
+        </div>
+    );
+
     return (
         <main className="col-span-full space-y-8 pb-content-safe font-sans text-text-default-default">
             {/* Header */}
@@ -139,65 +123,27 @@ export default function Eventos() {
             {/* Barra de Filtros PREMIUM */}
             <div className="space-y-4">
                 <div className="flex flex-col lg:flex-row lg:items-end gap-3 bg-background-secondary border border-border-default-secondary p-4 rounded-2xl transition-all shadow-sm">
-                    
                     {/* Mobile Toggle Button */}
                     <button 
-                        onClick={() => setIsFilterExpanded(!isFilterExpanded)}
+                        onClick={() => setIsMobileFilterOpen(true)}
                         className="lg:hidden flex items-center justify-center gap-2 h-[42px] px-4 w-full sm:w-auto bg-background-tertiary border border-border-default-secondary rounded-xl shadow-sm hover:bg-background-secondary-hover transition-colors text-body-small-strong text-text-default-secondary"
                     >
-                        <SlidersHorizontal className="w-5 h-5" /> Mostrar Filtros
+                        <Filter className="w-5 h-5" /> Filtrar Eventos
+                        {hasActiveFilters && (
+                            <span className="w-2.5 h-2.5 bg-brand-default rounded-full border border-background-default absolute top-2 right-2"></span>
+                        )}
                     </button>
 
-                    {/* Contenedor de Selects (Scrollable en móvil) */}
-                    <div className={`${isFilterExpanded ? 'flex' : 'hidden'} lg:flex flex-col sm:flex-row items-stretch gap-3 w-full overflow-x-auto pb-2 lg:pb-0 scrollbar-none`}>
-                        {/* Selector de Juego */}
-                        <MultiSelectDropdown 
-                            label="Juego" 
-                            options={gameOptions} 
-                            selected={selectedGames} 
-                            onChange={setSelectedGames}
-                            displayFormatter={getGameName}
-                        />
-
-                        {/* Selector de Tipo */}
-                        <MultiSelectDropdown 
-                            label="Tipo de Evento" 
-                            options={allTypes} 
-                            selected={selectedTypes} 
-                            onChange={setSelectedTypes} 
-                        />
-
-                        {/* Selector de Estado */}
-                        <MultiSelectDropdown 
-                            label="Estado" 
-                            options={STATUS_OPTIONS} 
-                            selected={selectedStatuses} 
-                            onChange={setSelectedStatuses} 
-                        />
-
-                        {/* Selector de Categoría */}
-                        <MultiSelectDropdown 
-                            label="Categoría" 
-                            options={CATEGORY_OPTIONS} 
-                            selected={selectedCategories} 
-                            onChange={setSelectedCategories} 
-                        />
-                    </div>
-
-                    {/* Limpiar */}
-                    <div className="flex items-center gap-3 mt-auto lg:mt-0 w-full lg:w-auto self-end">
-                        {hasActiveFilters && (
-                            <button
-                                onClick={clearFilters}
-                                className="flex items-center justify-center gap-2 h-[42px] px-4 bg-background-tertiary border border-border-default-secondary rounded-xl text-body-small-strong hover:bg-background-secondary-hover transition-all flex-1 sm:flex-none"
-                            >
-                                <RotateCcw className="w-4 h-4" />
-                                <span>Limpiar</span>
-                            </button>
-                        )}
+                    {/* Desktop Contenedor */}
+                    <div className="hidden lg:flex flex-col items-stretch gap-4 flex-1">
+                        <FiltersContent />
                     </div>
                 </div>
             </div>
+
+            <MobileFilterModal isOpen={isMobileFilterOpen} onClose={() => setIsMobileFilterOpen(false)} title="Filtros de Eventos">
+                <FiltersContent />
+            </MobileFilterModal>
 
             {/* Content Display */}
             <div className="flex flex-col gap-6">

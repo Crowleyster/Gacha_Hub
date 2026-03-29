@@ -7,6 +7,8 @@ import { Search, Filter, Check, X, ChevronDown, RotateCcw, Star } from 'lucide-r
 import { GAMES_DATA } from '@/lib/games-data';
 import PlatformIcon from '@/components/PlatformIcon';
 import { useFavorites } from '@/hooks/useFavorites';
+import FilterDropdown from '@/components/ui/FilterDropdown';
+import MobileFilterModal from '@/components/ui/MobileFilterModal';
 
 /* ─── Componente: Tarjeta de Juego ─── */
 function GameCard({ game }) {
@@ -87,36 +89,18 @@ function GameCard({ game }) {
     );
 }
 
-/* ─── Componente: Select de Filtro ─── */
-function FilterSelect({ label, options, value, onChange, defaultLabel = "Todos" }) {
-    return (
-        <div className="flex flex-col gap-2">
-            <label className="text-body-base text-text-default-default">{label}</label>
-            <div className="relative">
-                <select
-                    value={value}
-                    onChange={(e) => onChange(e.target.value)}
-                    className="w-full appearance-none bg-background-tertiary border border-border-default-secondary rounded-lg pl-3 pr-10 py-2.5 text-body-base text-text-default-default focus:outline-none focus:border-border-default-default cursor-pointer"
-                >
-                    <option value="Todos">{defaultLabel}</option>
-                    {options.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-                </select>
-                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-default-default pointer-events-none" />
-            </div>
-        </div>
-    );
-}
+// Eliminado FilterSelect local en favor de FilterDropdown global
 
 /* ─── Componente: Panel de Filtros ─── */
 function FiltersContent({ filters, updateFilter, hasActiveFilters, clearAllFilters, allPlatforms, allGenres, allDevs }) {
     return (
         <div className="flex flex-col gap-6">
-            <FilterSelect label="Región" options={['Global', 'Asia', 'CN']} value={filters.region} onChange={(v) => updateFilter('region', v)} defaultLabel="Todas" />
-            <FilterSelect label="Estado" options={['Lanzado', 'Beta', 'Próximamente']} value={filters.estado} onChange={(v) => updateFilter('estado', v)} defaultLabel="Todos" />
-            <FilterSelect label="Plataforma" options={allPlatforms} value={filters.plataforma} onChange={(v) => updateFilter('plataforma', v)} defaultLabel="Todas" />
-            <FilterSelect label="Género" options={allGenres} value={filters.genero} onChange={(v) => updateFilter('genero', v)} defaultLabel="Todos" />
-            <FilterSelect label="Desarrollador" options={allDevs} value={filters.desarrollador} onChange={(v) => updateFilter('desarrollador', v)} defaultLabel="Todos" />
-            <FilterSelect label="Publisher" options={allDevs} value={filters.publisher} onChange={(v) => updateFilter('publisher', v)} defaultLabel="Todos" />
+            <FilterDropdown label="Región" options={['Global', 'Asia', 'CN']} selected={filters.region} onChange={(v) => updateFilter('region', v)} />
+            <FilterDropdown label="Estado" options={['Lanzado', 'Beta', 'Próximamente']} selected={filters.estado} onChange={(v) => updateFilter('estado', v)} />
+            <FilterDropdown label="Plataforma" options={allPlatforms} selected={filters.plataforma} onChange={(v) => updateFilter('plataforma', v)} />
+            <FilterDropdown label="Género" options={allGenres} selected={filters.genero} onChange={(v) => updateFilter('genero', v)} />
+            <FilterDropdown label="Desarrollador" options={allDevs} selected={filters.desarrollador} onChange={(v) => updateFilter('desarrollador', v)} />
+            <FilterDropdown label="Publisher" options={allDevs} selected={filters.publisher} onChange={(v) => updateFilter('publisher', v)} />
 
             {hasActiveFilters && (
                 <button
@@ -143,41 +127,35 @@ export default function Juegos() {
     const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
 
     const [filters, setFilters] = useState({
-        region: 'Todos',
-        estado: 'Todos',
-        plataforma: 'Todos',
-        genero: 'Todos',
-        desarrollador: 'Todos',
-        publisher: 'Todos'
+        region: [],
+        estado: [],
+        plataforma: [],
+        genero: [],
+        desarrollador: [],
+        publisher: []
     });
 
     const updateFilter = (key, value) => setFilters(prev => ({ ...prev, [key]: value }));
 
-    const hasActiveFilters = Object.values(filters).some(val => val !== 'Todos');
+    const hasActiveFilters = Object.values(filters).some(val => val.length > 0);
     const clearAllFilters = () => {
         setFilters({
-            region: 'Todos',
-            estado: 'Todos',
-            plataforma: 'Todos',
-            genero: 'Todos',
-            desarrollador: 'Todos',
-            publisher: 'Todos'
+            region: [],
+            estado: [],
+            plataforma: [],
+            genero: [],
+            desarrollador: [],
+            publisher: []
         });
     };
-
-    useEffect(() => {
-        if (isMobileFilterOpen) document.body.style.overflow = 'hidden';
-        else document.body.style.overflow = '';
-        return () => { document.body.style.overflow = ''; };
-    }, [isMobileFilterOpen]);
 
     const sortOptions = ['Nuevos', 'Populares', 'Actualizados', 'A-Z'];
 
     const filteredGames = useMemo(() => {
         return gamesList.filter(game => {
-            const matchesGenre = filters.genero === 'Todos' || game.genre.includes(filters.genero);
-            const matchesPlatform = filters.plataforma === 'Todos' || game.platforms.includes(filters.plataforma);
-            const matchesDev = filters.desarrollador === 'Todos' || game.developer === filters.desarrollador;
+            const matchesGenre = filters.genero.length === 0 || filters.genero.some(g => game.genre.includes(g));
+            const matchesPlatform = filters.plataforma.length === 0 || filters.plataforma.some(p => game.platforms.includes(p));
+            const matchesDev = filters.desarrollador.length === 0 || filters.desarrollador.includes(game.developer);
             return matchesGenre && matchesPlatform && matchesDev;
         });
     }, [gamesList, filters]);
@@ -290,45 +268,17 @@ export default function Juegos() {
                 </div>
             </div>
 
-            {/* MODAL MÓVIL */}
-            {isMobileFilterOpen && (
-                <div className="fixed inset-0 z-[100] lg:hidden flex justify-end">
-                    <div
-                        className="absolute inset-0 bg-black/60 backdrop-blur-sm animate-in fade-in"
-                        onClick={() => setIsMobileFilterOpen(false)}
-                    />
-                    <aside className="relative w-[85%] max-w-sm h-full bg-background-default border-l border-border-default-secondary shadow-2xl flex flex-col animate-in slide-in-from-right-full duration-300">
-                        <div className="flex items-center justify-between p-4 border-b border-border-default-secondary">
-                            <h3 className="text-heading text-text-default-default">Filtros</h3>
-                            <button
-                                onClick={() => setIsMobileFilterOpen(false)}
-                                className="p-2 text-text-default-secondary hover:text-text-default-default bg-background-secondary rounded-full"
-                            >
-                                <X className="w-5 h-5" />
-                            </button>
-                        </div>
-                        <div className="flex-1 overflow-y-auto p-4 custom-scrollbar">
-                            <FiltersContent
-                                filters={filters}
-                                updateFilter={updateFilter}
-                                hasActiveFilters={hasActiveFilters}
-                                clearAllFilters={clearAllFilters}
-                                allPlatforms={allPlatforms}
-                                allGenres={allGenres}
-                                allDevs={allDevs}
-                            />
-                        </div>
-                        <div className="p-4 border-t border-border-default-secondary bg-background-default pb-safe">
-                            <button
-                                onClick={() => setIsMobileFilterOpen(false)}
-                                className="w-full py-3 bg-brand-default text-text-brand-on rounded-xl text-body-strong"
-                            >
-                                Mostrar resultados
-                            </button>
-                        </div>
-                    </aside>
-                </div>
-            )}
+            <MobileFilterModal isOpen={isMobileFilterOpen} onClose={() => setIsMobileFilterOpen(false)} title="Filtros de Juegos">
+                <FiltersContent
+                    filters={filters}
+                    updateFilter={updateFilter}
+                    hasActiveFilters={hasActiveFilters}
+                    clearAllFilters={clearAllFilters}
+                    allPlatforms={allPlatforms}
+                    allGenres={allGenres}
+                    allDevs={allDevs}
+                />
+            </MobileFilterModal>
 
         </main>
     );

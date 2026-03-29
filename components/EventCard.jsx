@@ -23,7 +23,7 @@ export function getTimeInfo(event) {
   }
 
   if (!endDate) {
-    return { label: 'Evento', color: 'bg-emerald-500 text-white border-emerald-400/20', expired: false };
+    return { label: 'Evento', color: 'bg-status-success text-white border-status-success/20', expired: false };
   }
 
   const [ey, em, ed] = endDate.split('-').map(Number);
@@ -42,21 +42,21 @@ export function getTimeInfo(event) {
 
   // Permanente
   if (diffDays > 365 || event.category === 'Permanente') {
-    return { label: 'Permanente', color: 'bg-indigo-500 text-white border-indigo-400/20', expired: false };
+    return { label: 'Permanente', color: 'bg-status-info text-white border-status-info/20', expired: false };
   }
 
   // Últimas horas (≤ 24h)
   if (diffHours <= 24) {
-    return { label: `${diffHours} ${diffHours === 1 ? 'Hora' : 'Hrs'}`, color: 'bg-red-500 text-white border-red-400/20', expired: false };
+    return { label: `${diffHours} ${diffHours === 1 ? 'Hora' : 'Hrs'}`, color: 'bg-status-danger text-white border-status-danger/20', expired: false };
   }
 
   // Últimos días (> 24h y ≤ 7 días)
   if (diffDays <= 7) {
-    return { label: `${diffDays} ${diffDays === 1 ? 'Día' : 'Días'}`, color: 'bg-amber-500 text-white border-amber-400/20', expired: false };
+    return { label: `${diffDays} ${diffDays === 1 ? 'Día' : 'Días'}`, color: 'bg-status-warning text-white border-status-warning/20', expired: false };
   }
 
   // Activo con tiempo
-  return { label: `${diffDays} Días`, color: 'bg-emerald-500 text-white border-emerald-400/20', expired: false };
+  return { label: `${diffDays} Días`, color: 'bg-status-success text-white border-status-success/20', expired: false };
 }
 
 // ── EventCard ─────────────────────────────────────────────
@@ -79,7 +79,7 @@ export default function EventCard({ event }) {
       group flex-shrink-0 relative rounded-2xl overflow-hidden
       border border-white/10 hover:border-white/30
       transition-all duration-300 cursor-pointer
-      h-56 w-full min-w-[280px] sm:min-w-0 bg-background-secondary
+      h-56 w-full min-w-72 lg:min-w-0 bg-background-secondary snap-start
     ">
       {/* Banner */}
       {bannerUrl
@@ -98,11 +98,11 @@ export default function EventCard({ event }) {
         <div className="flex flex-col gap-1.5 h-11 justify-end">
           <div className="flex items-center gap-2">
             {iconUrl && (
-              <div className="w-7 h-7 rounded-full overflow-hidden border border-white/20 shrink-0 shadow-lg">
+              <div className="w-8 h-8 rounded-full overflow-hidden border border-white/20 shrink-0 shadow-lg">
                 <img src={iconUrl} alt={shortName} className="w-full h-full object-cover" />
               </div>
             )}
-            <span className={`${color} h-5 flex items-center px-2.5 rounded-full shadow-lg backdrop-blur-sm border text-[9px] font-bold uppercase tracking-wider whitespace-nowrap`}>
+            <span className={`${color} h-5 flex items-center px-2.5 rounded-full shadow-lg backdrop-blur-sm border text-badge whitespace-nowrap`}>
               {label}
             </span>
           </div>
@@ -110,12 +110,12 @@ export default function EventCard({ event }) {
           {(type || category) && (
             <div className="flex items-center gap-1.5">
               {type && (
-                <span className="h-4.5 flex items-center px-1.5 bg-text-brand-default/20 backdrop-blur-sm text-text-brand-default rounded-full border border-text-brand-default/30 text-[8px] font-bold uppercase tracking-widest whitespace-nowrap">
+                <span className="h-4.5 flex items-center px-1.5 bg-text-brand-default/20 backdrop-blur-sm text-text-brand-default rounded-full border border-text-brand-default/30 text-badge whitespace-nowrap">
                   {type}
                 </span>
               )}
               {category && (
-                <span className="h-4.5 flex items-center px-1.5 bg-white/10 backdrop-blur-sm text-white/80 rounded-full border border-white/20 text-[8px] font-bold uppercase tracking-widest whitespace-nowrap">
+                <span className="h-4.5 flex items-center px-1.5 bg-white/10 backdrop-blur-sm text-white/80 rounded-full border border-white/20 text-badge whitespace-nowrap">
                   {category}
                 </span>
               )}
@@ -131,7 +131,7 @@ export default function EventCard({ event }) {
         {/* Fechas */}
         <div className="flex items-center gap-1.5 text-white/50 mt-1">
           <CalendarDays className="w-3 h-3 shrink-0" aria-hidden="true" />
-          <span className="text-[10px] font-medium tracking-wide">
+          <span className="text-caption whitespace-nowrap">
             {formatDateShort(startDate)} — {formatDateShort(endDate)}
           </span>
         </div>

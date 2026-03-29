@@ -3,17 +3,19 @@
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Search, SlidersHorizontal, ChevronDown, Check, Calendar, RotateCcw } from 'lucide-react';
+import { Search, SlidersHorizontal, ChevronDown, Check, Calendar, RotateCcw, Filter } from 'lucide-react';
 import { GAMES_DATA } from '@/lib/games-data';
+import FilterDropdown from '@/components/ui/FilterDropdown';
+import MobileFilterModal from '@/components/ui/MobileFilterModal';
 
 import NewsCard from '@/components/NewsCard';
 
 export default function Noticias() {
     // 1. Estados
-    const [selectedGame, setSelectedGame] = useState('Todos');
-    const [selectedTag, setSelectedTag] = useState('Todas');
+    const [selectedGames, setSelectedGames] = useState([]);
+    const [selectedTags, setSelectedTags] = useState([]);
     const [viewMode, setViewMode] = useState('nuevos'); // 'nuevos' | 'populares'
-    const [isFilterExpanded, setIsFilterExpanded] = useState(false);
+    const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
     const [visibleCount, setVisibleCount] = useState(6);
 
     // 2. Data
@@ -32,14 +34,14 @@ export default function Noticias() {
         allNews.forEach(news => {
             if (news.tag) tags.add(news.tag);
         });
-        return ['Todas', ...Array.from(tags)];
+        return Array.from(tags).sort();
     }, [allNews]);
 
     // 3. Filtrado y Ordenamiento
     const filteredAndSortedNews = useMemo(() => {
         let result = allNews.filter(news => {
-            const matchesGame = selectedGame === 'Todos' || news.gameId === selectedGame;
-            const matchesTag = selectedTag === 'Todas' || news.tag === selectedTag;
+            const matchesGame = selectedGames.length === 0 || selectedGames.includes(news.gameId);
+            const matchesTag = selectedTags.length === 0 || selectedTags.includes(news.tag);
             return matchesGame && matchesTag;
         });
 
@@ -52,17 +54,46 @@ export default function Noticias() {
         }
 
         return result;
-    }, [allNews, selectedGame, selectedTag, viewMode]);
+    }, [allNews, selectedGames, selectedTags, viewMode]);
 
     const visibleNews = filteredAndSortedNews.slice(0, visibleCount);
 
     const clearFilters = () => {
-        setSelectedGame('Todos');
-        setSelectedTag('Todas');
-        setViewMode('nuevos');
+        setSelectedGames([]);
+        setSelectedTags([]);
     };
 
-    const hasActiveFilters = selectedGame !== 'Todos' || selectedTag !== 'Todas' || viewMode !== 'nuevos';
+    const hasActiveFilters = selectedGames.length > 0 || selectedTags.length > 0;
+
+    const getGameName = (id) => GAMES_DATA[id]?.name || id;
+    const gameOptions = useMemo(() => Object.values(GAMES_DATA).map(g => g.id), []);
+
+    const FiltersContent = () => (
+        <div className="flex flex-col lg:flex-row items-stretch gap-3 w-full">
+            <FilterDropdown 
+                label="Juego" 
+                options={gameOptions} 
+                selected={selectedGames} 
+                onChange={setSelectedGames}
+                displayFormatter={getGameName}
+            />
+            <FilterDropdown 
+                label="Tipo de contenido" 
+                options={allTags} 
+                selected={selectedTags} 
+                onChange={setSelectedTags} 
+            />
+            {hasActiveFilters && (
+                <button
+                    onClick={clearFilters}
+                    className="flex items-center justify-center gap-2 h-[42px] px-4 shrink-0 bg-background-tertiary border border-border-default-secondary rounded-xl text-body-small-strong uppercase tracking-wider text-text-default-secondary hover:bg-background-secondary-hover hover:text-brand-default transition-all mt-auto"
+                >
+                    <RotateCcw className="w-3.5 h-3.5" />
+                    <span className="lg:hidden">Limpiar filtros</span>
+                </button>
+            )}
+        </div>
+    );
 
     return (
         <main className="col-span-full space-y-8 pb-content-safe font-sans text-text-default-default">
@@ -73,84 +104,50 @@ export default function Noticias() {
             <div className="space-y-4">
                 {/* Desktop: Fila Única | Mobile: Grid */}
                 <div className="flex flex-col lg:flex-row lg:items-end gap-4 bg-background-secondary border border-border-default-secondary p-4 rounded-2xl transition-all shadow-sm">
-                    
                     {/* Mobile Filter Toggle Button */}
                     <button 
-                        onClick={() => setIsFilterExpanded(!isFilterExpanded)}
-                        className="lg:hidden flex items-center justify-center gap-2 h-[42px] px-4 w-full sm:w-auto bg-background-tertiary border border-border-default-secondary rounded-xl shadow-sm hover:bg-background-secondary-hover transition-colors text-body-small-strong text-text-default-secondary"
+                        onClick={() => setIsMobileFilterOpen(true)}
+                        className="lg:hidden flex items-center justify-center gap-2 h-[42px] px-4 w-full sm:w-auto bg-background-tertiary border border-border-default-secondary rounded-xl shadow-sm hover:bg-background-secondary-hover transition-colors text-body-small-strong text-text-default-secondary relative"
                     >
-                        <SlidersHorizontal className="w-5 h-5" /> Combinar Filtros
+                        <Filter className="w-5 h-5" /> Filtrar
+                        {hasActiveFilters && (
+                            <span className="w-2.5 h-2.5 bg-brand-default rounded-full border border-background-default absolute top-2 right-2"></span>
+                        )}
                     </button>
 
-                    {/* Filtros Expandibles (Desktop siempre visible, Mobile toggleable) */}
-                    <div className={`${isFilterExpanded ? 'flex' : 'hidden'} lg:flex flex-col sm:flex-row items-stretch gap-4 flex-1`}>
-                        {/* Selector de Juego */}
-                        <div className="flex flex-col gap-1.5 flex-1 min-w-[140px]">
-                            <span className="text-[10px] uppercase tracking-wider font-bold text-text-default-tertiary px-1">Juego</span>
-                            <div className="relative">
-                                <select
-                                    value={selectedGame}
-                                    onChange={(e) => setSelectedGame(e.target.value)}
-                                    className="w-full h-[42px] appearance-none bg-background-tertiary border border-border-default-secondary rounded-xl px-3 text-body-small-strong outline-none cursor-pointer focus:border-border-default-default transition-all"
-                                >
-                                    <option value="Todos">Todos</option>
-                                    {Object.values(GAMES_DATA).map(game => (
-                                        <option key={game.id} value={game.id}>{game.name}</option>
-                                    ))}
-                                </select>
-                                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-default-tertiary pointer-events-none" />
-                            </div>
-                        </div>
-
-                        {/* Selector de Tipo */}
-                        <div className="flex flex-col gap-1.5 flex-1 min-w-[140px]">
-                            <span className="text-[10px] uppercase tracking-wider font-bold text-text-default-tertiary px-1">Tipo de contenido</span>
-                            <div className="relative">
-                                <select
-                                    value={selectedTag}
-                                    onChange={(e) => setSelectedTag(e.target.value)}
-                                    className="w-full h-[42px] appearance-none bg-background-tertiary border border-border-default-secondary rounded-xl px-3 text-body-small-strong outline-none cursor-pointer focus:border-border-default-default transition-all"
-                                >
-                                    {allTags.map(tag => (
-                                        <option key={tag} value={tag}>{tag}</option>
-                                    ))}
-                                </select>
-                                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-default-tertiary pointer-events-none" />
-                            </div>
-                        </div>
+                    {/* Filtros Expandibles (Desktop siempre visible) */}
+                    <div className="hidden lg:flex flex-col items-stretch gap-4 flex-1">
+                        <FiltersContent />
                     </div>
 
-                    {/* Toggles y Limpiar */}
-                    <div className="flex items-center gap-3 mt-auto lg:mt-0 w-full lg:w-auto">
-                        <div className="flex items-center bg-background-tertiary p-1 rounded-xl border border-border-default-secondary h-[42px] flex-1 lg:flex-none">
-                            <button
-                                onClick={() => setViewMode('nuevos')}
-                                className={`flex items-center justify-center gap-2 flex-1 lg:flex-none px-4 h-full rounded-lg transition-all ${viewMode === 'nuevos' ? 'bg-background-default text-text-default-default shadow-sm' : 'text-text-default-tertiary hover:text-text-default-default'}`}
-                            >
-                                {viewMode === 'nuevos' && <Check className="w-3.5 h-3.5" />}
-                                <span className="text-body-small-strong">Nuevos</span>
-                            </button>
-                            <button
-                                onClick={() => setViewMode('populares')}
-                                className={`flex items-center justify-center gap-2 flex-1 lg:flex-none px-4 h-full rounded-lg transition-all ${viewMode === 'populares' ? 'bg-background-default text-text-default-default shadow-sm' : 'text-text-default-tertiary hover:text-text-default-default'}`}
-                            >
-                                {viewMode === 'populares' && <Check className="w-3.5 h-3.5" />}
-                                <span className="text-body-small-strong">Populares</span>
-                            </button>
+                    {/* Toggles Ordenamiento */}
+                    <div className="flex items-center gap-3 mt-auto lg:mt-0 w-full lg:w-auto self-end">
+                        <div className="flex flex-col gap-1.5 w-full">
+                            <span className="hidden lg:block text-[10px] uppercase tracking-wider font-bold text-text-default-tertiary px-1">Orden</span>
+                            <div className="flex items-center bg-background-tertiary p-1 rounded-xl border border-border-default-secondary h-[42px] flex-1 lg:flex-none">
+                                <button
+                                    onClick={() => setViewMode('nuevos')}
+                                    className={`flex items-center justify-center gap-2 flex-1 lg:flex-none px-4 h-full rounded-lg transition-all ${viewMode === 'nuevos' ? 'bg-background-default text-text-default-default shadow-sm' : 'text-text-default-tertiary hover:text-text-default-default'}`}
+                                >
+                                    {viewMode === 'nuevos' && <Check className="w-3.5 h-3.5" />}
+                                    <span className="text-body-small-strong">Nuevos</span>
+                                </button>
+                                <button
+                                    onClick={() => setViewMode('populares')}
+                                    className={`flex items-center justify-center gap-2 flex-1 lg:flex-none px-4 h-full rounded-lg transition-all ${viewMode === 'populares' ? 'bg-background-default text-text-default-default shadow-sm' : 'text-text-default-tertiary hover:text-text-default-default'}`}
+                                >
+                                    {viewMode === 'populares' && <Check className="w-3.5 h-3.5" />}
+                                    <span className="text-body-small-strong">Populares</span>
+                                </button>
+                            </div>
                         </div>
-
-                        {hasActiveFilters && (
-                            <button
-                                onClick={clearFilters}
-                                className="flex items-center justify-center gap-2 h-[42px] px-4 bg-background-tertiary border border-border-default-secondary rounded-xl text-body-small-strong hover:bg-background-secondary-hover transition-all flex-1 sm:flex-none"
-                            >
-                                <RotateCcw className="w-4 h-4" />
-                                <span>Limpiar</span>
-                            </button>
-                        )}
                     </div>
                 </div>
             </div>
+
+            <MobileFilterModal isOpen={isMobileFilterOpen} onClose={() => setIsMobileFilterOpen(false)} title="Filtros de Noticias">
+                <FiltersContent />
+            </MobileFilterModal>
 
             {/* Grid de Resultados */}
             {visibleNews.length > 0 ? (

@@ -24,6 +24,12 @@
   --sds-color-border-default-default: #e4e4e7;
   --sds-color-border-default-secondary: #f4f4f5;
 
+  /* Status */
+  --sds-color-status-success: #10b981;
+  --sds-color-status-danger: #ef4444;
+  --sds-color-status-warning: #f59e0b;
+  --sds-color-status-info: #6366f1;
+
   /* Misc */
   --radius: 0.5rem;
 
@@ -70,6 +76,11 @@
   --color-text-brand-on: var(--sds-color-text-brand-on-brand);
   --color-border-default-default: var(--sds-color-border-default-default);
   --color-border-default-secondary: var(--sds-color-border-default-secondary);
+  
+  --color-status-success: var(--sds-color-status-success);
+  --color-status-danger: var(--sds-color-status-danger);
+  --color-status-warning: var(--sds-color-status-warning);
+  --color-status-info: var(--sds-color-status-info);
 
   /* Typography scale */
   --font-size-0: 14px;
@@ -153,6 +164,21 @@
 
 @utility text-body-small {
   font-size: var(--font-size-0);
+  font-weight: var(--font-weight-inter-1);
+  line-height: var(--leading-6);
+  letter-spacing: var(--tracking-2);
+}
+
+@utility text-badge {
+  font-size: 10px;
+  font-weight: var(--font-weight-inter-0);
+  line-height: var(--leading-0);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+@utility text-caption {
+  font-size: 10px;
   font-weight: var(--font-weight-inter-1);
   line-height: var(--leading-6);
   letter-spacing: var(--tracking-2);
