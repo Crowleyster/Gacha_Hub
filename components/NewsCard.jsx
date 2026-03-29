@@ -72,7 +72,7 @@ export default function NewsCard({
                             <div className="w-8 h-8 rounded-full overflow-hidden border border-border-default-default/20 shadow-400 shrink-0">
                                 <img
                                     src={gameIconUrl}
-                                    alt="Game Icon"
+                                    alt={`Icono de ${title}`}
                                     className="w-full h-full object-cover"
                                 />
                             </div>

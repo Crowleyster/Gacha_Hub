@@ -10,6 +10,7 @@ import { newsData, EVENTS_DATA } from '@/lib/mock-data';
 import PlatformIcon from '@/components/PlatformIcon';
 import NewsCard from '@/components/NewsCard';
 import EventCard from '@/components/EventCard';
+import ActiveCodes from '@/components/ActiveCodes';
 import { useFavorites } from '@/hooks/useFavorites';
 
 export default function GameHub() {
@@ -141,11 +142,22 @@ export default function GameHub() {
 
                     <div className="py-4">
                         {activeTab === 'resumen' && (
-                            <div className="flex flex-col gap-4">
-                                <h2 className="text-heading text-text-default-default">Acerca de {game.name}</h2>
-                                <p className="text-body-base text-text-default-secondary leading-relaxed whitespace-pre-line">
-                                    {game.description || 'No hay descripción disponible para este juego.'}
-                                </p>
+                            <div className="flex flex-col gap-10">
+                                <div className="flex flex-col gap-4">
+                                    <h2 className="text-heading text-text-default-default">Acerca de {game.name}</h2>
+                                    <p className="text-body-base text-text-default-secondary leading-relaxed whitespace-pre-line">
+                                        {game.description || 'No hay descripción disponible para este juego.'}
+                                    </p>
+                                </div>
+                                
+                                {/* Códigos Section */}
+                                <div className="flex flex-col gap-6 pt-6 border-t border-border-default-secondary">
+                                    <div className="flex items-center gap-2">
+                                        <div className="w-1 h-6 bg-brand-default rounded-full" />
+                                        <h3 className="text-subheading-strong text-text-default-default uppercase tracking-wider">Códigos de Canje</h3>
+                                    </div>
+                                    <ActiveCodes fixedGame={game.name} hideHeader={true} />
+                                </div>
                             </div>
                         )}
                         {activeTab === 'noticias' && (

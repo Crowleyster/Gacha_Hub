@@ -44,9 +44,11 @@ export default function Header({ onToggleSidebar, onOpenMobileSheet, onOpenSearc
           <PanelLeft className="w-5 h-5" />
         </button>
 
-        <h1 className="text-body-strong md:text-subheading-strong text-text-default-default transition-colors">
-          {pageTitle}
-        </h1>
+        {pathname !== '/' && (
+          <h1 className="text-body-strong md:text-subheading-strong text-text-default-default transition-colors">
+            {pageTitle}
+          </h1>
+        )}
       </div>
 
       {/* Right: Search + Theme + Sheet */}

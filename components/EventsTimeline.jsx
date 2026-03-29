@@ -1,10 +1,11 @@
 'use client';
 
 import { useRef } from 'react';
-import { CalendarDays, ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react';
+import { Calendar, ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 import { EVENTS_DATA } from '@/lib/mock-data';
 import EventCard from '@/components/EventCard';
+import SectionHeader from './SectionHeader';
 import { useFavorites } from '@/hooks/useFavorites';
 
 // ── Helpers ──────────────────────────────────────────────
@@ -50,20 +51,14 @@ export default function EventsTimeline() {
   return (
     <section className="col-span-full flex flex-col gap-6 font-sans">
 
-      {/* Encabezado */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div className="flex items-center gap-3">
-          <CalendarDays className="w-6 h-6 text-text-brand-default shrink-0" aria-hidden="true" />
-          <h2 className="text-heading text-text-default-default">Eventos Activos</h2>
-        </div>
-        <Link
-          href="/eventos"
-          className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-lg bg-background-secondary hover:bg-background-secondary-hover text-text-default-default hover:text-text-brand-default transition-colors text-body-small-strong"
-        >
-          Ver todos los eventos
-          <ArrowRight className="w-4 h-4" aria-hidden="true" />
-        </Link>
-      </div>
+      {/* Encabezado Unificado */}
+      <SectionHeader 
+        icon={Calendar}
+        title="Eventos"
+        subtitle="Activos"
+        href="/eventos"
+        ctaLabel="Ver cronograma"
+      />
 
       {/* Contenedor responsive */}
       <div className="relative">

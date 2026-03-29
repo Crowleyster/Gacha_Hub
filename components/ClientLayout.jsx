@@ -8,6 +8,7 @@ import Header from '@/components/Header';
 import MobileNav from '@/components/MobileNav';
 import SettingsSheet from '@/components/SettingsSheet';
 import GlobalSearch from '@/components/GlobalSearch';
+import Footer from '@/components/Footer';
 
 export default function ClientLayout({ children }) {
     const [isSidebarExpanded, setIsSidebarExpanded] = useState(true);
@@ -63,6 +64,7 @@ export default function ClientLayout({ children }) {
                     <main className="w-full max-w-[3840px] mx-auto grid content-start grid-cols-4 sm:grid-cols-8 md:grid-cols-12 gap-4 sm:gap-6 p-6 xs:p-8 sm:p-12 md:px-24 md:py-12 2xl:px-40 2xl:py-12">
                         {children}
                     </main>
+                    <Footer />
                 </div>
             </div>
 
