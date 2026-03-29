@@ -17,7 +17,7 @@ function HeroSection() {
       <div className="relative z-10 flex flex-col gap-6 max-w-4xl">
         <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-brand-default text-text-brand-on text-[10px] font-bold uppercase tracking-widest w-fit animate-pulse">
            <span className="w-1.5 h-1.5 rounded-full bg-current animate-ping" />
-           Sistema Activo
+           Actualizaciones en vivo
         </div>
         
         <h1 className="text-[32px] sm:text-[48px] md:text-title-hero text-text-default-default leading-[1.2] md:leading-[1.1]">
@@ -26,15 +26,18 @@ function HeroSection() {
         </h1>
         
         <p className="text-body-base sm:text-subtitle text-text-default-secondary max-w-2xl leading-relaxed">
-          Noticias en tiempo real, códigos oficiales y cronogramas de eventos de todos tus juegos favoritos centralizados en una interfaz de vanguardia.
+          Tu acceso directo a noticias, códigos y eventos de tus juegos gacha favoritos.
         </p>
         
         <div className="flex flex-col sm:flex-row flex-wrap gap-4 mt-2">
-           <Link href="/juegos" className="w-full sm:w-auto px-6 py-3 bg-brand-default text-text-brand-on rounded-xl text-body-strong hover:scale-[1.02] transition-all active:scale-95 shadow-lg text-center">
+           <Link href="/juegos" className="w-full sm:w-auto px-6 py-3 bg-brand-default text-text-brand-on rounded-xl text-body-strong transition-all hover:scale-[1.02] active:scale-95 shadow-lg shadow-brand-default/20 text-center">
              Explorar Catálogo
            </Link>
-           <Link href="/noticias" className="w-full sm:w-auto px-6 py-3 bg-background-tertiary text-text-default-default border border-border-default-default rounded-xl text-body-strong hover:bg-background-default transition-all text-center">
+           <Link href="/noticias" className="w-full sm:w-auto px-6 py-3 bg-background-tertiary text-text-default-default border border-border-default-default rounded-xl text-body-strong transition-all hover:bg-background-default text-center">
              Últimas Noticias
+           </Link>
+           <Link href="/eventos" className="w-full sm:w-auto px-6 py-3 bg-background-tertiary text-text-default-default border border-border-default-default rounded-xl text-body-strong transition-all hover:bg-background-default text-center">
+             Ver Eventos
            </Link>
         </div>
       </div>
