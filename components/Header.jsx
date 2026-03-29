@@ -19,18 +19,6 @@ export default function Header({ onToggleSidebar, onOpenMobileSheet, onOpenSearc
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const getPageTitle = (path) => {
-    if (path === '/') return 'Inicio';
-    if (path.startsWith('/juegos')) return 'Juegos';
-    if (path.startsWith('/noticias')) return 'Noticias';
-    if (path.startsWith('/eventos')) return 'Eventos';
-    if (path.startsWith('/ajustes')) return 'Ajustes';
-    if (path.startsWith('/ayuda')) return 'Ayuda';
-    return 'Gacha Hub';
-  };
-
-  const pageTitle = getPageTitle(pathname);
-
   return (
     <header className="relative w-full z-40 flex-shrink-0 flex items-center justify-between pt-[max(0.75rem,env(safe-area-inset-top))] pb-3 px-4 md:px-6 border-b bg-background-default/70 backdrop-blur-md saturate-150 border-border-default-secondary transition-colors duration-300 dark:shadow-black/20">
 
@@ -44,11 +32,9 @@ export default function Header({ onToggleSidebar, onOpenMobileSheet, onOpenSearc
           <PanelLeft className="w-5 h-5" />
         </button>
 
-        {pathname !== '/' && (
-          <h1 className="text-body-strong md:text-subheading-strong text-text-default-default transition-colors">
-            {pageTitle}
-          </h1>
-        )}
+        <h1 className="text-body-strong md:text-subheading-strong text-text-default-default lg:hidden">
+          Gacha Hub
+        </h1>
       </div>
 
       {/* Right: Search + Theme + Sheet */}

@@ -55,8 +55,10 @@ export default function BottomSheet({ isOpen, onClose, title, children }) {
         setCurrentY(0);
     };
 
+    const dragOffset = isDragging ? Math.max(0, currentY - startY) : 0;
+
     const transformStyle = {
-        transform: isOpen
+        transform: isVisible && isOpen
             ? `translateY(${dragOffset}px)`
             : 'translateY(100%)',
         // Disable CSS transition while actively dragging for 1:1 finger tracking
@@ -78,12 +80,7 @@ export default function BottomSheet({ isOpen, onClose, title, children }) {
 
             {/* Bottom Sheet Modal */}
             <div
-                className={`
-                    relative w-full bg-background-default rounded-t-3xl shadow-600
-                    border-t border-border-default-secondary
-                    ${isOpen && !isDragging ? 'translate-y-0' : ''} 
-                    ${!isOpen ? 'translate-y-full' : ''}
-                `}
+                className="relative w-full bg-background-default rounded-t-3xl shadow-600 border-t border-border-default-secondary"
                 style={transformStyle}
             >
                 {/* Drag handle / Header */}
