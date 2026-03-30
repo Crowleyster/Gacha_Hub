@@ -3,12 +3,14 @@
 import { useState, useMemo, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Search, Filter, Check, X, ChevronDown, RotateCcw, Star } from 'lucide-react';
+import { Search, Filter, Check, X, ChevronDown, RotateCcw, Star, Gamepad2 } from 'lucide-react';
 import { GAMES_DATA } from '@/lib/games-data';
 import PlatformIcon from '@/components/PlatformIcon';
 import { useFavorites } from '@/hooks/useFavorites';
 import FilterDropdown from '@/components/ui/FilterDropdown';
 import MobileFilterModal from '@/components/ui/MobileFilterModal';
+import SectionHeader from '@/components/SectionHeader';
+import EmptyState from '@/components/ui/EmptyState';
 
 /* ─── Componente: Tarjeta de Juego ─── */
 function GameCard({ game }) {
@@ -31,7 +33,7 @@ function GameCard({ game }) {
                 overflow-hidden rounded-2xl 
                 border border-white/10 dark:border-white/5
                 transition-all duration-300 
-                shadow-200 hover:shadow-400
+                hover:shadow-lg hover:-translate-y-1
                 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-white/30
             "
         >
@@ -67,8 +69,8 @@ function GameCard({ game }) {
                         </div>
                     )}
                 </div>
-                
-                <button 
+
+                <button
                     onClick={handleFavoriteClick}
                     className={`p-1.5 rounded-lg flex items-center justify-center transition-all duration-300 ${isFav ? 'bg-amber-500/90 text-white shadow-lg scale-105' : 'bg-black/30 backdrop-blur-md text-white/70 hover:bg-black/50 hover:text-white border border-white/10'}`}
                     title={isFav ? "Quitar de favoritos" : "Añadir a favoritos"}
@@ -125,6 +127,7 @@ export default function Juegos() {
 
     const [selectedSort, setSelectedSort] = useState('Nuevos');
     const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
+    const [visibleCount, setVisibleCount] = useState(12);
 
     const [filters, setFilters] = useState({
         region: [],
@@ -160,10 +163,67 @@ export default function Juegos() {
         });
     }, [gamesList, filters]);
 
-    return (
-        <main className="col-span-full pb-content-safe font-sans flex flex-col gap-6">
+    const visibleGames = filteredGames.slice(0, visibleCount);
 
-            <h1 className="text-title-page text-text-default-default">Catálogo de juegos</h1>
+    return (
+        <div className="col-span-full pb-content-safe font-sans flex flex-col gap-6">
+
+            <SectionHeader
+                variant="page"
+                icon={Gamepad2}
+                title="Catálogo de juegos"
+                subtitle="Explora y descubre todos los títulos de tu biblioteca con guías detalladas."
+            >
+                <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                    {/* Botón de Filtro Móvil */}
+                    <div className="flex items-center lg:hidden shrink-0">
+                        <button
+                            disabled
+                            title="Próximamente"
+                            aria-label="Abrir filtros"
+                            className="flex items-center justify-center gap-2 p-3 px-4 rounded-xl bg-background-tertiary border border-border-default-secondary text-text-default-secondary opacity-50 cursor-not-allowed relative text-body-small-strong"
+                        >
+                            <Filter className="w-5 h-5" /> Filtrar
+                            {hasActiveFilters && (
+                                <span className="absolute top-0 right-0 w-3 h-3 bg-brand-default rounded-full border-2 border-background-default"></span>
+                            )}
+                        </button>
+                    </div>
+
+                    {/* Chips de Ordenamiento (Full-Bleed en Mobile/Tablet) */}
+                    <div className="
+                        flex items-center gap-2 overflow-x-auto scrollbar-none 
+                        pb-2 lg:pb-0 
+                        -mx-4 px-4 scroll-pl-4 
+                        md:-mx-6 md:px-6 md:scroll-pl-6 
+                        lg:mx-0 lg:px-0 lg:scroll-pl-0 
+                        snap-x snap-mandatory
+                        w-full lg:w-auto shrink-0
+                    ">
+                        {sortOptions.map(opt => {
+                            const isActive = selectedSort === opt;
+                            return (
+                                <button
+                                    key={opt}
+                                    onClick={() => setSelectedSort(opt)}
+                                    className={`
+                                        snap-start shrink-0 flex items-center gap-1.5 px-4 py-2 rounded-full text-body-small-strong transition-all
+                                        ${isActive
+                                            ? 'bg-text-default-default text-background-default'
+                                            : 'bg-background-tertiary text-text-default-secondary border border-border-default-secondary hover:text-text-default-default'
+                                        }
+                                    `}
+                                >
+                                    {isActive && <Check className="w-4 h-4 shrink-0" />}
+                                    {opt}
+                                </button>
+                            );
+                        })}
+                        {/* Espaciador para respetar el margen derecho al hacer scroll al máximo */}
+                        <div className="w-px shrink-0 lg:hidden" aria-hidden="true" />
+                    </div>
+                </div>
+            </SectionHeader>
 
             <div className="flex flex-col lg:flex-row gap-8 items-start">
 
@@ -190,79 +250,30 @@ export default function Juegos() {
                 {/* CONTENIDO PRINCIPAL */}
                 <div className="flex-1 flex flex-col w-full gap-6 min-w-0">
 
-                    <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-
-                        {/* Botón de Filtro Móvil */}
-                        <div className="flex items-center lg:hidden shrink-0">
-                            <button
-                                onClick={() => setIsMobileFilterOpen(true)}
-                                aria-label="Abrir filtros"
-                                className="flex items-center justify-center gap-2 p-3 px-4 rounded-xl bg-background-secondary border border-border-default-secondary text-text-default-default hover:bg-background-secondary-hover relative text-body-small-strong"
-                            >
-                                <Filter className="w-5 h-5" /> Filtrar
-                                {hasActiveFilters && (
-                                    <span className="absolute top-0 right-0 w-3 h-3 bg-brand-default rounded-full border-2 border-background-default"></span>
-                                )}
-                            </button>
-                        </div>
-
-                        {/* Chips de Ordenamiento (Full-Bleed en Mobile/Tablet) */}
-                        <div className="
-                            flex items-center gap-2 overflow-x-auto scrollbar-none 
-                            pb-2 lg:pb-0 
-                            -mx-4 px-4 scroll-pl-4 
-                            md:-mx-6 md:px-6 md:scroll-pl-6 
-                            lg:mx-0 lg:px-0 lg:scroll-pl-0 
-                            snap-x snap-mandatory
-                            w-full lg:w-auto shrink-0
-                        ">
-                            {sortOptions.map(opt => {
-                                const isActive = selectedSort === opt;
-                                return (
-                                    <button
-                                        key={opt}
-                                        onClick={() => setSelectedSort(opt)}
-                                        className={`
-                                            snap-start shrink-0 flex items-center gap-1.5 px-4 py-2 rounded-full text-body-small-strong transition-all
-                                            ${isActive
-                                                ? 'bg-text-default-default text-background-default'
-                                                : 'bg-background-tertiary text-text-default-secondary border border-border-default-secondary hover:text-text-default-default'
-                                            }
-                                        `}
-                                    >
-                                        {isActive && <Check className="w-4 h-4 shrink-0" />}
-                                        {opt}
-                                    </button>
-                                );
-                            })}
-                            {/* Espaciador para respetar el margen derecho al hacer scroll al máximo */}
-                            <div className="w-px shrink-0 lg:hidden" aria-hidden="true" />
-                        </div>
-                    </div>
-
                     {/* Cuadrícula */}
                     {filteredGames.length > 0 ? (
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                            {filteredGames.map((game) => (
+                            {visibleGames.map((game) => (
                                 <GameCard key={game.id} game={game} />
                             ))}
                         </div>
                     ) : (
-                        <div className="flex flex-col items-center justify-center py-20 gap-4 text-center border-2 border-dashed border-border-default-secondary rounded-2xl">
-                            <p className="text-body-base text-text-default-secondary">No se encontraron juegos con esos filtros.</p>
-                            <button
-                                onClick={clearAllFilters}
-                                className="mt-2 text-text-brand-default text-body-small-strong hover:underline"
-                            >
-                                Limpiar filtros
-                            </button>
-                        </div>
+                        <EmptyState onClear={clearAllFilters} />
                     )}
 
-                    {filteredGames.length > 0 && (
-                        <button className="w-full py-4 mt-4 bg-background-secondary text-text-default-default text-body-strong rounded-xl hover:bg-background-secondary-hover transition-colors">
-                            Cargar más juegos ↓
-                        </button>
+                    {visibleCount < filteredGames.length && (
+                        <div className="flex flex-col items-center gap-4 pt-12">
+                            <p className="text-body-small text-text-default-tertiary">
+                                Mostrando {visibleGames.length} de {filteredGames.length} juegos
+                            </p>
+                            <button
+                                onClick={() => setVisibleCount(prev => prev + 12)}
+                                className="group w-full max-w-2xl bg-background-secondary border border-border-default-secondary rounded-xl py-3 text-body-small-strong text-text-default-default hover:bg-background-secondary-hover hover:border-brand-default/50 transition-all flex items-center justify-center gap-2 shadow-sm"
+                            >
+                                Cargar más juegos
+                                <ChevronDown className="w-4 h-4 transition-transform group-hover:translate-y-0.5" />
+                            </button>
+                        </div>
                     )}
 
                 </div>
@@ -280,6 +291,6 @@ export default function Juegos() {
                 />
             </MobileFilterModal>
 
-        </main>
+        </div>
     );
 }

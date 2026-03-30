@@ -8,8 +8,8 @@ export default function Footer() {
     const currentYear = new Date().getFullYear();
 
     return (
-        <footer className="hidden md:block w-full bg-background-default border-t border-border-default-secondary mt-auto pt-12 pb-12 px-6">
-            <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8">
+        <footer className="w-full bg-background-default border-t border-border-default-secondary mt-auto pt-8 md:pt-12 pb-24 md:pb-12 px-6">
+            <div className="max-w-7xl mx-auto flex flex-col md:grid md:grid-cols-3 gap-8 md:gap-8">
                 
                 {/* 1. Brand Section */}
                 <div className="flex flex-col gap-4">
@@ -51,7 +51,7 @@ export default function Footer() {
                 </div>
 
                 {/* 3. Support & More */}
-                <div className="flex flex-col gap-4">
+                <div className="hidden md:flex flex-col gap-4">
                     <h4 className="text-body-strong text-text-default-default uppercase tracking-widest text-[10px]">Soporte y Sistema</h4>
                     <ul className="flex flex-col gap-3">
                         {BOTTOM_NAV_ITEMS.map((item) => (
@@ -75,13 +75,20 @@ export default function Footer() {
             </div>
 
             {/* Bottom Copyright */}
-            <div className="max-w-7xl mx-auto mt-12 pt-8 border-t border-border-default-secondary flex flex-col md:flex-row justify-between items-center gap-4 text-center">
+            <div className="max-w-7xl mx-auto mt-8 md:mt-12 pt-6 md:pt-8 border-t border-border-default-secondary flex flex-col md:flex-row justify-between items-center gap-6 md:gap-4 text-center">
+                
+                <div className="flex items-center gap-2 text-[10px] font-bold text-text-default-tertiary bg-background-tertiary/50 border border-border-default-secondary px-2 py-1 rounded w-fit uppercase tracking-tighter md:hidden">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                    v1.0.2 Stable Build
+                </div>
+
                 <p className="text-[10px] text-text-default-tertiary uppercase tracking-widest">
                     © {currentYear} Gacha Hub. Todos los derechos reservados.
                 </p>
                 <div className="flex items-center gap-6">
+                   <Link href="/ajustes" className="text-[10px] text-text-default-tertiary uppercase tracking-widest hover:text-text-default-secondary cursor-pointer transition-colors md:hidden">Ayuda</Link>
                    <span className="text-[10px] text-text-default-tertiary uppercase tracking-widest hover:text-text-default-secondary cursor-pointer transition-colors">Privacidad</span>
-                   <span className="text-[10px] text-text-default-tertiary uppercase tracking-widest hover:text-text-default-secondary cursor-pointer transition-colors">Términos</span>
+                   <span className="text-[10px] text-text-default-tertiary uppercase tracking-widest hover:text-text-default-secondary cursor-pointer transition-colors hidden md:inline-block">Términos</span>
                 </div>
             </div>
         </footer>

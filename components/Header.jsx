@@ -32,8 +32,8 @@ export default function Header({ onToggleSidebar, onOpenMobileSheet, onOpenSearc
           <PanelLeft className="w-5 h-5" />
         </button>
 
-        <h1 className="text-body-strong sm:text-subheading-strong font-bold text-text-default-default lg:hidden tracking-tight select-none">
-          Gacha Hub
+        <h1 className="text-body-strong sm:text-subheading-strong font-bold text-text-default-default lg:hidden tracking-tight select-none capitalize">
+          {pathname === '/' ? 'Gacha Hub' : (pathname.split('/')[1] || 'Gacha Hub').replace(/-/g, ' ')}
         </h1>
       </div>
 

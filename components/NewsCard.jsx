@@ -31,7 +31,7 @@ export default function NewsCard({
             className="
                 group relative block w-full h-full rounded-[16px] overflow-hidden cursor-pointer
                 border-2 border-transparent transition-all duration-300
-                hover:border-border-default-default
+                hover:border-border-default-default hover:shadow-lg hover:-translate-y-1
                 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2
             "
         >
@@ -40,7 +40,7 @@ export default function NewsCard({
                 <img
                     src={imageUrl}
                     alt={title}
-                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
 
                 {/* 2. Scrims (Gradientes) */}

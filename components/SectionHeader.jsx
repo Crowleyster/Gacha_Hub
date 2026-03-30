@@ -19,35 +19,54 @@ export default function SectionHeader({
     title, 
     subtitle, 
     href, 
-    ctaLabel = "Ver todo" 
+    ctaLabel = "Ver todo",
+    variant = "section",
+    children
 }) {
+    const isPage = variant === "page";
+    const TitleTag = isPage ? "h1" : "h2";
+    
     return (
-        <div className="flex items-center justify-between border-b border-border-default-secondary pb-4 mb-2 group/header">
-            <div className="flex items-center gap-3">
-                {Icon && (
-                    <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-background-secondary border border-border-default-secondary text-brand-default shadow-sm group-hover/header:border-brand-default/30 transition-colors">
-                        <Icon className="w-5 h-5" />
+        <div className={`flex flex-col gap-4 ${isPage ? 'mb-2' : 'mb-2'}`}>
+            <div className="flex items-center justify-between border-b border-border-default-secondary pb-4 group/header">
+                <div className="flex items-center gap-3">
+                    {Icon && (
+                        <div className={`flex items-center justify-center rounded-xl bg-background-secondary border border-border-default-secondary text-brand-default shadow-sm group-hover/header:border-brand-default/30 transition-colors ${isPage ? 'w-12 h-12' : 'w-10 h-10'}`}>
+                            <Icon className={isPage ? "w-6 h-6" : "w-5 h-5"} />
+                        </div>
+                    )}
+                    <div className="flex flex-col">
+                        <TitleTag className={`${isPage ? 'text-title-page' : 'text-heading uppercase tracking-tight'} text-text-default-default flex items-center gap-2`}>
+                            {title}
+                            {!isPage && subtitle && (
+                                <span className="text-text-default-tertiary hidden sm:inline">{subtitle}</span>
+                            )}
+                        </TitleTag>
+                        <div className="h-0.5 w-12 bg-brand-default rounded-full mt-1 origin-left group-hover/header:w-full transition-all duration-500" />
                     </div>
-                )}
-                <div className="flex flex-col">
-                    <h2 className="text-heading text-text-default-default uppercase tracking-tight flex items-center gap-2">
-                        {title}
-                        {subtitle && (
-                            <span className="text-text-default-tertiary hidden sm:inline">{subtitle}</span>
-                        )}
-                    </h2>
-                    <div className="h-0.5 w-12 bg-brand-default rounded-full mt-1 origin-left group-hover/header:w-full transition-all duration-500" />
                 </div>
+
+                {href && !isPage && (
+                    <Link
+                        href={href}
+                        className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg text-text-default-secondary hover:text-text-default-default hover:bg-background-secondary transition-all text-body-small-strong"
+                    >
+                        <span className="hidden sm:inline">{ctaLabel}</span>
+                        <ArrowRight className="w-4 h-4 transition-transform group-hover/header:translate-x-1" />
+                    </Link>
+                )}
             </div>
 
-            {href && (
-                <Link
-                    href={href}
-                    className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg text-text-default-secondary hover:text-text-default-default hover:bg-background-secondary transition-all text-body-small-strong"
-                >
-                    <span className="hidden sm:inline">{ctaLabel}</span>
-                    <ArrowRight className="w-4 h-4 transition-transform group-hover/header:translate-x-1" />
-                </Link>
+            {isPage && subtitle && (
+                <p className="text-body-base text-text-default-secondary max-w-2xl -mt-2">
+                    {subtitle}
+                </p>
+            )}
+
+            {children && (
+                <div className="w-full">
+                    {children}
+                </div>
             )}
         </div>
     );

@@ -1,6 +1,7 @@
 'use client';
 
 import { CalendarDays } from 'lucide-react';
+import Link from 'next/link';
 import { GAMES_DATA } from '@/lib/games-data';
 
 // ── Helpers ──────────────────────────────────────────────
@@ -75,15 +76,18 @@ export default function EventCard({ event }) {
   if (expired) return null;
 
   return (
-    <article className="
-      group flex-shrink-0 relative rounded-2xl overflow-hidden
-      border border-white/10 hover:border-white/30
-      transition-all duration-300 cursor-pointer
-      h-56 w-full min-w-72 lg:min-w-0 bg-background-secondary snap-start
-    ">
+    <Link
+      href={`/juegos/${gameId}`}
+      className="
+        group flex-shrink-0 relative rounded-2xl overflow-hidden block
+        border border-white/10 hover:border-white/30 hover:shadow-lg hover:-translate-y-1
+        transition-all duration-300 cursor-pointer
+        h-56 w-full min-w-72 lg:min-w-0 bg-background-secondary snap-start
+      "
+    >
       {/* Banner */}
       {bannerUrl
-        ? <img src={bannerUrl} alt="" aria-hidden="true" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+        ? <img src={bannerUrl} alt="" aria-hidden="true" className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
         : <div className="absolute inset-0 bg-background-tertiary" />
       }
 
@@ -92,7 +96,7 @@ export default function EventCard({ event }) {
       <div className="absolute inset-0 bg-gradient-to-t from-black via-black/90 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
 
       {/* Contenido */}
-      <div className="relative h-full w-full flex flex-col justify-end p-4 sm:p-5 gap-2 transition-transform duration-300 group-hover:-translate-y-2">
+      <div className="relative z-10 h-full w-full flex flex-col justify-end p-4 sm:p-5 gap-2 transition-transform duration-300 group-hover:-translate-y-2">
 
         {/* Fila de metadatos */}
         <div className="flex flex-col gap-1.5 h-11 justify-end">
@@ -136,6 +140,6 @@ export default function EventCard({ event }) {
           </span>
         </div>
       </div>
-    </article>
+    </Link>
   );
 }

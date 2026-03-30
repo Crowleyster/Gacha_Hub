@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { CircleHelp, ChevronDown, Mail } from 'lucide-react';
+import SectionHeader from '@/components/SectionHeader';
 
 function FAQItem({ question, answer }) {
     const [isOpen, setIsOpen] = useState(false);
@@ -22,33 +23,28 @@ function FAQItem({ question, answer }) {
 
 export default function Ayuda() {
     return (
-        <main className="col-span-full space-y-8 pb-content-safe font-sans max-w-4xl mx-auto w-full">
-            <div className="flex flex-col gap-2">
-                <div className="flex items-center gap-3">
-                    <div className="p-2 bg-background-secondary rounded-xl">
-                        <CircleHelp className="w-6 h-6 text-text-brand-default" />
-                    </div>
-                    <h1 className="text-title-page text-text-default-default">Centro de Ayuda</h1>
-                </div>
-                <p className="text-body-base text-text-default-secondary">
-                    Encuentra respuestas a las preguntas más comunes sobre Gacha Hub o contáctanos si necesitas asistencia.
-                </p>
-            </div>
+        <div className="col-span-full space-y-8 pb-content-safe font-sans max-w-4xl mx-auto w-full">
+            <SectionHeader
+                variant="page"
+                icon={CircleHelp}
+                title="Centro de Ayuda"
+                subtitle="Encuentra respuestas a las preguntas más comunes sobre Gacha Hub o contáctanos si necesitas asistencia."
+            />
 
             <section className="flex flex-col gap-4">
                 <h2 className="text-heading text-text-default-default">Preguntas Frecuentes</h2>
                 <div className="flex flex-col gap-3">
-                    <FAQItem 
-                        question="¿Cada cuánto se actualizan los códigos de canje?" 
-                        answer="Nuestro sistema rastrea y actualiza los códigos cada 30 minutos. Si hay un código nuevo de un Livestream, aparecerá casi al instante." 
+                    <FAQItem
+                        question="¿Cada cuánto se actualizan los códigos de canje?"
+                        answer="Nuestro sistema rastrea y actualiza los códigos cada 30 minutos. Si hay un código nuevo de un Livestream, aparecerá casi al instante."
                     />
-                    <FAQItem 
-                        question="¿Cómo configuro mi región para los juegos?" 
-                        answer="Puedes dirigirte a la página de 'Ajustes' en el menú principal para seleccionar tu región preferida. Esto filtrará los códigos y eventos que no correspondan a tu servidor." 
+                    <FAQItem
+                        question="¿Cómo configuro mi región para los juegos?"
+                        answer="Puedes dirigirte a la página de 'Ajustes' en el menú principal para seleccionar tu región preferida. Esto filtrará los códigos y eventos que no correspondan a tu servidor."
                     />
-                    <FAQItem 
-                        question="Mi juego favorito no está en la lista. ¿Pueden agregarlo?" 
-                        answer="¡Sí! Constantemente estamos añadiendo nuevos títulos. Puedes usar el botón de contacto más abajo para sugerir un juego." 
+                    <FAQItem
+                        question="Mi juego favorito no está en la lista. ¿Pueden agregarlo?"
+                        answer="¡Sí! Constantemente estamos añadiendo nuevos títulos. Puedes usar el botón de contacto más abajo para sugerir un juego."
                     />
                 </div>
             </section>
@@ -65,6 +61,6 @@ export default function Ayuda() {
                     Contactar Soporte
                 </a>
             </section>
-        </main>
+        </div>
     );
 }

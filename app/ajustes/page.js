@@ -3,6 +3,7 @@
 import { useTheme } from 'next-themes';
 import { Settings, Moon, Sun, Monitor, Globe, Github, Twitter } from 'lucide-react';
 import { useState, useEffect } from 'react';
+import SectionHeader from '@/components/SectionHeader';
 
 export default function Ajustes() {
     const { theme, setTheme } = useTheme();
@@ -11,15 +12,13 @@ export default function Ajustes() {
     useEffect(() => setMounted(true), []);
 
     return (
-        <main className="col-span-full space-y-8 pb-content-safe font-sans max-w-4xl mx-auto w-full">
-            <div className="flex flex-col gap-2">
-                <div className="flex items-center gap-3">
-                    <div className="p-2 bg-background-secondary rounded-xl">
-                        <Settings className="w-6 h-6 text-text-brand-default" />
-                    </div>
-                    <h1 className="text-title-page text-text-default-default">Ajustes</h1>
-                </div>
-            </div>
+        <div className="col-span-full space-y-8 pb-content-safe font-sans max-w-4xl mx-auto w-full">
+            <SectionHeader
+                variant="page"
+                icon={Settings}
+                title="Ajustes"
+                subtitle="Configura tu experiencia, el tema visual y tus preferencias de región para el contenido global."
+            />
 
             <div className="flex flex-col gap-6">
                 {/* Bloque: Apariencia */}
@@ -83,6 +82,6 @@ export default function Ajustes() {
                     </div>
                 </section>
             </div>
-        </main>
+        </div>
     );
 }
