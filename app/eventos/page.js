@@ -69,12 +69,29 @@ function EventRow({ event }) {
                 )}
             </div>
 
-            {/* Badge de tiempo + Chevron */}
-            <div className="flex items-center gap-3 shrink-0">
-                <span className={`${color} h-6 flex items-center px-3 rounded-full text-badge font-semibold whitespace-nowrap shadow-sm`}>
+            {/* Badges + Chevron — visibilidad progresiva */}
+            <div className="flex items-center gap-2 shrink-0">
+
+                {/* Tipo de evento — visible desde sm */}
+                {event.type && (
+                    <span className="hidden sm:inline-flex items-center h-6 px-2 bg-brand-default/15 text-brand-default rounded-full border border-brand-default/25 text-[10px] font-semibold uppercase tracking-wide whitespace-nowrap">
+                        {event.type}
+                    </span>
+                )}
+
+                {/* Categoría — visible desde md */}
+                {event.category && (
+                    <span className="hidden md:inline-flex items-center h-6 px-2 bg-background-tertiary text-text-default-secondary rounded-full border border-border-default-secondary text-[10px] font-semibold uppercase tracking-wide whitespace-nowrap">
+                        {event.category}
+                    </span>
+                )}
+
+                {/* Badge de tiempo — SIEMPRE visible */}
+                <span className={`${color} h-6 flex items-center px-3 rounded-full text-badge font-semibold whitespace-nowrap shadow-sm shrink-0`}>
                     {label}
                 </span>
-                <ChevronRight className="w-4 h-4 text-text-default-tertiary group-hover:text-text-default-default group-hover:translate-x-0.5 transition-all" />
+
+                <ChevronRight className="w-4 h-4 text-text-default-tertiary group-hover:text-text-default-default group-hover:translate-x-0.5 transition-all shrink-0" />
             </div>
         </Link>
     );
