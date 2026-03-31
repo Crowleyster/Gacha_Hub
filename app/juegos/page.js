@@ -256,7 +256,7 @@ export default function Juegos() {
     const visibleGames = filteredGames.slice(0, visibleCount);
 
     return (
-        <div className="col-span-full pb-content-safe font-sans flex flex-col gap-8">
+        <div className="col-span-full pb-content-safe font-sans flex flex-col gap-12 sm:gap-16">
 
             <SectionHeader
                 variant="page"

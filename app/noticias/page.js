@@ -98,8 +98,7 @@ export default function Noticias() {
     );
 
     return (
-        <div className="col-span-full space-y-8 pb-content-safe font-sans text-text-default-default">
-
+        <div className="col-span-full pb-content-safe font-sans text-text-default-default flex flex-col gap-12 sm:gap-16">
             <SectionHeader
                 variant="page"
                 icon={Newspaper}
