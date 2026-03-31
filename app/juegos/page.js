@@ -49,7 +49,7 @@ function GameCard({ game, viewMode = 'grid' }) {
                             fill
                             sizes="80px"
                             className="object-cover transition-transform duration-500 group-hover:scale-105"
-                          />
+                        />
                         : <div className="w-full h-full bg-background-tertiary" />
                     }
                 </div>
@@ -200,9 +200,9 @@ function GameCard({ game, viewMode = 'grid' }) {
 function FiltersContent({ filters, updateFilter, hasActiveFilters, clearAllFilters, allPlatforms, allGenres, allDevs }) {
     return (
         <div className="flex flex-col lg:flex-row items-stretch gap-3 w-full">
-            <FilterDropdown label="Plataforma"    options={allPlatforms} selected={filters.plataforma}    onChange={(v) => updateFilter('plataforma', v)} />
-            <FilterDropdown label="Género"          options={allGenres}    selected={filters.genero}        onChange={(v) => updateFilter('genero', v)} />
-            <FilterDropdown label="Desarrollador"  options={allDevs}      selected={filters.desarrollador} onChange={(v) => updateFilter('desarrollador', v)} />
+            <FilterDropdown label="Plataforma" options={allPlatforms} selected={filters.plataforma} onChange={(v) => updateFilter('plataforma', v)} />
+            <FilterDropdown label="Género" options={allGenres} selected={filters.genero} onChange={(v) => updateFilter('genero', v)} />
+            <FilterDropdown label="Desarrollador" options={allDevs} selected={filters.desarrollador} onChange={(v) => updateFilter('desarrollador', v)} />
 
             {hasActiveFilters && (
                 <button
@@ -223,14 +223,14 @@ function FiltersContent({ filters, updateFilter, hasActiveFilters, clearAllFilte
 export default function Juegos() {
     const gamesList = Object.values(GAMES_DATA);
 
-    const allGenres    = useMemo(() => Array.from(new Set(gamesList.flatMap(g => g.genre))).sort(),      [gamesList]);
-    const allPlatforms = useMemo(() => Array.from(new Set(gamesList.flatMap(g => g.platforms))).sort(),  [gamesList]);
-    const allDevs      = useMemo(() => Array.from(new Set(gamesList.map(g => g.developer))).sort(),      [gamesList]);
+    const allGenres = useMemo(() => Array.from(new Set(gamesList.flatMap(g => g.genre))).sort(), [gamesList]);
+    const allPlatforms = useMemo(() => Array.from(new Set(gamesList.flatMap(g => g.platforms))).sort(), [gamesList]);
+    const allDevs = useMemo(() => Array.from(new Set(gamesList.map(g => g.developer))).sort(), [gamesList]);
 
-    const [selectedSort, setSelectedSort]       = useState('Nuevos');
-    const [viewMode, setViewMode]               = useState('grid');   // 'grid' | 'list'
+    const [selectedSort, setSelectedSort] = useState('Nuevos');
+    const [viewMode, setViewMode] = useState('grid');   // 'grid' | 'list'
     const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
-    const [visibleCount, setVisibleCount]       = useState(12);
+    const [visibleCount, setVisibleCount] = useState(12);
 
     const [filters, setFilters] = useState({
         plataforma: [],
@@ -238,17 +238,17 @@ export default function Juegos() {
         desarrollador: [],
     });
 
-    const updateFilter    = (key, value) => setFilters(prev => ({ ...prev, [key]: value }));
+    const updateFilter = (key, value) => setFilters(prev => ({ ...prev, [key]: value }));
     const hasActiveFilters = Object.values(filters).some(val => val.length > 0);
-    const clearAllFilters  = () => setFilters({ plataforma: [], genero: [], desarrollador: [] });
+    const clearAllFilters = () => setFilters({ plataforma: [], genero: [], desarrollador: [] });
 
     const sortOptions = ['Nuevos', 'Populares', 'Actualizados', 'A-Z'];
 
     const filteredGames = useMemo(() => {
         return gamesList.filter(game => {
-            const matchesGenre    = filters.genero.length === 0       || filters.genero.some(g => game.genre.includes(g));
-            const matchesPlatform = filters.plataforma.length === 0   || filters.plataforma.some(p => game.platforms.includes(p));
-            const matchesDev      = filters.desarrollador.length === 0 || filters.desarrollador.includes(game.developer);
+            const matchesGenre = filters.genero.length === 0 || filters.genero.some(g => game.genre.includes(g));
+            const matchesPlatform = filters.plataforma.length === 0 || filters.plataforma.some(p => game.platforms.includes(p));
+            const matchesDev = filters.desarrollador.length === 0 || filters.desarrollador.includes(game.developer);
             return matchesGenre && matchesPlatform && matchesDev;
         });
     }, [gamesList, filters]);
@@ -267,18 +267,49 @@ export default function Juegos() {
                 {/* Barra de Controles */}
                 <div className="flex flex-col lg:flex-row lg:items-end gap-3 bg-background-secondary border border-border-default-secondary p-4 rounded-2xl shadow-sm">
 
-                    {/* Mobile: Botón Filtrar (deshabilitado) */}
-                    <button
-                        disabled
-                        title="Próximamente"
-                        aria-label="Abrir filtros"
-                        className="lg:hidden flex items-center justify-center gap-2 h-[42px] px-4 w-full bg-background-tertiary border border-border-default-secondary rounded-xl opacity-50 cursor-not-allowed text-body-small-strong text-text-default-secondary"
-                    >
-                        <Filter className="w-5 h-5" /> Filtrar
-                        {hasActiveFilters && (
-                            <span className="w-2 h-2 bg-brand-default rounded-full" />
-                        )}
-                    </button>
+                    {/* --- CONTROLES MOBILE --- */}
+                    <div className="lg:hidden flex flex-col gap-3 w-full">
+                        {/* Botón Filtrar */}
+                        <button
+                            onClick={() => setIsMobileFilterOpen(true)}
+                            className="flex items-center justify-center gap-2 h-[42px] px-4 w-full bg-background-tertiary border border-border-default-secondary rounded-xl shadow-sm text-body-small-strong text-text-default-default hover:bg-background-secondary-hover transition-colors relative"
+                        >
+                            <Filter className="w-5 h-5" /> Filtrar Juegos
+                            {hasActiveFilters && (
+                                <span className="w-2.5 h-2.5 bg-brand-default rounded-full border border-background-default absolute top-2 right-2"></span>
+                            )}
+                        </button>
+
+                        {/* Sort & View Mobile */}
+                        <div className="flex items-center justify-between gap-3 w-full">
+                            {/* Sort Chips Scrollable */}
+                            <div className="flex items-center bg-background-tertiary p-1 rounded-xl border border-border-default-secondary gap-1 overflow-x-auto scrollbar-none snap-x snap-mandatory flex-1">
+                                {sortOptions.map(opt => {
+                                    const isActive = selectedSort === opt;
+                                    return (
+                                        <button
+                                            key={opt}
+                                            onClick={() => setSelectedSort(opt)}
+                                            className={`snap-start shrink-0 px-3 h-[34px] rounded-lg text-body-small-strong transition-all ${isActive ? 'bg-background-default text-text-default-default shadow-sm' : 'text-text-default-tertiary hover:text-text-default-default'}`}
+                                        >
+                                            {isActive && <Check className="inline w-3 h-3 mr-1" />}
+                                            {opt}
+                                        </button>
+                                    );
+                                })}
+                            </div>
+                            
+                            {/* View Toggle Mobile */}
+                            <div className="flex items-center bg-background-tertiary p-1 rounded-xl border border-border-default-secondary shrink-0">
+                                <button onClick={() => setViewMode('grid')} className={`flex items-center justify-center w-[34px] h-[34px] rounded-lg transition-all ${viewMode === 'grid' ? 'bg-background-default text-text-default-default shadow-sm' : 'text-text-default-tertiary hover:text-text-default-default'}`}>
+                                    <LayoutGrid className="w-4 h-4" />
+                                </button>
+                                <button onClick={() => setViewMode('list')} className={`flex items-center justify-center w-[34px] h-[34px] rounded-lg transition-all ${viewMode === 'list' ? 'bg-background-default text-text-default-default shadow-sm' : 'text-text-default-tertiary hover:text-text-default-default'}`}>
+                                    <List className="w-4 h-4" />
+                                </button>
+                            </div>
+                        </div>
+                    </div>
 
                     {/* Desktop: Filtros Horizontales */}
                     <div className="hidden lg:flex flex-col items-stretch flex-1">
@@ -296,8 +327,8 @@ export default function Juegos() {
                     {/* Separador vertical */}
                     <div className="hidden lg:block w-px self-stretch bg-border-default-secondary shrink-0" />
 
-                    {/* Sort Chips + View Toggle */}
-                    <div className="flex items-center gap-2 shrink-0">
+                    {/* Controles Desktop: Sort Chips + View Toggle */}
+                    <div className="hidden lg:flex items-center gap-2 shrink-0">
 
                         {/* Sort Chips — scroll horizontal en mobile */}
                         <div className="

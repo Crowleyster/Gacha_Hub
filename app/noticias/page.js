@@ -110,25 +110,45 @@ export default function Noticias() {
                 <div className="space-y-4">
                     {/* Desktop: Fila Única | Mobile: Grid */}
                     <div className="flex flex-col lg:flex-row lg:items-end gap-4 bg-background-secondary border border-border-default-secondary p-4 rounded-2xl transition-all shadow-sm">
-                        {/* Mobile Filter Toggle Button */}
-                        <button
-                            disabled
-                            title="Próximamente"
-                            className="lg:hidden flex items-center justify-center gap-2 h-[42px] px-4 w-full sm:w-auto bg-background-tertiary border border-border-default-secondary rounded-xl shadow-sm opacity-50 cursor-not-allowed text-body-small-strong text-text-default-secondary relative"
-                        >
-                            <Filter className="w-5 h-5" /> Filtrar
-                            {hasActiveFilters && (
-                                <span className="w-2.5 h-2.5 bg-brand-default rounded-full border border-background-default absolute top-2 right-2"></span>
-                            )}
-                        </button>
+                        {/* --- CONTROLES MOBILE --- */}
+                        <div className="lg:hidden flex flex-col gap-3 w-full">
+                            {/* Botón Filtrar */}
+                            <button
+                                onClick={() => setIsMobileFilterOpen(true)}
+                                className="flex items-center justify-center gap-2 h-[42px] px-4 w-full bg-background-tertiary border border-border-default-secondary rounded-xl shadow-sm text-body-small-strong text-text-default-default hover:bg-background-secondary-hover transition-colors relative"
+                            >
+                                <Filter className="w-5 h-5" /> Filtrar Noticias
+                                {hasActiveFilters && (
+                                    <span className="w-2.5 h-2.5 bg-brand-default rounded-full border border-background-default absolute top-2 right-2"></span>
+                                )}
+                            </button>
+
+                            {/* Toggles Sort Mobile */}
+                            <div className="flex items-center bg-background-tertiary p-1 rounded-xl border border-border-default-secondary h-[42px] w-full">
+                                <button
+                                    onClick={() => setViewMode('nuevos')}
+                                    className={`flex items-center justify-center gap-2 flex-1 h-full rounded-lg transition-all ${viewMode === 'nuevos' ? 'bg-background-default text-text-default-default shadow-sm' : 'text-text-default-tertiary hover:text-text-default-default'}`}
+                                >
+                                    {viewMode === 'nuevos' && <Check className="w-3.5 h-3.5" />}
+                                    <span className="text-body-small-strong">Nuevos</span>
+                                </button>
+                                <button
+                                    onClick={() => setViewMode('populares')}
+                                    className={`flex items-center justify-center gap-2 flex-1 h-full rounded-lg transition-all ${viewMode === 'populares' ? 'bg-background-default text-text-default-default shadow-sm' : 'text-text-default-tertiary hover:text-text-default-default'}`}
+                                >
+                                    {viewMode === 'populares' && <Check className="w-3.5 h-3.5" />}
+                                    <span className="text-body-small-strong">Populares</span>
+                                </button>
+                            </div>
+                        </div>
 
                         {/* Filtros Expandibles (Desktop siempre visible) */}
                         <div className="hidden lg:flex flex-col items-stretch gap-4 flex-1">
                             <FiltersContent />
                         </div>
 
-                        {/* Toggles Ordenamiento */}
-                        <div className="flex items-center gap-3 mt-auto lg:mt-0 w-full lg:w-auto self-end">
+                        {/* Toggles Ordenamiento Desktop */}
+                        <div className="hidden lg:flex items-center gap-3 mt-auto lg:mt-0 w-auto self-end">
                             <div className="flex flex-col gap-1.5 w-full">
                                 <span className="hidden lg:block text-[10px] uppercase tracking-wider font-bold text-text-default-tertiary px-1">Orden</span>
                                 <div className="flex items-center bg-background-tertiary p-1 rounded-xl border border-border-default-secondary h-[42px] flex-1 lg:flex-none">

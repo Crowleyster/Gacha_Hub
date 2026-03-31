@@ -21,13 +21,13 @@ import MobileFilterModal from '@/components/ui/MobileFilterModal';
 import SectionHeader from '@/components/SectionHeader';
 
 /* ─── Opciones de Filtro ─── */
-const STATUS_OPTIONS     = ["Ultimas horas", "Últimos días", "Nuevos", "Próximos"];
-const CATEGORY_OPTIONS   = ["Permanente", "Recurrente", "Limitado"];
+const STATUS_OPTIONS = ["Ultimas horas", "Últimos días", "Nuevos", "Próximos"];
+const CATEGORY_OPTIONS = ["Permanente", "Recurrente", "Limitado"];
 
 const SORT_OPTIONS = [
-    { id: 'pronto',   label: 'Terminan pronto', icon: Clock },
-    { id: 'reciente', label: 'Recientes',        icon: CalendarDays },
-    { id: 'az',       label: 'A–Z',              icon: ArrowDownAZ },
+    { id: 'pronto', label: 'Terminan pronto', icon: Clock },
+    { id: 'reciente', label: 'Recientes', icon: CalendarDays },
+    { id: 'az', label: 'A–Z', icon: ArrowDownAZ },
 ];
 
 /* ─── EventRow: Fila Horizontal para Vista Lista ─── */
@@ -99,9 +99,9 @@ function EventRow({ event }) {
 
 /* ─── Página Principal de Eventos ─── */
 export default function Eventos() {
-    const [selectedGames, setSelectedGames]           = useState([]);
-    const [selectedTypes, setSelectedTypes]           = useState([]);
-    const [selectedStatuses, setSelectedStatuses]     = useState([]);
+    const [selectedGames, setSelectedGames] = useState([]);
+    const [selectedTypes, setSelectedTypes] = useState([]);
+    const [selectedStatuses, setSelectedStatuses] = useState([]);
     const [selectedCategories, setSelectedCategories] = useState([]);
     const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
     const [sortMode, setSortMode] = useState('pronto');  // 'pronto' | 'reciente' | 'az'
@@ -118,9 +118,9 @@ export default function Eventos() {
     /* ─── Filtrado + Ordenamiento ─── */
     const filteredAndSortedEvents = useMemo(() => {
         let result = EVENTS_DATA.filter(event => {
-            const matchesGame     = selectedGames.length === 0     || selectedGames.includes(event.gameId);
-            const matchesType     = selectedTypes.length === 0     || selectedTypes.includes(event.type);
-            const matchesStatus   = selectedStatuses.length === 0  || selectedStatuses.includes(event.statusLabel);
+            const matchesGame = selectedGames.length === 0 || selectedGames.includes(event.gameId);
+            const matchesType = selectedTypes.length === 0 || selectedTypes.includes(event.type);
+            const matchesStatus = selectedStatuses.length === 0 || selectedStatuses.includes(event.statusLabel);
             const matchesCategory = selectedCategories.length === 0 || selectedCategories.includes(event.category);
             return matchesGame && matchesType && matchesStatus && matchesCategory;
         });
@@ -156,10 +156,10 @@ export default function Eventos() {
 
     const FiltersContent = () => (
         <div className="flex flex-col lg:flex-row items-stretch gap-3 w-full">
-            <FilterDropdown label="Juego"          options={gameOptions}      selected={selectedGames}      onChange={setSelectedGames}      displayFormatter={getGameName} />
-            <FilterDropdown label="Tipo de Evento" options={allTypes}         selected={selectedTypes}      onChange={setSelectedTypes} />
-            <FilterDropdown label="Estado"          options={STATUS_OPTIONS}   selected={selectedStatuses}   onChange={setSelectedStatuses} />
-            <FilterDropdown label="Categoría"       options={CATEGORY_OPTIONS} selected={selectedCategories} onChange={setSelectedCategories} />
+            <FilterDropdown label="Juego" options={gameOptions} selected={selectedGames} onChange={setSelectedGames} displayFormatter={getGameName} />
+            <FilterDropdown label="Tipo de Evento" options={allTypes} selected={selectedTypes} onChange={setSelectedTypes} />
+            <FilterDropdown label="Estado" options={STATUS_OPTIONS} selected={selectedStatuses} onChange={setSelectedStatuses} />
+            <FilterDropdown label="Categoría" options={CATEGORY_OPTIONS} selected={selectedCategories} onChange={setSelectedCategories} />
 
             {hasActiveFilters && (
                 <button
@@ -186,14 +186,46 @@ export default function Eventos() {
                 <div className="space-y-3">
                     <div className="flex flex-col lg:flex-row lg:items-end gap-3 bg-background-secondary border border-border-default-secondary p-4 rounded-2xl shadow-sm">
 
-                        {/* Mobile: Botón Filtrar (deshabilitado) */}
-                        <button
-                            disabled
-                            title="Próximamente"
-                            className="lg:hidden flex items-center justify-center gap-2 h-[42px] px-4 w-full sm:w-auto bg-background-tertiary border border-border-default-secondary rounded-xl opacity-50 cursor-not-allowed text-body-small-strong text-text-default-secondary"
-                        >
-                            <Filter className="w-5 h-5" /> Filtrar Eventos
-                        </button>
+                        {/* --- CONTROLES MOBILE --- */}
+                        <div className="lg:hidden flex flex-col gap-3 w-full">
+                            {/* Botón Filtrar */}
+                            <button
+                                onClick={() => setIsMobileFilterOpen(true)}
+                                className="flex items-center justify-center gap-2 h-[42px] px-4 w-full bg-background-tertiary border border-border-default-secondary rounded-xl shadow-sm text-body-small-strong text-text-default-default hover:bg-background-secondary-hover transition-colors relative"
+                            >
+                                <Filter className="w-5 h-5" /> Filtrar Eventos
+                                {hasActiveFilters && (
+                                    <span className="w-2.5 h-2.5 bg-brand-default rounded-full border border-background-default absolute top-2 right-2"></span>
+                                )}
+                            </button>
+
+                            {/* Sort & View Mobile */}
+                            <div className="flex items-center justify-between gap-3 w-full">
+                                {/* Sort Icons */}
+                                <div className="flex items-center bg-background-tertiary p-1 rounded-xl border border-border-default-secondary gap-0.5 flex-1">
+                                    {SORT_OPTIONS.map(({ id, icon: Icon, label }) => (
+                                        <button
+                                            key={id}
+                                            onClick={() => setSortMode(id)}
+                                            title={label}
+                                            className={`flex items-center justify-center h-[34px] flex-1 rounded-lg transition-all ${sortMode === id ? 'bg-background-default text-text-default-default shadow-sm' : 'text-text-default-tertiary hover:text-text-default-default'}`}
+                                        >
+                                            <Icon className="w-4 h-4" />
+                                        </button>
+                                    ))}
+                                </div>
+                                
+                                {/* View Toggle Mobile */}
+                                <div className="flex items-center bg-background-tertiary p-1 rounded-xl border border-border-default-secondary shrink-0">
+                                    <button onClick={() => setViewMode('grid')} className={`flex items-center justify-center w-[34px] h-[34px] rounded-lg transition-all ${viewMode === 'grid' ? 'bg-background-default text-text-default-default shadow-sm' : 'text-text-default-tertiary hover:text-text-default-default'}`}>
+                                        <LayoutGrid className="w-4 h-4" />
+                                    </button>
+                                    <button onClick={() => setViewMode('list')} className={`flex items-center justify-center w-[34px] h-[34px] rounded-lg transition-all ${viewMode === 'list' ? 'bg-background-default text-text-default-default shadow-sm' : 'text-text-default-tertiary hover:text-text-default-default'}`}>
+                                        <List className="w-4 h-4" />
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
 
                         {/* Desktop: Filtros */}
                         <div className="hidden lg:flex flex-col items-stretch gap-4 flex-1">
@@ -203,8 +235,8 @@ export default function Eventos() {
                         {/* Separador vertical */}
                         <div className="hidden lg:block w-px self-stretch bg-border-default-secondary shrink-0" />
 
-                        {/* Controles: Sort + View */}
-                        <div className="flex items-center gap-2 shrink-0">
+                        {/* Controles Desktop: Sort + View */}
+                        <div className="hidden lg:flex items-center gap-2 shrink-0">
 
                             {/* Sort Chips */}
                             <div className="flex items-center bg-background-tertiary p-1 rounded-xl border border-border-default-secondary gap-0.5">
