@@ -75,10 +75,10 @@ export default function ClientLayout({ children }) {
             <SettingsSheet isOpen={isMobileSheetOpen} onClose={() => setIsMobileSheetOpen(false)} />
 
             {/* Global Spotlight Search */}
-            <GlobalSearch 
-                isOpen={isGlobalSearchOpen} 
-                onClose={() => setIsGlobalSearchOpen(false)} 
-                onOpen={() => setIsGlobalSearchOpen(true)} 
+            <GlobalSearch
+                isOpen={isGlobalSearchOpen}
+                onClose={() => setIsGlobalSearchOpen(false)}
+                onOpen={() => setIsGlobalSearchOpen(true)}
             />
         </ThemeProvider>
     );

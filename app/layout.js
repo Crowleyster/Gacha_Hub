@@ -9,7 +9,7 @@ export const viewport = {
   initialScale: 1,
   themeColor: [
     { media: '(prefers-color-scheme: light)', color: '#ffffff' },
-    { media: '(prefers-color-scheme: dark)',  color: '#09090b' },
+    { media: '(prefers-color-scheme: dark)', color: '#09090b' },
   ],
 };
 
@@ -39,7 +39,7 @@ export default function RootLayout({ children }) {
        * ⚠️ Se eliminó h-screen (= 100vh fijo) que causaba el corte en PWA standalone.
        *    El alto ahora viene de globals.css → html/body con dvh + -webkit-fill-available.
        */}
-      <body className={`${inter.className} antialiased overflow-hidden flex h-dvh animate-in fade-in duration-500`}>
+      <body className={`${inter.className} antialiased overflow-hidden flex h-dvh animate-in fade-in duration-400`}>
         <ClientLayout>{children}</ClientLayout>
       </body>
     </html>

@@ -1,245 +1,189 @@
 "use client";
 
-import { useState, useMemo } from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
-import { Search, SlidersHorizontal, ChevronDown, Check, Calendar, RotateCcw, Filter, Newspaper } from 'lucide-react';
+import { useState, useMemo, useCallback } from 'react';
+import { Newspaper, Check, RotateCcw, Sparkles, TrendingUp } from 'lucide-react';
+import SectionHeader from '@/components/SectionHeader';
 import { GAMES_DATA } from '@/lib/games-data';
 import FilterDropdown from '@/components/ui/FilterDropdown';
-import MobileFilterModal from '@/components/ui/MobileFilterModal';
-import SectionHeader from '@/components/SectionHeader';
-
-import NewsCard from '@/components/NewsCard';
+import PageControls from '@/components/PageControls';
 import EmptyState from '@/components/ui/EmptyState';
+import NewsCard from '@/components/NewsCard';
+import { useFilters } from '@/hooks/useFilters';
 
-export default function Noticias() {
-    // 1. Estados
-    const [selectedGames, setSelectedGames] = useState([]);
-    const [selectedTags, setSelectedTags] = useState([]);
-    const [viewMode, setViewMode] = useState('nuevos'); // 'nuevos' | 'populares'
-    const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
-    const [visibleCount, setVisibleCount] = useState(6);
-
-    // 2. Data
-    const allNews = useMemo(() => {
-        const newsArray = [];
-        Object.values(GAMES_DATA).forEach(game => {
-            if (game.news) {
-                game.news.forEach(n => newsArray.push({ ...n, gameId: game.id }));
-            }
-        });
-        return newsArray;
-    }, []);
-
-    const allTags = useMemo(() => {
-        const tags = new Set();
-        allNews.forEach(news => {
-            if (news.tag) tags.add(news.tag);
-        });
-        return Array.from(tags).sort();
-    }, [allNews]);
-
-    // 3. Filtrado y Ordenamiento
-    const filteredAndSortedNews = useMemo(() => {
-        let result = allNews.filter(news => {
-            const matchesGame = selectedGames.length === 0 || selectedGames.includes(news.gameId);
-            const matchesTag = selectedTags.length === 0 || selectedTags.includes(news.tag);
-            return matchesGame && matchesTag;
-        });
-
-        // Ordenamiento
-        if (viewMode === 'nuevos') {
-            result.sort((a, b) => new Date(b.date) - new Date(a.date));
-        } else {
-            // Mock de populares: Orden determinista por longitud de título
-            result.sort((a, b) => b.title.length - a.title.length);
-        }
-
-        return result;
-    }, [allNews, selectedGames, selectedTags, viewMode]);
-
-    const visibleNews = filteredAndSortedNews.slice(0, visibleCount);
-
-    const clearFilters = () => {
-        setSelectedGames([]);
-        setSelectedTags([]);
-    };
-
-    const hasActiveFilters = selectedGames.length > 0 || selectedTags.length > 0;
-
-    const getGameName = (id) => GAMES_DATA[id]?.name || id;
-    const gameOptions = useMemo(() => Object.values(GAMES_DATA).map(g => g.id), []);
-
-    const FiltersContent = () => (
+/* ─────────────────────────────────────────────
+   Componente de Filtros Interno
+───────────────────────────────────────────── */
+function FiltersContent({ filters, updateFilter, hasActiveFilters, clearFilters, allGames, allTags }) {
+    return (
         <div className="flex flex-col lg:flex-row items-stretch gap-3 w-full">
-            <FilterDropdown
-                label="Juego"
-                options={gameOptions}
-                selected={selectedGames}
-                onChange={setSelectedGames}
-                displayFormatter={getGameName}
+            <FilterDropdown 
+                label="Juego" 
+                options={allGames.map(g => g.id)} 
+                selected={filters.juego} 
+                onChange={(v) => updateFilter('juego', v)}
+                displayFormatter={(id) => GAMES_DATA[id]?.shortName || id}
             />
-            <FilterDropdown
-                label="Tipo de contenido"
-                options={allTags}
-                selected={selectedTags}
-                onChange={setSelectedTags}
+            <FilterDropdown 
+                label="Categoría" 
+                options={allTags} 
+                selected={filters.categoria} 
+                onChange={(v) => updateFilter('categoria', v)} 
             />
+
             {hasActiveFilters && (
                 <button
                     onClick={clearFilters}
                     className="flex items-center justify-center gap-2 h-[42px] px-4 shrink-0 bg-background-tertiary border border-border-default-secondary rounded-xl text-body-small-strong uppercase tracking-wider text-text-default-secondary hover:bg-background-secondary-hover hover:text-brand-default transition-all mt-auto"
                 >
                     <RotateCcw className="w-3.5 h-3.5" />
-                    <span className="lg:hidden">Limpiar filtros</span>
+                    <span className="lg:hidden text-[10px]">Limpiar filtros</span>
                 </button>
-            )}
-        </div>
-    );
-
-    return (
-        <div className="col-span-full pb-content-safe font-sans text-text-default-default flex flex-col gap-12 sm:gap-16">
-            <SectionHeader
-                variant="page"
-                icon={Newspaper}
-                title="Todas las noticias"
-                subtitle="Mantente al día con las últimas novedades, guías y parches de tus juegos favoritos."
-            >
-                {/* Barra de Filtros PREMIUM */}
-                <div className="space-y-4">
-                    {/* Desktop: Fila Única | Mobile: Grid */}
-                    <div className="flex flex-col lg:flex-row lg:items-end gap-4 bg-background-secondary border border-border-default-secondary p-4 rounded-2xl transition-all shadow-sm">
-                        {/* --- CONTROLES MOBILE --- */}
-                        <div className="lg:hidden flex flex-col gap-3 w-full">
-                            {/* Botón Filtrar */}
-                            <button
-                                onClick={() => setIsMobileFilterOpen(true)}
-                                className="flex items-center justify-center gap-2 h-[42px] px-4 w-full bg-background-tertiary border border-border-default-secondary rounded-xl shadow-sm text-body-small-strong text-text-default-default hover:bg-background-secondary-hover transition-colors relative"
-                            >
-                                <Filter className="w-5 h-5" /> Filtrar Noticias
-                                {hasActiveFilters && (
-                                    <span className="w-2.5 h-2.5 bg-brand-default rounded-full border border-background-default absolute top-2 right-2"></span>
-                                )}
-                            </button>
-
-                            {/* Toggles Sort Mobile */}
-                            <div className="flex items-center bg-background-tertiary p-1 rounded-xl border border-border-default-secondary h-[42px] w-full">
-                                <button
-                                    onClick={() => setViewMode('nuevos')}
-                                    className={`flex items-center justify-center gap-2 flex-1 h-full rounded-lg transition-all ${viewMode === 'nuevos' ? 'bg-background-default text-text-default-default shadow-sm' : 'text-text-default-tertiary hover:text-text-default-default'}`}
-                                >
-                                    {viewMode === 'nuevos' && <Check className="w-3.5 h-3.5" />}
-                                    <span className="text-body-small-strong">Nuevos</span>
-                                </button>
-                                <button
-                                    onClick={() => setViewMode('populares')}
-                                    className={`flex items-center justify-center gap-2 flex-1 h-full rounded-lg transition-all ${viewMode === 'populares' ? 'bg-background-default text-text-default-default shadow-sm' : 'text-text-default-tertiary hover:text-text-default-default'}`}
-                                >
-                                    {viewMode === 'populares' && <Check className="w-3.5 h-3.5" />}
-                                    <span className="text-body-small-strong">Populares</span>
-                                </button>
-                            </div>
-                        </div>
-
-                        {/* Filtros Expandibles (Desktop siempre visible) */}
-                        <div className="hidden lg:flex flex-col items-stretch gap-4 flex-1">
-                            <FiltersContent />
-                        </div>
-
-                        {/* Toggles Ordenamiento Desktop */}
-                        <div className="hidden lg:flex items-center gap-3 mt-auto lg:mt-0 w-auto self-end">
-                            <div className="flex flex-col gap-1.5 w-full">
-                                <span className="hidden lg:block text-[10px] uppercase tracking-wider font-bold text-text-default-tertiary px-1">Orden</span>
-                                <div className="flex items-center bg-background-tertiary p-1 rounded-xl border border-border-default-secondary h-[42px] flex-1 lg:flex-none">
-                                    <button
-                                        onClick={() => setViewMode('nuevos')}
-                                        className={`flex items-center justify-center gap-2 flex-1 lg:flex-none px-4 h-full rounded-lg transition-all ${viewMode === 'nuevos' ? 'bg-background-default text-text-default-default shadow-sm' : 'text-text-default-tertiary hover:text-text-default-default'}`}
-                                    >
-                                        {viewMode === 'nuevos' && <Check className="w-3.5 h-3.5" />}
-                                        <span className="text-body-small-strong">Nuevos</span>
-                                    </button>
-                                    <button
-                                        onClick={() => setViewMode('populares')}
-                                        className={`flex items-center justify-center gap-2 flex-1 lg:flex-none px-4 h-full rounded-lg transition-all ${viewMode === 'populares' ? 'bg-background-default text-text-default-default shadow-sm' : 'text-text-default-tertiary hover:text-text-default-default'}`}
-                                    >
-                                        {viewMode === 'populares' && <Check className="w-3.5 h-3.5" />}
-                                        <span className="text-body-small-strong">Populares</span>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </SectionHeader>
-
-            <MobileFilterModal isOpen={isMobileFilterOpen} onClose={() => setIsMobileFilterOpen(false)} title="Filtros de Noticias">
-                <FiltersContent />
-            </MobileFilterModal>
-
-            {/* Contenido de Noticias */}
-            {visibleNews.length > 0 ? (
-                <div className="flex flex-col gap-8">
-                    {/* Hero Story — Primer elemento destacado */}
-                    {(() => {
-                        const heroNews = visibleNews[0];
-                        const heroGame = GAMES_DATA[heroNews.gameId];
-                        return (
-                            <div className="h-[420px] md:h-[520px]">
-                                <NewsCard
-                                    key={`hero-${heroNews.gameId}-${heroNews.id}`}
-                                    title={heroNews.title}
-                                    tag={heroNews.tag}
-                                    gameIconUrl={heroGame?.iconUrl}
-                                    imageUrl={heroNews.imageUrl || heroGame?.bannerUrl}
-                                    date={heroNews.date}
-                                    isHero={true}
-                                    href={`/noticias/${heroNews.id}`}
-                                />
-                            </div>
-                        );
-                    })()}
-
-                    {/* Grilla Estándar — Resto de noticias */}
-                    {visibleNews.length > 1 && (
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-[280px]">
-                            {visibleNews.slice(1).map(news => {
-                                const game = GAMES_DATA[news.gameId];
-                                return (
-                                    <NewsCard
-                                        key={`${news.gameId}-${news.id}`}
-                                        title={news.title}
-                                        tag={news.tag}
-                                        gameIconUrl={game?.iconUrl}
-                                        imageUrl={news.imageUrl || game?.bannerUrl}
-                                        date={news.date}
-                                        isSmall={true}
-                                        href={`/noticias/${news.id}`}
-                                    />
-                                );
-                            })}
-                        </div>
-                    )}
-                </div>
-            ) : (
-                <EmptyState onClear={clearFilters} />
-            )}
-
-            {/* Botón Cargar Más */}
-            {visibleCount < filteredAndSortedNews.length && (
-                <div className="flex flex-col items-center gap-4 pt-8">
-                    <p className="text-body-small text-text-default-tertiary">
-                        Mostrando {visibleNews.length} de {filteredAndSortedNews.length} noticias
-                    </p>
-                    <button
-                        onClick={() => setVisibleCount(prev => prev + 6)}
-                        className="group w-full max-w-2xl bg-background-secondary border border-border-default-secondary rounded-xl py-3 text-body-small-strong text-text-default-default hover:bg-background-secondary-hover hover:border-brand-default/50 transition-all flex items-center justify-center gap-2 shadow-sm"
-                    >
-                        Cargar más noticias
-                        <ChevronDown className="w-4 h-4 transition-transform group-hover:translate-y-0.5" />
-                    </button>
-                </div>
             )}
         </div>
     );
 }
 
+export default function Noticias() {
+    // 1. Data Preparation
+    const allNews = useMemo(() => {
+        return Object.values(GAMES_DATA).flatMap(game => 
+            (game.news || []).map(news => ({
+                ...news,
+                gameId: game.id,
+                gameName: game.name,
+                gameShortName: game.shortName,
+                gameIconUrl: game.iconUrl
+            }))
+        );
+    }, []);
+
+    const allGames = useMemo(() => Object.values(GAMES_DATA), []);
+    const allTags = useMemo(() => Array.from(new Set(allNews.map(n => n.tag))).sort(), [allNews]);
+
+    const sortOptions = [
+        { id: 'nuevos', label: 'Nuevos', icon: Sparkles },
+        { id: 'populares', label: 'Populares', icon: TrendingUp }
+    ];
+
+    // 2. Logic Hooks
+    const filterFn = useCallback((news, filters) => {
+        const matchesGame = filters.juego.length === 0 || filters.juego.includes(news.gameId);
+        const matchesTag = filters.categoria.length === 0 || filters.categoria.includes(news.tag);
+        return matchesGame && matchesTag;
+    }, []);
+
+    const sortFn = useCallback((a, b, mode) => {
+        if (mode === 'nuevos') return new Date(b.date) - new Date(a.date);
+        // 'populares' fallback to random/id for now as it's mock data
+        return 0;
+    }, []);
+
+    const {
+        filters,
+        updateFilter,
+        clearFilters,
+        sortMode,
+        setSortMode,
+        visibleData,
+        loadMore,
+        hasMore,
+        hasActiveFilters
+    } = useFilters(allNews, {
+        filterFn,
+        sortFn,
+        initialSort: 'nuevos',
+        initialFilters: { juego: [], categoria: [] },
+        initialVisible: 11, // 1 Hero + 10 grid items
+        pageSize: 6
+    });
+
+    const [viewMode, setViewMode] = useState('grid');
+
+    return (
+        <div className="col-span-full pb-content-safe font-sans flex flex-col gap-12 sm:gap-16">
+            <SectionHeader
+                variant="page"
+                icon={Newspaper}
+                title="Todas las noticias"
+                subtitle="Mantente al día con las últimas actualizaciones, banners y guías de la industria."
+            >
+                <PageControls 
+                    sortOptions={sortOptions}
+                    sortMode={sortMode}
+                    onSortChange={setSortMode}
+                    viewMode={viewMode}
+                    onViewChange={setViewMode}
+                    hasActiveFilters={hasActiveFilters}
+                    filters={
+                        <FiltersContent 
+                            filters={filters}
+                            updateFilter={updateFilter}
+                            hasActiveFilters={hasActiveFilters}
+                            clearFilters={clearFilters}
+                            allGames={allGames}
+                            allTags={allTags}
+                        />
+                    }
+                />
+            </SectionHeader>
+
+            <div className="flex flex-col gap-8">
+                {visibleData.length > 0 ? (
+                    <>
+                        {/* 1. SECCIÓN HERO (Solo si hay noticias) */}
+                        <div className="h-[420px] md:h-[520px]">
+                            {(() => {
+                                const hero = visibleData[0];
+                                return (
+                                    <NewsCard
+                                        key={`hero-${hero.gameId}-${hero.id}`}
+                                        title={hero.title}
+                                        tag={hero.tag}
+                                        gameIconUrl={hero.gameIconUrl}
+                                        imageUrl={hero.imageUrl}
+                                        date={hero.date}
+                                        isHero={true}
+                                        href={`/noticias/${hero.id}`}
+                                    />
+                                );
+                            })()}
+                        </div>
+
+                        {/* 2. GRILLA / LISTA */}
+                        <div className={`grid gap-4 sm:gap-6 ${viewMode === 'grid' ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3' : 'grid-cols-1'}`}>
+                            {visibleData.slice(1).map((news) => (
+                                <NewsCard
+                                    key={`${news.gameId}-${news.id}`}
+                                    title={news.title}
+                                    tag={news.tag}
+                                    gameIconUrl={news.gameIconUrl}
+                                    imageUrl={news.imageUrl}
+                                    date={news.date}
+                                    viewMode={viewMode}
+                                    href={`/noticias/${news.id}`}
+                                />
+                            ))}
+                        </div>
+                    </>
+                ) : (
+                    <EmptyState 
+                        title="No se encontraron noticias"
+                        message="Intenta ajustar los filtros para encontrar lo que buscas."
+                        onClear={clearFilters}
+                    />
+                )}
+
+                {hasMore && (
+                    <div className="flex justify-center pt-8">
+                        <button
+                            onClick={loadMore}
+                            className="bg-background-secondary border border-border-default-secondary px-8 py-3 rounded-xl text-body-strong text-text-default-default transition-all hover:bg-background-tertiary active:scale-95"
+                        >
+                            Ver más noticias
+                        </button>
+                    </div>
+                )}
+            </div>
+        </div>
+    );
+}

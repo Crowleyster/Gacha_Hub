@@ -1,20 +1,7 @@
+import Image from 'next/image';
 import { ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 
-/**
- * NewsCard Component
- * 
- * Modular component for the Bento Grid news tiles.
- * 
- * @param {string} title - The news headline
- * @param {string} tag - category/type of news (e.g. "EVENTO", "UPDATE")
- * @param {string} gameIconUrl - URL for the small circular game avatar
- * @param {string} imageUrl - Main background image URL
- * @param {string} date - ISO date string for news metadata
- * @param {boolean} isHero - Whether this is the main Card-1 (affects typography)
- * @param {boolean} isSmall - Whether this is a small card (affects typography)
- * @param {string} href - Destination URL (defaults to /noticias)
- */
 export default function NewsCard({
     title,
     tag,
@@ -29,26 +16,32 @@ export default function NewsCard({
         <Link
             href={href}
             className="
-                group relative block w-full h-full rounded-[16px] overflow-hidden cursor-pointer
-                border-2 border-transparent transition-all duration-300
-                hover:border-border-default-default hover:shadow-lg hover:-translate-y-1
-                focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2
+                group relative block w-full h-full rounded-[24px] overflow-hidden cursor-pointer
+                border-2 border-transparent transition-all duration-500
+                hover:border-border-default-default hover:shadow-2xl hover:-translate-y-1
+                focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-white/30
             "
         >
             <article className="w-full h-full">
-                {/* 1. Imagen de Fondo */}
-                <img
-                    src={imageUrl}
-                    alt={title}
-                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                />
+                {/* 1. Imagen de Fondo Optimizada */}
+                <div className="absolute inset-0 bg-background-tertiary">
+                    {imageUrl && (
+                        <Image
+                            src={imageUrl}
+                            alt={title}
+                            fill
+                            priority={isHero}
+                            sizes={isHero ? "(max-width: 1024px) 100vw, 50vw" : "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"}
+                            className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+                        />
+                    )}
+                </div>
 
-                {/* 2. Scrims (Gradientes) */}
+                {/* 2. Scrims (Gradientes) — Jerarquía técnica */}
                 <div className="
                     absolute inset-0 
-                    bg-gradient-to-t from-black/90 via-black/40 to-transparent
+                    bg-gradient-to-t from-black/95 via-black/40 to-transparent
                     transition-opacity duration-500
-                    group-hover:opacity-0
                 " />
 
                 <div className="
@@ -97,7 +90,7 @@ export default function NewsCard({
                     `}>
                         {title}
                     </h3>
-                    
+
                     {date && (
                         <div className="text-white/60 text-[10px] sm:text-body-small font-medium drop-shadow-sm mt-1">
                             {new Date(date).toLocaleDateString('es-ES', { day: '2-digit', month: 'long', year: 'numeric', timeZone: 'UTC' })}
