@@ -157,24 +157,49 @@ export default function Noticias() {
                 <FiltersContent />
             </MobileFilterModal>
 
-            {/* Grid de Resultados */}
+            {/* Contenido de Noticias */}
             {visibleNews.length > 0 ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-[280px]">
-                    {visibleNews.map(news => {
-                        const game = GAMES_DATA[news.gameId];
+                <div className="flex flex-col gap-8">
+                    {/* Hero Story — Primer elemento destacado */}
+                    {(() => {
+                        const heroNews = visibleNews[0];
+                        const heroGame = GAMES_DATA[heroNews.gameId];
                         return (
-                            <NewsCard
-                                key={`${news.gameId}-${news.id}`}
-                                title={news.title}
-                                tag={news.tag}
-                                gameIconUrl={game?.iconUrl}
-                                imageUrl={news.imageUrl || game?.bannerUrl}
-                                date={news.date}
-                                isSmall={true}
-                                href={`/noticias/${news.id}`}
-                            />
+                            <div className="h-[420px] md:h-[520px]">
+                                <NewsCard
+                                    key={`hero-${heroNews.gameId}-${heroNews.id}`}
+                                    title={heroNews.title}
+                                    tag={heroNews.tag}
+                                    gameIconUrl={heroGame?.iconUrl}
+                                    imageUrl={heroNews.imageUrl || heroGame?.bannerUrl}
+                                    date={heroNews.date}
+                                    isHero={true}
+                                    href={`/noticias/${heroNews.id}`}
+                                />
+                            </div>
                         );
-                    })}
+                    })()}
+
+                    {/* Grilla Estándar — Resto de noticias */}
+                    {visibleNews.length > 1 && (
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-[280px]">
+                            {visibleNews.slice(1).map(news => {
+                                const game = GAMES_DATA[news.gameId];
+                                return (
+                                    <NewsCard
+                                        key={`${news.gameId}-${news.id}`}
+                                        title={news.title}
+                                        tag={news.tag}
+                                        gameIconUrl={game?.iconUrl}
+                                        imageUrl={news.imageUrl || game?.bannerUrl}
+                                        date={news.date}
+                                        isSmall={true}
+                                        href={`/noticias/${news.id}`}
+                                    />
+                                );
+                            })}
+                        </div>
+                    )}
                 </div>
             ) : (
                 <EmptyState onClear={clearFilters} />
