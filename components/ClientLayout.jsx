@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { ThemeProvider } from 'next-themes';
 import { usePathname } from 'next/navigation';
 import Sidebar from '@/components/Sidebar';
@@ -15,6 +15,7 @@ export default function ClientLayout({ children }) {
     const [isMobileSheetOpen, setIsMobileSheetOpen] = useState(false);
     const [isGlobalSearchOpen, setIsGlobalSearchOpen] = useState(false);
     const pathname = usePathname();
+    const scrollContainerRef = useRef(null);
 
     // Initialize sidebar state based on screen size
     useEffect(() => {
@@ -31,10 +32,15 @@ export default function ClientLayout({ children }) {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
-    // Close sidebar on tablet when navigating
+    // Close sidebar on tablet when navigating and reset scroll position
     useEffect(() => {
         if (window.innerWidth < 1440) {
             setIsSidebarExpanded(false);
+        }
+        
+        // Fix: Resetear la posicion del scroll al inicio en cada cambio de vista
+        if (scrollContainerRef.current) {
+            scrollContainerRef.current.scrollTo(0, 0);
         }
     }, [pathname]);
 
@@ -60,7 +66,7 @@ export default function ClientLayout({ children }) {
                     />
                 </div>
 
-                <div className="flex-1 overflow-y-auto overflow-x-hidden custom-scrollbar pb-content-safe sm:pb-12 pt-[57px]">
+                <div ref={scrollContainerRef} className="flex-1 overflow-y-auto overflow-x-hidden custom-scrollbar pb-content-safe sm:pb-12 pt-[57px]">
                     <main className="w-full max-w-[3840px] mx-auto grid content-start grid-cols-4 sm:grid-cols-8 md:grid-cols-12 gap-4 sm:gap-6 p-6 xs:p-8 sm:p-12 md:px-24 md:py-12 2xl:px-40 2xl:py-12">
                         {children}
                     </main>
