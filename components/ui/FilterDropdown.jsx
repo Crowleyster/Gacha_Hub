@@ -24,10 +24,10 @@ export default function FilterDropdown({ label, options, selected, onChange, dis
 
     return (
         <div className="flex flex-col gap-1.5 flex-1 min-w-[140px] relative" ref={dropdownRef}>
-            <span className="text-[10px] uppercase tracking-wider font-bold text-text-default-tertiary px-1">{label}</span>
+            <span className="text-badge text-text-default-tertiary px-1">{label}</span>
             <button 
                 onClick={() => setIsOpen(!isOpen)}
-                className={`w-full h-[42px] flex items-center justify-between bg-background-tertiary border rounded-xl px-3 transition-all ${isOpen ? 'border-border-default-default ring-1 ring-border-default-default/20' : 'border-border-default-secondary'} hover:border-border-default-default`}
+                className={`w-full h-11 flex items-center justify-between bg-background-tertiary border rounded-xl px-3 transition-all ${isOpen ? 'border-border-default-default ring-1 ring-border-default-default/20' : 'border-border-default-secondary'} hover:border-border-default-default`}
             >
                 <span className={`text-body-small-strong truncate ${selected.length > 0 ? 'text-text-default-default' : 'text-text-default-tertiary'}`}>
                     {selected.length === 0 ? "Todos" : `${label} (${selected.length})`}

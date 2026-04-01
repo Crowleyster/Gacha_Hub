@@ -3,7 +3,7 @@ export default function Loading() {
     <div className="col-span-full pb-content-safe font-sans flex flex-col gap-8 animate-pulse">
       
       {/* 1. Hero Skeleton */}
-      <section className="relative w-full h-48 sm:h-64 md:h-80 bg-background-tertiary border border-border-default-secondary rounded-[32px] sm:rounded-[48px] overflow-hidden" />
+      <section className="relative w-full h-48 sm:h-64 md:h-80 bg-background-tertiary border border-border-default-secondary rounded-3xl sm:rounded-[3rem] overflow-hidden" />
 
       {/* 2. Identity Overlap Skeleton */}
       <section className="-mt-12 sm:-mt-16 relative z-10 px-4 md:px-8 flex flex-col gap-6">
@@ -19,7 +19,7 @@ export default function Loading() {
 
         {/* Buttons + Tags Skeleton */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 border-b border-border-default-secondary pb-8">
-          <div className="h-12 w-full sm:w-48 bg-background-tertiary rounded-[16px]" />
+          <div className="h-12 w-full sm:w-48 bg-background-tertiary rounded-2xl" />
           <div className="flex gap-2 w-full overflow-hidden">
             <div className="h-8 w-24 bg-background-tertiary rounded-lg shrink-0" />
             <div className="h-8 w-24 bg-background-tertiary rounded-lg shrink-0" />
@@ -44,16 +44,16 @@ export default function Loading() {
             <section key={i} className="space-y-6">
               <div className="h-6 w-48 bg-background-tertiary rounded-md" />
               <div className="flex gap-4 overflow-hidden">
-                <div className="h-48 w-80 bg-background-tertiary rounded-[24px] shrink-0" />
-                <div className="h-48 w-80 bg-background-tertiary rounded-[24px] shrink-0" />
+                <div className="h-48 w-80 bg-background-tertiary rounded-3xl shrink-0" />
+                <div className="h-48 w-80 bg-background-tertiary rounded-3xl shrink-0" />
               </div>
             </section>
           ))}
         </div>
 
         {/* LEFT COLUMN (In page.js it's the GameSidebar) */}
-        <div className="w-full lg:w-[320px] order-2 lg:order-1 space-y-10">
-          <div className="bg-background-tertiary border border-border-default-secondary rounded-[32px] p-8 h-[600px]" />
+        <div className="w-full lg:w-80 order-2 lg:order-1 space-y-10">
+          <div className="bg-background-tertiary border border-border-default-secondary rounded-3xl p-8 h-[600px]" />
         </div>
 
       </div>

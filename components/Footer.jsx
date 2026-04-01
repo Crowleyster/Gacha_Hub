@@ -34,7 +34,7 @@ export default function Footer() {
 
                 {/* 2. Navigation Section (Hidden on Mobile to avoid redundancy with Bottom Bar) */}
                 <div className="hidden md:flex flex-col gap-4">
-                    <h4 className="text-body-strong text-text-default-default uppercase tracking-widest text-[10px]">Explorar</h4>
+                    <h4 className="text-badge text-text-default-default">Explorar</h4>
                     <ul className="flex flex-col gap-3">
                         {TOP_NAV_ITEMS.map((item) => (
                             <li key={item.href}>
@@ -52,7 +52,7 @@ export default function Footer() {
 
                 {/* 3. Support & More */}
                 <div className="hidden md:flex flex-col gap-4">
-                    <h4 className="text-body-strong text-text-default-default uppercase tracking-widest text-[10px]">Soporte y Sistema</h4>
+                    <h4 className="text-badge text-text-default-default">Soporte y Sistema</h4>
                     <ul className="flex flex-col gap-3">
                         {BOTTOM_NAV_ITEMS.map((item) => (
                             <li key={item.href}>
@@ -65,7 +65,7 @@ export default function Footer() {
                             </li>
                         ))}
                         <li>
-                            <div className="flex items-center gap-2 text-[10px] font-bold text-text-default-tertiary bg-background-tertiary/50 border border-border-default-secondary px-2 py-1 rounded w-fit uppercase tracking-tighter">
+                            <div className="flex items-center gap-2 text-badge text-text-default-tertiary bg-background-tertiary/50 border border-border-default-secondary px-2 py-1 rounded w-fit uppercase tracking-tighter">
                                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
                                 v1.0.2 Stable Build
                             </div>
@@ -77,18 +77,18 @@ export default function Footer() {
             {/* Bottom Copyright */}
             <div className="max-w-7xl mx-auto mt-8 md:mt-12 pt-6 md:pt-8 border-t border-border-default-secondary flex flex-col md:flex-row justify-between items-center gap-6 md:gap-4 text-center">
                 
-                <div className="flex items-center gap-2 text-[10px] font-bold text-text-default-tertiary bg-background-tertiary/50 border border-border-default-secondary px-2 py-1 rounded w-fit uppercase tracking-tighter md:hidden">
+                <div className="flex items-center gap-2 text-badge text-text-default-tertiary bg-background-tertiary/50 border border-border-default-secondary px-2 py-1 rounded w-fit uppercase tracking-tighter md:hidden">
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
                     v1.0.2 Stable Build
                 </div>
 
-                <p className="text-[10px] text-text-default-tertiary uppercase tracking-widest">
+                <p className="text-caption text-text-default-tertiary uppercase tracking-widest">
                     © {currentYear} Gacha Hub. Todos los derechos reservados.
                 </p>
                 <div className="flex items-center gap-6">
-                   <Link href="/ayuda" className="text-[10px] text-text-default-tertiary uppercase tracking-widest hover:text-text-default-secondary cursor-pointer transition-colors md:hidden">Ayuda</Link>
-                   <span className="text-[10px] text-text-default-tertiary uppercase tracking-widest hover:text-text-default-secondary cursor-pointer transition-colors">Privacidad</span>
-                   <span className="text-[10px] text-text-default-tertiary uppercase tracking-widest hover:text-text-default-secondary cursor-pointer transition-colors hidden md:inline-block">Términos</span>
+                   <Link href="/ayuda" className="text-caption text-text-default-tertiary uppercase tracking-widest hover:text-text-default-secondary cursor-pointer transition-colors md:hidden">Ayuda</Link>
+                   <span className="text-caption text-text-default-tertiary uppercase tracking-widest hover:text-text-default-secondary cursor-pointer transition-colors">Privacidad</span>
+                   <span className="text-caption text-text-default-tertiary uppercase tracking-widest hover:text-text-default-secondary cursor-pointer transition-colors hidden md:inline-block">Términos</span>
                 </div>
             </div>
         </footer>

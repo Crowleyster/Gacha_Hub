@@ -19,7 +19,7 @@ export default function GameSidebar({ game }) {
                 {/* Ficha Técnica (Lista Tipográfica Limpia) */}
                 <section className="flex flex-col gap-5 pt-6 border-t border-border-default-secondary">
                     <h3 className="text-body-strong text-text-default-default uppercase tracking-wider">Ficha Técnica</h3>
-                    
+
                     <div className="flex flex-col gap-4">
                         <div className="flex justify-between items-baseline gap-4">
                             <span className="text-body-small-strong text-text-default-tertiary">Desarrollador</span>
@@ -38,8 +38,8 @@ export default function GameSidebar({ game }) {
 
                 {/* Comunidades y Redes Sociales */}
                 <section className="flex flex-col gap-5 pt-6 border-t border-border-default-secondary">
-                     <h3 className="text-body-strong text-text-default-default uppercase tracking-wider">Comunidad Oficial</h3>
-                     <div className="flex flex-wrap gap-2">
+                    <h3 className="text-body-strong text-text-default-default uppercase tracking-wider">Comunidad Oficial</h3>
+                    <div className="flex flex-wrap gap-2">
                         {game.socialLinks?.twitter && (
                             <a href={game.socialLinks.twitter} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center p-3 bg-background-tertiary border border-border-default-secondary rounded-xl text-text-default-secondary hover:text-brand-default hover:border-brand-default transition-all w-12 h-12" title="Twitter"><Twitter className="w-5 h-5" /></a>
                         )}

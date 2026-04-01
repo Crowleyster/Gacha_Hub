@@ -61,7 +61,7 @@ function GameCard({ game, viewMode }) {
                             ))}
                         </div>
                     </div>
-                    <p className="text-body-small text-text-default-secondary truncate">{game.developer} • {game.genre.join(', ')}</p>
+                    <p className="text-body-small text-text-default-secondary truncate">{game.developer} • {game.genre.slice(0, 2).join(', ')}</p>
                 </div>
                 <div className="hidden sm:flex flex-col items-end gap-1 shrink-0">
                     <span className="text-[10px] font-bold text-text-default-tertiary uppercase tracking-wider">Versión</span>
@@ -80,7 +80,7 @@ function GameCard({ game, viewMode }) {
         <Link
             href={`/juegos/${game.id}`}
             className="
-                group relative flex flex-col aspect-[4/5] rounded-[24px] overflow-hidden bg-background-tertiary
+                group relative flex flex-col aspect-[4/5] rounded-3xl overflow-hidden bg-background-tertiary
                 border border-border-default-secondary transition-all duration-500
                 hover:border-border-default-default hover:shadow-lg hover:-translate-y-1
                 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-white/30
@@ -150,10 +150,10 @@ function FiltersContent({ filters, updateFilter, hasActiveFilters, clearFilters,
             {hasActiveFilters && (
                 <button
                     onClick={clearFilters}
-                    className="flex items-center justify-center gap-2 h-[42px] px-4 shrink-0 bg-background-tertiary border border-border-default-secondary rounded-xl text-body-small-strong uppercase tracking-wider text-text-default-secondary hover:bg-background-secondary-hover hover:text-brand-default transition-all mt-auto"
+                    className="flex items-center justify-center gap-2 h-11 px-4 shrink-0 bg-background-tertiary border border-border-default-secondary rounded-xl text-body-small-strong uppercase tracking-wider text-text-default-secondary hover:bg-background-secondary-hover hover:text-brand-default transition-all mt-auto"
                 >
                     <RotateCcw className="w-3.5 h-3.5" />
-                    <span className="lg:hidden text-[10px]">Limpiar filtros</span>
+                    <span className="lg:hidden text-badge">Limpiar filtros</span>
                 </button>
             )}
         </div>

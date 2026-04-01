@@ -96,7 +96,7 @@ export default function SectionCarousel({ children }) {
 
             {/* Indicador de Progreso (Dots/Pills) */}
             {canScrollRight || canScrollLeft ? (
-                <div className="flex justify-center items-center gap-1.5 mt-1 lg:hidden">
+                <div className="flex justify-center items-center gap-1.5 mt-4">
                     <div className="relative w-16 h-1 bg-background-tertiary rounded-full overflow-hidden">
                         <div 
                             className="absolute top-0 left-0 h-full bg-brand-default transition-all duration-150 rounded-full"

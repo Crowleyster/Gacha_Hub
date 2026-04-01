@@ -52,10 +52,10 @@ function FiltersContent({ filters, updateFilter, hasActiveFilters, clearFilters,
             {hasActiveFilters && (
                 <button
                     onClick={clearFilters}
-                    className="flex items-center justify-center gap-2 h-[42px] px-4 shrink-0 bg-background-tertiary border border-border-default-secondary rounded-xl text-body-small-strong uppercase tracking-wider text-text-default-secondary hover:bg-background-secondary-hover hover:text-brand-default transition-all mt-auto"
+                    className="flex items-center justify-center gap-2 h-11 px-4 shrink-0 bg-background-tertiary border border-border-default-secondary rounded-xl text-body-small-strong uppercase tracking-wider text-text-default-secondary hover:bg-background-secondary-hover hover:text-brand-default transition-all mt-auto"
                 >
                     <RotateCcw className="w-3.5 h-3.5" />
-                    <span className="lg:hidden text-[10px]">Limpiar filtros</span>
+                    <span className="lg:hidden text-badge">Limpiar filtros</span>
                 </button>
             )}
         </div>

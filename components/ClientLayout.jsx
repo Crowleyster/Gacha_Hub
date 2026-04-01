@@ -78,11 +78,11 @@ function GlobalEventSheet() {
                         <div className="flex flex-col gap-4 p-4 bg-background-secondary rounded-2xl border border-border-default-secondary">
                             <div className="flex justify-between items-center text-body-small">
                                 <div className="flex flex-col">
-                                    <span className="text-text-default-tertiary uppercase text-[10px] font-bold tracking-widest mb-1">Inicio</span>
+                                    <span className="text-text-default-tertiary uppercase text-badge mb-1">Inicio</span>
                                     <span className="text-text-default-default font-medium">{selectedEvent.startDate}</span>
                                 </div>
                                 <div className="flex flex-col text-right">
-                                    <span className="text-text-default-tertiary uppercase text-[10px] font-bold tracking-widest mb-1">Fin</span>
+                                    <span className="text-text-default-tertiary uppercase text-badge mb-1">Fin</span>
                                     <span className="text-text-default-default font-medium">{selectedEvent.endDate === '2099-12-31' ? 'Permanente' : selectedEvent.endDate}</span>
                                 </div>
                             </div>
@@ -107,7 +107,7 @@ function GlobalEventSheet() {
                         <div className="flex flex-col gap-3">
                             <div className="flex items-center gap-2 text-text-default-tertiary">
                                 <Info className="w-4 h-4" />
-                                <span className="text-[10px] uppercase font-bold tracking-widest">Información</span>
+                                <span className="text-badge uppercase">Información</span>
                             </div>
                             <p className="text-body-base text-text-default-secondary leading-relaxed">
                                 {selectedEvent.description || GAMES_DATA[selectedEvent.gameId]?.description || 'Este evento ofrece recompensas exclusivas por tiempo limitado. Asegúrate de completar los objetivos antes del cierre.'}
@@ -187,7 +187,7 @@ function LayoutContent({ children }) {
             )}
 
             <div className={`flex flex-col h-full flex-1 min-w-0 bg-background-default transition-all duration-300 ${isSidebarExpanded ? 'sm:ml-64 sm:w-[calc(100%-16rem)]' : 'sm:ml-16 sm:w-[calc(100%-4rem)]'}`}>
-                <div className={`fixed top-0 right-0 z-40 transition-all duration-300 ${isSidebarExpanded ? 'left-64' : 'sm:left-[68px] left-0'}`}>
+                <div className={`fixed top-0 right-0 z-40 transition-all duration-300 ${isSidebarExpanded ? 'left-64' : 'sm:left-16 left-0'}`}>
                     <Header
                         onToggleSidebar={() => setIsSidebarExpanded(!isSidebarExpanded)}
                         onOpenMobileSheet={() => setIsMobileSheetOpen(true)}
@@ -195,7 +195,7 @@ function LayoutContent({ children }) {
                     />
                 </div>
 
-                <div ref={scrollContainerRef} className="flex-1 overflow-y-auto overflow-x-hidden custom-scrollbar pb-content-safe sm:pb-12 pt-[57px]">
+                <div ref={scrollContainerRef} className="flex-1 overflow-y-auto overflow-x-hidden custom-scrollbar pb-content-safe sm:pb-12 pt-14">
                     <main className="w-full max-w-[3840px] mx-auto grid content-start grid-cols-4 sm:grid-cols-8 md:grid-cols-12 gap-4 sm:gap-6 p-6 xs:p-8 sm:p-12 md:px-24 md:py-12 2xl:px-40 2xl:py-12">
                         {children}
                     </main>

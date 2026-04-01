@@ -138,11 +138,11 @@ export default function GlobalSearch({ isOpen, onClose, onOpen }) {
                     />
                     <button 
                         onClick={onClose}
-                        className="p-1 text-text-default-tertiary hover:text-text-default-default bg-background-tertiary rounded-md px-2 text-[10px] font-bold tracking-widest sm:hidden"
+                        className="p-1 text-text-default-tertiary hover:text-text-default-default bg-background-tertiary rounded-md px-2 text-badge font-bold tracking-widest sm:hidden"
                     >
                         ESC
                     </button>
-                    <div className="hidden sm:flex text-[10px] items-center gap-1 font-bold text-text-default-tertiary tracking-widest bg-background-tertiary px-2 py-1 rounded-md">
+                    <div className="hidden sm:flex text-badge items-center gap-1 font-bold text-text-default-tertiary tracking-widest bg-background-tertiary px-2 py-1 rounded-md">
                         ESC
                     </div>
                 </div>

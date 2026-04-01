@@ -35,6 +35,9 @@
 
   /* PWA / safe area */
   --mobile-nav-height: 80px;
+  --header-height: 56px;
+  --sidebar-width-expanded: 256px;
+  --sidebar-width-collapsed: 64px;
 }
 
 .dark {

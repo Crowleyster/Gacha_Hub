@@ -37,7 +37,7 @@ export default function PageControls({
                 <div className="2xl:hidden flex items-center justify-between gap-3 w-full">
                     <button
                         onClick={() => setIsMobileFilterOpen(true)}
-                        className="flex items-center justify-center gap-2 h-[42px] px-4 flex-1 sm:flex-none bg-background-tertiary border border-border-default-secondary rounded-xl shadow-sm text-body-small-strong text-text-default-default hover:bg-background-secondary-hover transition-colors relative"
+                        className="flex items-center justify-center gap-2 h-11 px-4 flex-1 sm:flex-none bg-background-tertiary border border-border-default-secondary rounded-xl shadow-100 text-body-small-strong text-text-default-default hover:bg-background-secondary-hover transition-colors relative"
                     >
                         <Filter className="w-5 h-5" /> Filtrar y Ordenar
                         {hasActiveFilters && (
@@ -69,12 +69,12 @@ export default function PageControls({
                 <div className="hidden 2xl:flex items-center gap-3 shrink-0 ml-auto self-end">
                     {/* Sort Selector Desktop */}
                     <div className="flex flex-col gap-1.5 shrink-0 min-w-[160px]">
-                        <span className="text-[10px] uppercase tracking-wider font-bold text-text-default-tertiary px-1">Ordenar por</span>
+                        <span className="text-badge text-text-default-tertiary px-1">Ordenar por</span>
                         <div className="relative group/select">
                             <select
                                 value={sortMode}
                                 onChange={(e) => onSortChange(e.target.value)}
-                                className="w-full h-[42px] pl-4 pr-10 bg-background-tertiary border border-border-default-secondary rounded-xl text-body-small-strong text-text-default-default appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-brand-default/20 transition-all hover:border-border-default-default"
+                                className="w-full h-11 pl-4 pr-10 bg-background-tertiary border border-border-default-secondary rounded-xl text-body-small-strong text-text-default-default appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-brand-default/20 transition-all hover:border-border-default-default"
                             >
                                 {sortOptions.map((opt) => (
                                     <option key={opt.id} value={opt.id} className="bg-background-secondary text-text-default-default">
@@ -94,10 +94,10 @@ export default function PageControls({
                     <div className="flex flex-col gap-1.5 shrink-0">
                         <span className="text-[10px] uppercase tracking-wider font-bold text-text-default-tertiary px-1">Vista</span>
                         <div className="flex items-center bg-background-tertiary p-1 rounded-xl border border-border-default-secondary">
-                            <button onClick={() => onViewChange('grid')} className={`flex items-center justify-center w-[34px] h-[34px] rounded-lg transition-all ${viewMode === 'grid' ? 'bg-background-default text-text-default-default shadow-sm' : 'text-text-default-tertiary hover:text-text-default-default'}`}>
+                            <button onClick={() => onViewChange('grid')} className={`flex items-center justify-center w-9 h-9 rounded-lg transition-all ${viewMode === 'grid' ? 'bg-background-default text-text-default-default shadow-100' : 'text-text-default-tertiary hover:text-text-default-default'}`}>
                                 <LayoutGrid className="w-4 h-4" />
                             </button>
-                            <button onClick={() => onViewChange('list')} className={`flex items-center justify-center w-[34px] h-[34px] rounded-lg transition-all ${viewMode === 'list' ? 'bg-background-default text-text-default-default shadow-sm' : 'text-text-default-tertiary hover:text-text-default-default'}`}>
+                            <button onClick={() => onViewChange('list')} className={`flex items-center justify-center w-9 h-9 rounded-lg transition-all ${viewMode === 'list' ? 'bg-background-default text-text-default-default shadow-100' : 'text-text-default-tertiary hover:text-text-default-default'}`}>
                                 <List className="w-4 h-4" />
                             </button>
                         </div>

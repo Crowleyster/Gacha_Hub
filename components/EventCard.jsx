@@ -31,7 +31,7 @@ export default function EventCard({ event, viewMode = 'grid', onClick, className
 
   // Clases compartidas para el contenedor
   const commonClasses = "group relative overflow-hidden transition-all duration-500 cursor-pointer text-left shrink-0";
-  const gridClasses = `rounded-[24px] border-2 border-transparent hover:border-border-default-default hover:shadow-2xl hover:-translate-y-1 aspect-[16/9] sm:aspect-[4/3] lg:aspect-auto h-56 lg:h-64 bg-background-secondary snap-center ${className || 'w-full'}`;
+  const gridClasses = `rounded-3xl border-2 border-transparent hover:border-border-default-default hover:shadow-600 hover:-translate-y-1 aspect-[16/9] sm:aspect-[4/3] lg:aspect-auto h-56 lg:h-64 bg-background-secondary snap-center ${className || 'w-full'}`;
   const listClasses = "flex flex-col sm:flex-row sm:items-center gap-4 p-4 bg-background-secondary border border-border-default-secondary rounded-2xl hover:border-border-default-default hover:shadow-md w-full";
 
   const Content = () => {
@@ -52,8 +52,8 @@ export default function EventCard({ event, viewMode = 'grid', onClick, className
             
             <div className="flex items-center gap-3 sm:shrink-0 justify-between sm:justify-end">
                 <div className="flex items-center gap-2">
-                    {type && <span className="hidden md:inline px-2 py-0.5 bg-brand-default/10 text-brand-default rounded-md text-[10px] font-bold uppercase tracking-wider">{type}</span>}
-                    <span className={`${color} px-3 py-1 rounded-full text-[10px] font-bold shadow-sm`}>{label}</span>
+                    {type && <span className="hidden md:inline px-2 py-0.5 bg-brand-default/10 text-brand-default rounded-md text-badge font-bold uppercase tracking-wider">{type}</span>}
+                    <span className={`${color} px-3 py-1 rounded-full text-badge font-bold shadow-100`}>{label}</span>
                 </div>
                 <CalendarDays className="w-4 h-4 text-text-default-tertiary group-hover:text-text-default-default transition-colors" />
             </div>
@@ -78,7 +78,7 @@ export default function EventCard({ event, viewMode = 'grid', onClick, className
                       <Image src={iconUrl} alt={shortName} fill sizes="32px" className="object-cover" />
                   </div>
               )}
-              <span className={`${color} px-2.5 py-0.5 rounded-full shadow-lg backdrop-blur-sm border border-white/10 text-[10px] font-bold uppercase tracking-wider whitespace-nowrap`}>
+              <span className={`${color} px-2.5 py-0.5 rounded-full shadow-400 backdrop-blur-sm border border-white/10 text-badge font-bold uppercase tracking-wider whitespace-nowrap`}>
                 {label}
               </span>
           </div>
@@ -87,7 +87,7 @@ export default function EventCard({ event, viewMode = 'grid', onClick, className
             {title}
           </h3>
 
-          <div className="flex items-center gap-1.5 text-white/60 text-[10px] font-medium tracking-wide drop-shadow-sm">
+          <div className="flex items-center gap-1.5 text-white/60 text-caption font-medium tracking-wide drop-shadow-sm">
             <CalendarDays className="w-3.5 h-3.5 shrink-0" />
             <span>{formatDateShort(startDate)} — {formatDateShort(endDate)}</span>
           </div>

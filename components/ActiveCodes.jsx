@@ -2,14 +2,15 @@
 
 import { useState, useRef, useEffect, useMemo } from 'react';
 import Image from 'next/image';
-import { Copy, Check, Ticket, ChevronLeft, ChevronRight, Clock, ChevronDown } from 'lucide-react';
+import { Copy, Check, Ticket, Clock, ChevronDown } from 'lucide-react';
 import { CODES_DATA } from '@/lib/mock-data';
 import SectionHeader from './SectionHeader';
+import SectionCarousel from './ui/SectionCarousel';
 
 /* ─── Code Card ─────────────────────────────────────────────────────── */
 function CodeCard({ item, onCopy, isCopied }) {
     return (
-        <div className="flex-shrink-0 snap-start w-[calc(100vw-2rem)] sm:w-72 md:w-80 bg-background-secondary border border-border-default-secondary rounded-xl p-4 flex flex-col gap-3 hover:bg-background-secondary-hover hover:border-border-default-default transition-all duration-300 group/card">
+        <div className="flex-shrink-0 snap-start w-[calc(100vw-2rem)] sm:w-[320px] bg-background-secondary border border-border-default-secondary rounded-xl p-4 flex flex-col gap-3 hover:bg-background-secondary-hover hover:border-border-default-default transition-all duration-300 group/card">
 
             <div className="flex items-center justify-between gap-3">
                 <div className="flex items-center gap-2 overflow-hidden">
@@ -144,7 +145,6 @@ export default function ActiveCodes({ fixedGame = null, hideHeader = false }) {
     // Si hay un juego fijo, lo usamos. Si no, usamos ALL_GAMES.
     const [selectedGame, setSelectedGame] = useState(fixedGame || ALL_GAMES);
     const [copiedCode, setCopiedCode] = useState(null);
-    const carouselRef = useRef(null);
 
     // Actualizar el juego seleccionado si fixedGame cambia (ej. navegando entre hubs)
     useEffect(() => {
@@ -155,11 +155,6 @@ export default function ActiveCodes({ fixedGame = null, hideHeader = false }) {
         navigator.clipboard.writeText(code).catch(() => { });
         setCopiedCode(code);
         setTimeout(() => setCopiedCode(null), 2000);
-    };
-
-    const scroll = (dir) => {
-        if (!carouselRef.current) return;
-        carouselRef.current.scrollBy({ left: dir * 300, behavior: 'smooth' });
     };
 
     // Flatten and Sort Codes
@@ -204,37 +199,17 @@ export default function ActiveCodes({ fixedGame = null, hideHeader = false }) {
                 </div>
             )}
 
-            <div className="relative group">
-                <button 
-                  onClick={() => scroll(-1)} 
-                  aria-label="Anterior" 
-                  className="hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-20 w-10 h-10 items-center justify-center rounded-full bg-background-default border border-border-default-default text-text-default-secondary hover:text-brand-default hover:border-brand-default shadow-400 transition-all duration-300 opacity-0 group-hover:opacity-100 group-hover:translate-x-0"
-                >
-                    <ChevronLeft className="w-5 h-5" />
-                </button>
-                <button 
-                  onClick={() => scroll(1)} 
-                  aria-label="Siguiente" 
-                  className="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-20 w-10 h-10 items-center justify-center rounded-full bg-background-default border border-border-default-default text-text-default-secondary hover:text-brand-default hover:border-brand-default shadow-400 transition-all duration-300 opacity-0 group-hover:opacity-100 group-hover:translate-x-0"
-                >
-                    <ChevronRight className="w-5 h-5" />
-                </button>
-
-                <div 
-                  ref={carouselRef} 
-                  className="flex gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-none pb-4 -mx-4 px-4 scroll-pl-4 md:-mx-6 md:px-6 md:scroll-pl-6 xl:mx-0 xl:px-0 xl:scroll-pl-0"
-                >
-                    {codes.map((item) => (
-                        <CodeCard
-                            key={`${item.gameName}-${item.code}`}
-                            item={item}
-                            isCopied={copiedCode === item.code}
-                            onCopy={handleCopy}
-                        />
-                    ))}
-                    <div className="w-1 md:w-4 lg:w-8 shrink-0" aria-hidden="true" />
-                </div>
-            </div>
+            <SectionCarousel>
+                {codes.map((item) => (
+                    <CodeCard
+                        key={`${item.gameName}-${item.code}`}
+                        item={item}
+                        isCopied={copiedCode === item.code}
+                        onCopy={handleCopy}
+                    />
+                ))}
+                <div className="w-1 md:w-4 lg:w-8 shrink-0" aria-hidden="true" />
+            </SectionCarousel>
 
             {codes.length === 0 && (
                 <div className="flex flex-col items-center justify-center gap-2 py-12 text-text-default-secondary">

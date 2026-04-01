@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { 
-    ArrowLeft, Ticket, CalendarDays, Newspaper, Star, 
+import {
+    ArrowLeft, Ticket, CalendarDays, Newspaper, Star,
     Info, Globe, Twitter, MessageSquare, Download, ChevronRight
 } from 'lucide-react';
 import { GAMES_DATA } from '@/lib/games-data';
@@ -54,7 +54,7 @@ export default async function GameHub({ params }) {
         );
     }
 
-    const genres = game.genre || ['Acción', 'RPG', 'Gacha'];
+    const genres = (game.genre || ['Acción', 'RPG']).slice(0, 2);
 
     // Lógica de datos (Server-side)
     const baseNews = newsData.filter(news => news.gameId === id).slice(0, 6);
@@ -93,22 +93,22 @@ export default async function GameHub({ params }) {
 
     return (
         <main className="col-span-full pb-content-safe font-sans flex flex-col">
-            
+
             {/* ─── FASE 1: LA CABECERA (STOREFRONT) ─── */}
-            
+
             {/* Hero Banner */}
             <section className="relative w-full h-48 sm:h-64 md:h-80 bg-background-tertiary border border-border-default-secondary rounded-[32px] sm:rounded-[48px] overflow-hidden">
                 {game.bannerUrl && (
-                    <Image 
-                        src={game.bannerUrl} 
-                        alt={game.name} 
-                        fill 
-                        priority 
-                        className="object-cover" 
+                    <Image
+                        src={game.bannerUrl}
+                        alt={game.name}
+                        fill
+                        priority
+                        className="object-cover"
                     />
                 )}
                 <div className="absolute inset-0 bg-gradient-to-t from-background-default via-black/20 to-black/40" />
-                
+
                 <Link href="/juegos" className="absolute top-4 sm:top-6 left-4 sm:left-6 p-2 bg-black/40 backdrop-blur-md rounded-full text-white hover:bg-black/80 transition-colors z-20">
                     <ArrowLeft className="w-6 h-6" />
                 </Link>
@@ -118,17 +118,17 @@ export default async function GameHub({ params }) {
 
             {/* Identidad Solapada */}
             <section className="-mt-8 sm:-mt-12 md:-mt-16 relative z-10 px-4 md:px-8 flex flex-col gap-6">
-                
+
                 <div className="flex flex-row items-end gap-3 sm:gap-4 md:gap-6">
                     {/* Izquierda: Ícono */}
                     <div className="relative w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 shrink-0 rounded-2xl border-4 border-background-default shadow-300 bg-background-default overflow-hidden">
                         {game.iconUrl && (
-                            <Image 
-                                src={game.iconUrl} 
-                                alt={`${game.name} icon`} 
-                                fill 
+                            <Image
+                                src={game.iconUrl}
+                                alt={`${game.name} icon`}
+                                fill
                                 sizes="(max-width: 640px) 64px, (max-width: 768px) 80px, 96px"
-                                className="object-cover" 
+                                className="object-cover"
                             />
                         )}
                     </div>
@@ -142,11 +142,11 @@ export default async function GameHub({ params }) {
 
                 {/* Acciones y Tags Rápidos */}
                 <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 border-b border-border-default-secondary pb-6">
-                    <a 
-                        href={game.officialSite || '#'} 
-                        target="_blank" 
-                        rel="noopener noreferrer" 
-                        className="w-full sm:w-auto flex items-center justify-center gap-2 h-12 px-8 bg-brand-default text-text-brand-on rounded-[16px] text-body-strong font-bold hover:opacity-90 transition-opacity whitespace-nowrap shadow-sm"
+                    <a
+                        href={game.officialSite || '#'}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-full sm:w-auto flex items-center justify-center gap-2 h-12 px-8 bg-brand-default text-text-brand-on rounded-2xl text-body-strong font-bold hover:opacity-90 transition-opacity whitespace-nowrap shadow-100"
                     >
                         <Download className="w-5 h-5" /> Jugar Gratis
                     </a>
@@ -169,15 +169,13 @@ export default async function GameHub({ params }) {
 
             {/* ─── FASE 2: EL LAYOUT DE CONTENIDO ─── */}
             <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 px-4 md:px-8 mt-8 pb-12">
-                
+
                 <div className="flex-1 flex flex-col gap-12 min-w-0 order-1 lg:order-2">
-                    
+
                     {/* Códigos de Canje */}
-                    <section>
+                    <section className="flex flex-col gap-4">
                         <SectionHeader icon={Ticket} title="Códigos Activos" />
-                        <div className="bg-background-secondary border border-border-default-secondary p-4 sm:p-6 rounded-3xl">
-                             <ActiveCodes fixedGame={game.name} hideHeader={true} />
-                        </div>
+                        <ActiveCodes fixedGame={game.name} hideHeader={true} />
                     </section>
 
                     {/* Destacados / Gachapón */}
@@ -192,16 +190,16 @@ export default async function GameHub({ params }) {
                         {gameEvents.length > 0 ? (
                             <SectionCarousel>
                                 {gameEvents.map(event => (
-                                    <EventCard 
-                                        key={event.id} 
-                                        event={{...event, gameId: id}} 
-                                        className="w-[75vw] sm:w-[calc(50%-12px)]" 
+                                    <EventCard
+                                        key={event.id}
+                                        event={{ ...event, gameId: id }}
+                                        className="w-[75vw] sm:w-[calc(50%-12px)]"
                                     />
                                 ))}
                                 <div className="w-1 shrink-0" aria-hidden="true" />
                             </SectionCarousel>
                         ) : (
-                            <EmptyState 
+                            <EmptyState
                                 title="Sin eventos activos"
                                 subtitle="No hay eventos activos en este momento. Revisa las noticias para próximos anuncios."
                             />
@@ -214,7 +212,7 @@ export default async function GameHub({ params }) {
                             <SectionHeader icon={Newspaper} title="Últimas Noticias" href={`/noticias?juego=${id}`} />
                             <SectionCarousel>
                                 {gameNews.map(newsItem => (
-                                    <NewsCard 
+                                    <NewsCard
                                         key={newsItem.id}
                                         id={newsItem.id}
                                         title={newsItem.title}
@@ -223,7 +221,7 @@ export default async function GameHub({ params }) {
                                         imageUrl={newsItem.imageUrl || game.bannerUrl}
                                         date={newsItem.date}
                                         isSmall={true}
-                                        className="w-[280px] h-[380px] sm:w-[320px] sm:h-[420px]"
+                                        className="w-72 h-[380px] sm:w-80 sm:h-[420px]"
                                     />
                                 ))}
                                 <div className="w-1 shrink-0" aria-hidden="true" />

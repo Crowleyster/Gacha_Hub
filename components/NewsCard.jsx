@@ -22,7 +22,7 @@ export default function NewsCard({
         <Link
             href={finalHref}
             className={`
-                group relative block w-full rounded-[24px] overflow-hidden cursor-pointer
+                group relative block w-full rounded-3xl overflow-hidden cursor-pointer
                 border-2 border-transparent transition-all duration-500
                 hover:border-border-default-default hover:shadow-2xl hover:-translate-y-1
                 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-white/30
@@ -62,7 +62,7 @@ export default function NewsCard({
                 <div className="
                     relative h-full w-full flex flex-col justify-end
                     p-4 sm:p-5 md:p-6
-                    gap-[4px]
+                    gap-1
                     transition-transform duration-300
                     group-hover:-translate-y-2
                 ">
@@ -78,7 +78,7 @@ export default function NewsCard({
                             </div>
                         )}
                         <div className="flex items-center gap-2">
-                            <span className="bg-black/50 backdrop-blur-sm text-white text-[10px] sm:text-body-small-strong p-1.5 px-2 rounded-md leading-none uppercase tracking-wider">
+                            <span className="bg-black/50 backdrop-blur-sm text-white text-badge sm:text-body-small-strong p-1.5 px-2 rounded-md leading-none uppercase tracking-wider">
                                 {tag}
                             </span>
                         </div>
@@ -99,7 +99,7 @@ export default function NewsCard({
                     </h3>
 
                     {date && (
-                        <div className="text-white/60 text-[10px] sm:text-body-small font-medium drop-shadow-sm mt-1">
+                        <div className="text-white/60 text-caption sm:text-body-small font-medium drop-shadow-sm mt-1">
                             {new Date(date).toLocaleDateString('es-ES', { day: '2-digit', month: 'long', year: 'numeric', timeZone: 'UTC' })}
                         </div>
                     )}
