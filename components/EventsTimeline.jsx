@@ -1,12 +1,12 @@
 'use client';
 
-import { useRef } from 'react';
-import { Calendar, ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react';
+import { Calendar, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 import { EVENTS_DATA } from '@/lib/mock-data';
 import EventCard from '@/components/EventCard';
 import SectionHeader from './SectionHeader';
 import { useFavorites } from '@/hooks/useFavorites';
+import SectionCarousel from './ui/SectionCarousel';
 
 // ── Helpers ──────────────────────────────────────────────
 
@@ -38,15 +38,8 @@ function sortedEvents(favorites = []) {
 // ── EventsTimeline ────────────────────────────────────────
 
 export default function EventsTimeline() {
-  const scrollRef = useRef(null);
   const { favorites } = useFavorites();
-
-  const scroll = (dir) => {
-    scrollRef.current?.scrollBy({ left: 296 * dir, behavior: 'smooth' });
-  };
-
   const events = sortedEvents(favorites);
-  const hasMany = events.length > 3;
 
   return (
     <section className="col-span-full flex flex-col gap-6 font-sans">
@@ -60,54 +53,18 @@ export default function EventsTimeline() {
         ctaLabel="Ver cronograma"
       />
 
-      {/* Contenedor responsive */}
-      <div className="relative">
-
-        {/* Flechas tablet */}
-        {hasMany && (
-          <>
-            <button
-              onClick={() => scroll(-1)}
-              aria-label="Anterior"
-              className="hidden md:flex lg:hidden absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10
-                         w-9 h-9 items-center justify-center rounded-full
-                         bg-background-default border border-border-default-default
-                         text-text-default-secondary hover:text-text-default-default
-                         shadow-300 transition-all duration-200"
-            >
-              <ChevronLeft className="w-4 h-4" aria-hidden="true" />
-            </button>
-            <button
-              onClick={() => scroll(1)}
-              aria-label="Siguiente"
-              className="hidden md:flex lg:hidden absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10
-                         w-9 h-9 items-center justify-center rounded-full
-                         bg-background-default border border-border-default-default
-                         text-text-default-secondary hover:text-text-default-default
-                         shadow-300 transition-all duration-200"
-            >
-              <ChevronRight className="w-4 h-4" aria-hidden="true" />
-            </button>
-          </>
-        )}
-
-        {/* Carrusel alineado a la izquierda con sangrado completo (Full-Bleed) */}
-        <div
-          ref={scrollRef}
-          className="
-            flex gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-none pb-4
-            -mx-4 px-4 scroll-pl-4 md:-mx-6 md:px-6 md:scroll-pl-6
-            lg:mx-0 lg:px-0 lg:scroll-pl-0 lg:grid lg:grid-cols-3 lg:pb-0 lg:overflow-x-visible
-            xl:grid-cols-4
-          "
-        >
-          {events.map((event) => (
-            <EventCard key={event.id} event={event} />
-          ))}
-          {/* Espaciador invisible para el margen final */}
-          <div className="w-1 shrink-0 lg:hidden" aria-hidden="true" />
-        </div>
-      </div>
+      {/* Carrusel Unificado (Full-Bleed + Peek) — La lógica de scroll y flechas se delega a SectionCarousel */}
+      <SectionCarousel>
+        {events.map((event) => (
+          <EventCard 
+            key={event.id} 
+            event={event} 
+            className="w-[75vw] sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-12px)] xl:w-[calc(25%-12px)]" 
+          />
+        ))}
+        {/* Espaciador invisible para el margen final */}
+        <div className="w-1 shrink-0 lg:hidden" aria-hidden="true" />
+      </SectionCarousel>
 
       {/* Botón mobile */}
       <Link

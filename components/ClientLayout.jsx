@@ -3,14 +3,132 @@
 import { useState, useEffect, useRef } from 'react';
 import { ThemeProvider } from 'next-themes';
 import { usePathname } from 'next/navigation';
+import Image from 'next/image';
+import { Clock, Info } from 'lucide-react';
 import Sidebar from '@/components/Sidebar';
 import Header from '@/components/Header';
 import MobileNav from '@/components/MobileNav';
 import SettingsSheet from '@/components/SettingsSheet';
 import GlobalSearch from '@/components/GlobalSearch';
 import Footer from '@/components/Footer';
+import RightSheet from '@/components/ui/RightSheet';
+import { ActiveEventProvider, useActiveEvent } from '@/context/ActiveEventContext';
+import { GAMES_DATA } from '@/lib/games-data';
+import { getTimeInfo } from '@/lib/utils/date-utils';
+
+function GlobalEventSheet() {
+    const { selectedEvent, isOpen, closeEvent } = useActiveEvent();
+
+    return (
+        <RightSheet isOpen={isOpen} onClose={closeEvent} title={selectedEvent?.title}>
+            {selectedEvent && (
+                <div className="flex flex-col animate-in fade-in duration-500">
+                    {/* 1. Imagen del Evento */}
+                    <div className="relative aspect-video w-full bg-background-tertiary overflow-hidden">
+                        {(selectedEvent.imageUrl || GAMES_DATA[selectedEvent.gameId]?.bannerUrl) && (
+                            <Image 
+                                src={selectedEvent.imageUrl || GAMES_DATA[selectedEvent.gameId]?.bannerUrl} 
+                                alt={selectedEvent.title} 
+                                fill 
+                                className="object-cover" 
+                            />
+                        )}
+                        <div className="absolute inset-0 bg-gradient-to-t from-background-default via-transparent to-transparent" />
+                    </div>
+
+                    <div className="flex flex-col p-6 gap-8">
+                        {/* 2. Cabecera del Juego */}
+                        <div className="flex items-center gap-3">
+                            {GAMES_DATA[selectedEvent.gameId]?.iconUrl && (
+                                <div className="relative w-10 h-10 rounded-full overflow-hidden border border-border-default-secondary shadow-sm">
+                                    <Image 
+                                        src={GAMES_DATA[selectedEvent.gameId].iconUrl} 
+                                        alt={selectedEvent.gameName} 
+                                        fill 
+                                        className="object-cover" 
+                                    />
+                                </div>
+                            )}
+                            <span className="text-body-strong text-text-default-secondary">
+                                {GAMES_DATA[selectedEvent.gameId]?.name || selectedEvent.gameName}
+                            </span>
+                        </div>
+
+                        {/* 3. Título */}
+                        <h2 className="text-heading text-text-default-default leading-tight">
+                            {selectedEvent.title}
+                        </h2>
+
+                        {/* 4. Metadatos y Tags */}
+                        <div className="flex flex-wrap gap-2">
+                            {selectedEvent.type && (
+                                <span className="px-3 py-1.5 bg-brand-default/10 text-brand-default rounded-lg text-badge tracking-wider font-bold border border-brand-default/20">
+                                    {selectedEvent.type}
+                                </span>
+                            )}
+                            {selectedEvent.category && (
+                                <span className="px-3 py-1.5 bg-background-secondary text-text-default-secondary rounded-lg text-badge tracking-wider font-bold border border-border-default-secondary">
+                                    {selectedEvent.category}
+                                </span>
+                            )}
+                        </div>
+
+                        {/* 5. Estado y Tiempo */}
+                        <div className="flex flex-col gap-4 p-4 bg-background-secondary rounded-2xl border border-border-default-secondary">
+                            <div className="flex justify-between items-center text-body-small">
+                                <div className="flex flex-col">
+                                    <span className="text-text-default-tertiary uppercase text-[10px] font-bold tracking-widest mb-1">Inicio</span>
+                                    <span className="text-text-default-default font-medium">{selectedEvent.startDate}</span>
+                                </div>
+                                <div className="flex flex-col text-right">
+                                    <span className="text-text-default-tertiary uppercase text-[10px] font-bold tracking-widest mb-1">Fin</span>
+                                    <span className="text-text-default-default font-medium">{selectedEvent.endDate === '2099-12-31' ? 'Permanente' : selectedEvent.endDate}</span>
+                                </div>
+                            </div>
+                            <hr className="border-border-default-secondary opacity-50" />
+                            <div className="flex items-center justify-between">
+                                <div className="flex items-center gap-2 text-text-default-secondary">
+                                    <Clock className="w-4 h-4" />
+                                    <span className="text-body-base">Tiempo restante</span>
+                                </div>
+                                {(() => {
+                                    const { label, color } = getTimeInfo(selectedEvent);
+                                    return (
+                                        <span className={`${color} px-4 py-1.5 rounded-full text-body-small-strong shadow-sm border border-black/10`}>
+                                            {label}
+                                        </span>
+                                    );
+                                })()}
+                            </div>
+                        </div>
+
+                        {/* 6. Descripción */}
+                        <div className="flex flex-col gap-3">
+                            <div className="flex items-center gap-2 text-text-default-tertiary">
+                                <Info className="w-4 h-4" />
+                                <span className="text-[10px] uppercase font-bold tracking-widest">Información</span>
+                            </div>
+                            <p className="text-body-base text-text-default-secondary leading-relaxed">
+                                {selectedEvent.description || GAMES_DATA[selectedEvent.gameId]?.description || 'Este evento ofrece recompensas exclusivas por tiempo limitado. Asegúrate de completar los objetivos antes del cierre.'}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            )}
+        </RightSheet>
+    );
+}
 
 export default function ClientLayout({ children }) {
+    return (
+        <ActiveEventProvider>
+            <LayoutContent>{children}</LayoutContent>
+            <GlobalEventSheet />
+        </ActiveEventProvider>
+    );
+}
+
+function LayoutContent({ children }) {
     const [isSidebarExpanded, setIsSidebarExpanded] = useState(true);
     const [isMobileSheetOpen, setIsMobileSheetOpen] = useState(false);
     const [isGlobalSearchOpen, setIsGlobalSearchOpen] = useState(false);
@@ -44,7 +162,6 @@ export default function ClientLayout({ children }) {
         }
     }, [pathname]);
 
-    // The Layout wrapper on desktop uses lg:ml-64 and sm:ml-16. Below sm, sidebar is hidden.
     return (
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
             <Sidebar isExpanded={isSidebarExpanded} />
@@ -76,11 +193,8 @@ export default function ClientLayout({ children }) {
 
             <MobileNav />
 
-            {/* Application Mobile Sheet (Settings & Help) */}
-            {/* The BottomSheet component seems to be imported inside MobileNav currently, we should handle that correctly or create a quick SettingsSheet here if BottomSheet is generic */}
             <SettingsSheet isOpen={isMobileSheetOpen} onClose={() => setIsMobileSheetOpen(false)} />
 
-            {/* Global Spotlight Search */}
             <GlobalSearch
                 isOpen={isGlobalSearchOpen}
                 onClose={() => setIsGlobalSearchOpen(false)}

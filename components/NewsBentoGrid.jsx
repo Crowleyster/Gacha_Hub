@@ -50,7 +50,6 @@ export default function NewsBentoGrid() {
                 <NewsCard 
                     {...news} 
                     imageUrl={fallbackImage} 
-                    href="/noticias"
                     isHero={index === 0}
                     isSmall={index >= 2} 
                 />

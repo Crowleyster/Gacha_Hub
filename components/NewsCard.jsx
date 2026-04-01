@@ -3,6 +3,7 @@ import { ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 
 export default function NewsCard({
+    id,
     title,
     tag,
     gameIconUrl,
@@ -10,16 +11,21 @@ export default function NewsCard({
     date,
     isHero = false,
     isSmall = false,
-    href = "/noticias"
+    href
 }) {
+    // Si se pasa un ID, construimos la ruta al detalle, 
+    // a menos que se pase un href explícito.
+    const finalHref = href || (id ? `/noticias/${id}` : "/noticias");
+
     return (
         <Link
-            href={href}
+            href={finalHref}
             className="
                 group relative block w-full h-full rounded-[24px] overflow-hidden cursor-pointer
                 border-2 border-transparent transition-all duration-500
                 hover:border-border-default-default hover:shadow-2xl hover:-translate-y-1
                 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-white/30
+                shrink-0 snap-center
             "
         >
             <article className="w-full h-full">

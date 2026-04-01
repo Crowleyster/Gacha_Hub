@@ -142,7 +142,7 @@ function GameCard({ game, viewMode }) {
 ───────────────────────────────────────────── */
 function FiltersContent({ filters, updateFilter, hasActiveFilters, clearFilters, allPlatforms, allGenres, allDevs }) {
     return (
-        <div className="flex flex-col lg:flex-row items-stretch gap-3 w-full">
+        <div className="flex flex-col 2xl:flex-row items-stretch gap-3 w-full">
             <FilterDropdown label="Plataforma" options={allPlatforms} selected={filters.plataforma} onChange={(v) => updateFilter('plataforma', v)} />
             <FilterDropdown label="Género" options={allGenres} selected={filters.genero} onChange={(v) => updateFilter('genero', v)} />
             <FilterDropdown label="Desarrollador" options={allDevs} selected={filters.desarrollador} onChange={(v) => updateFilter('desarrollador', v)} />

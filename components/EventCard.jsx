@@ -1,67 +1,15 @@
+"use client";
+
 import Image from 'next/image';
 import { CalendarDays } from 'lucide-react';
-import Link from 'next/link';
 import { GAMES_DATA } from '@/lib/games-data';
-
-// ── Helpers ──────────────────────────────────────────────
-
-function formatDateShort(dateStr) {
-  if (!dateStr) return '';
-  const [y, m, d] = dateStr.split('-').map(Number);
-  return new Date(y, m - 1, d).toLocaleDateString('es-ES', {
-    day: 'numeric',
-    month: 'short',
-  });
-}
-
-export function getTimeInfo(event) {
-  const { endDate, statusLabel } = event;
-
-  // Próximamente — evento aún no iniciado
-  if (statusLabel === 'Próximos' || event.status === 'upcoming') {
-    return { label: 'Próximamente', color: 'bg-black/50 backdrop-blur-sm text-white border-white/10', expired: false };
-  }
-
-  if (!endDate) {
-    return { label: 'Evento', color: 'bg-status-success text-white border-status-success/20', expired: false };
-  }
-
-  const [ey, em, ed] = endDate.split('-').map(Number);
-  const end = new Date(ey, em - 1, ed);
-  const now = new Date();
-  now.setHours(0, 0, 0, 0);
-
-  const diffMs = end - now;
-  const diffHours = Math.ceil(diffMs / (1000 * 60 * 60));
-  const diffDays = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
-
-  // Expirado
-  if (diffMs < 0) {
-    return { label: 'Finalizado', color: 'bg-white/10 text-white/50 border-white/10', expired: true };
-  }
-
-  // Permanente
-  if (diffDays > 365 || event.category === 'Permanente') {
-    return { label: 'Permanente', color: 'bg-status-info text-white border-status-info/20', expired: false };
-  }
-
-  // Últimas horas (≤ 24h)
-  if (diffHours <= 24) {
-    return { label: `${diffHours} ${diffHours === 1 ? 'Hora' : 'Hrs'}`, color: 'bg-status-danger text-white border-status-danger/20', expired: false };
-  }
-
-  // Últimos días (> 24h y ≤ 7 días)
-  if (diffDays <= 7) {
-    return { label: `${diffDays} ${diffDays === 1 ? 'Día' : 'Días'}`, color: 'bg-status-warning text-white border-status-warning/20', expired: false };
-  }
-
-  // Activo con tiempo
-  return { label: `${diffDays} Días`, color: 'bg-status-success text-white border-status-success/20', expired: false };
-}
+import { useActiveEvent } from '@/context/ActiveEventContext';
+import { formatDateShort, getTimeInfo } from '@/lib/utils/date-utils';
 
 // ── EventCard ─────────────────────────────────────────────
 
-export default function EventCard({ event, viewMode = 'grid', onClick }) {
+export default function EventCard({ event, viewMode = 'grid', onClick, className }) {
+  const { openEvent } = useActiveEvent();
   const { gameId, title, type, startDate, endDate, category } = event;
   const game = GAMES_DATA[gameId];
   const bannerUrl = game?.bannerUrl;
@@ -72,10 +20,19 @@ export default function EventCard({ event, viewMode = 'grid', onClick }) {
 
   if (expired) return null;
 
+  // Manejador de clic: usa prop onClick o el global openEvent
+  const handleInteraction = () => {
+    if (onClick) {
+      onClick(event);
+    } else {
+      openEvent(event);
+    }
+  };
+
   // Clases compartidas para el contenedor
-  const commonClasses = "group relative overflow-hidden transition-all duration-500 cursor-pointer";
-  const gridClasses = "rounded-[24px] border-2 border-transparent hover:border-border-default-default hover:shadow-2xl hover:-translate-y-1 aspect-[16/9] sm:aspect-[4/3] lg:aspect-auto h-56 w-full bg-background-secondary";
-  const listClasses = "flex flex-col sm:flex-row sm:items-center gap-4 p-4 bg-background-secondary border border-border-default-secondary rounded-2xl hover:border-border-default-default hover:shadow-md";
+  const commonClasses = "group relative overflow-hidden transition-all duration-500 cursor-pointer text-left shrink-0";
+  const gridClasses = `rounded-[24px] border-2 border-transparent hover:border-border-default-default hover:shadow-2xl hover:-translate-y-1 aspect-[16/9] sm:aspect-[4/3] lg:aspect-auto h-56 lg:h-64 bg-background-secondary snap-center ${className || 'w-[75vw] sm:w-full'}`;
+  const listClasses = "flex flex-col sm:flex-row sm:items-center gap-4 p-4 bg-background-secondary border border-border-default-secondary rounded-2xl hover:border-border-default-default hover:shadow-md w-full";
 
   const Content = () => {
     if (viewMode === 'list') {
@@ -89,7 +46,7 @@ export default function EventCard({ event, viewMode = 'grid', onClick }) {
                 </div>
                 <div className="flex-1 min-w-0 text-left">
                     <p className="text-caption text-text-default-tertiary truncate">{shortName}</p>
-                    <h3 className="text-body-strong text-text-default-default truncate">{title}</h3>
+                    <h3 className="text-body-strong text-text-default-default truncate drop-shadow-sm">{title}</h3>
                 </div>
             </div>
             
@@ -108,7 +65,7 @@ export default function EventCard({ event, viewMode = 'grid', onClick }) {
       <>
         <div className="absolute inset-0 bg-background-tertiary">
           {bannerUrl && (
-              <Image src={bannerUrl} alt={title} fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover transition-transform duration-700 ease-out group-hover:scale-110" />
+              <Image src={bannerUrl} alt={title} fill sizes="(max-width: 768px) 75vw, (max-width: 1024px) 320px, 33vw" className="object-cover transition-transform duration-700 ease-out group-hover:scale-110" />
           )}
         </div>
 
@@ -126,11 +83,11 @@ export default function EventCard({ event, viewMode = 'grid', onClick }) {
               </span>
           </div>
 
-          <h3 className="text-white text-body-strong font-bold line-clamp-2 leading-tight group-hover:text-amber-200 transition-colors text-left">
+          <h3 className="text-white text-body-strong font-bold line-clamp-2 leading-tight group-hover:text-amber-200 transition-colors text-left drop-shadow-md">
             {title}
           </h3>
 
-          <div className="flex items-center gap-1.5 text-white/60 text-[10px] font-medium tracking-wide">
+          <div className="flex items-center gap-1.5 text-white/60 text-[10px] font-medium tracking-wide drop-shadow-sm">
             <CalendarDays className="w-3.5 h-3.5 shrink-0" />
             <span>{formatDateShort(startDate)} — {formatDateShort(endDate)}</span>
           </div>
@@ -139,24 +96,12 @@ export default function EventCard({ event, viewMode = 'grid', onClick }) {
     );
   };
 
-  // Switch interactivo: Botón (Sheet) o Link (Página)
-  if (onClick) {
-    return (
-        <button 
-            onClick={() => onClick(event)}
-            className={`${commonClasses} ${viewMode === 'grid' ? gridClasses : listClasses} w-full`}
-        >
-            <Content />
-        </button>
-    );
-  }
-
   return (
-    <Link
-      href={`/juegos/${gameId}`}
-      className={`${commonClasses} ${viewMode === 'grid' ? gridClasses : listClasses} block h-full`}
+    <button 
+        onClick={handleInteraction}
+        className={`${commonClasses} ${viewMode === 'grid' ? gridClasses : listClasses}`}
     >
-      <Content />
-    </Link>
+        <Content />
+    </button>
   );
 }

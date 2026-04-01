@@ -14,12 +14,12 @@ export default function MobileFilterModal({ isOpen, onClose, title = "Filtros", 
     if (!isOpen) return null;
 
     return (
-        <div className="fixed inset-0 z-[100] lg:hidden flex justify-end">
+        <div className="fixed inset-0 z-[100] flex justify-end">
             <div
                 className="absolute inset-0 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200"
                 onClick={onClose}
             />
-            <aside className="relative w-[85%] max-w-sm h-full bg-background-default border-l border-border-default-secondary shadow-2xl flex flex-col animate-in slide-in-from-right-full duration-300">
+            <aside className="relative w-[85%] sm:max-w-md h-full bg-background-default border-l border-border-default-secondary shadow-2xl flex flex-col animate-in slide-in-from-right-full duration-300">
                 <div className="flex items-center justify-between p-4 border-b border-border-default-secondary shrink-0">
                     <h3 className="text-heading text-text-default-default">{title}</h3>
                     <button

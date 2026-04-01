@@ -33,8 +33,8 @@ export default function PageControls({
         <div className="space-y-3">
             <div className="flex flex-col lg:flex-row lg:items-end gap-3 bg-background-secondary border border-border-default-secondary p-4 rounded-2xl shadow-sm">
                 
-                {/* --- CONTROLES MOBILE --- */}
-                <div className="lg:hidden flex items-center justify-between gap-3 w-full">
+                {/* --- CONTROLES MOBILE / TABLET / LAPTOP (Hasta 1536px) --- */}
+                <div className="2xl:hidden flex items-center justify-between gap-3 w-full">
                     <button
                         onClick={() => setIsMobileFilterOpen(true)}
                         className="flex items-center justify-center gap-2 h-[42px] px-4 flex-1 sm:flex-none bg-background-tertiary border border-border-default-secondary rounded-xl shadow-sm text-body-small-strong text-text-default-default hover:bg-background-secondary-hover transition-colors relative"
@@ -61,12 +61,12 @@ export default function PageControls({
                     </div>
                 </div>
 
-                {/* --- CONTROLES DESKTOP --- */}
-                <div className="hidden lg:flex flex-col items-stretch gap-4 flex-1">
+                {/* --- CONTROLES DESKTOP LARGE (Desde 1536px) --- */}
+                <div className="hidden 2xl:flex flex-col items-stretch gap-4 flex-1">
                     {filters}
                 </div>
 
-                <div className="hidden lg:flex items-center gap-3 shrink-0 ml-auto self-end">
+                <div className="hidden 2xl:flex items-center gap-3 shrink-0 ml-auto self-end">
                     {/* Sort Selector Desktop */}
                     <div className="flex flex-col gap-1.5 shrink-0">
                         <span className="text-[10px] uppercase tracking-wider font-bold text-text-default-tertiary px-1">Ordenar por</span>
