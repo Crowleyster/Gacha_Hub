@@ -86,7 +86,7 @@ export default function Footer() {
                     © {currentYear} Gacha Hub. Todos los derechos reservados.
                 </p>
                 <div className="flex items-center gap-6">
-                   <Link href="/ajustes" className="text-[10px] text-text-default-tertiary uppercase tracking-widest hover:text-text-default-secondary cursor-pointer transition-colors md:hidden">Ayuda</Link>
+                   <Link href="/ayuda" className="text-[10px] text-text-default-tertiary uppercase tracking-widest hover:text-text-default-secondary cursor-pointer transition-colors md:hidden">Ayuda</Link>
                    <span className="text-[10px] text-text-default-tertiary uppercase tracking-widest hover:text-text-default-secondary cursor-pointer transition-colors">Privacidad</span>
                    <span className="text-[10px] text-text-default-tertiary uppercase tracking-widest hover:text-text-default-secondary cursor-pointer transition-colors hidden md:inline-block">Términos</span>
                 </div>

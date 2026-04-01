@@ -107,6 +107,13 @@ export default async function NewsArticle({ params }) {
                     <h1 className="text-heading sm:text-title-page lg:text-[44px] lg:leading-[1.1] text-text-default-default leading-tight text-balance">
                         {article.title}
                     </h1>
+
+                    <Link 
+                        href={`/juegos/${article.gameId}`}
+                        className="flex items-center gap-2 text-body-small-strong text-text-brand-default hover:text-brand-default transition-colors w-fit border-b border-brand-default/20 pb-0.5"
+                    >
+                        Ver el Hub de {article.gameShort} <ArrowRight className="w-4 h-4" />
+                    </Link>
                 </header>
 
                 {/* Imagen Principal Optimizada */}

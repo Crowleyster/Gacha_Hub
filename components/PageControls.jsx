@@ -68,22 +68,27 @@ export default function PageControls({
 
                 <div className="hidden 2xl:flex items-center gap-3 shrink-0 ml-auto self-end">
                     {/* Sort Selector Desktop */}
-                    <div className="flex flex-col gap-1.5 shrink-0">
+                    <div className="flex flex-col gap-1.5 shrink-0 min-w-[160px]">
                         <span className="text-[10px] uppercase tracking-wider font-bold text-text-default-tertiary px-1">Ordenar por</span>
-                        <div className="flex items-center bg-background-tertiary p-1 rounded-xl border border-border-default-secondary">
-                            {sortOptions.map((opt) => (
-                                <button
-                                    key={opt.id}
-                                    onClick={() => onSortChange(opt.id)}
-                                    className={`flex items-center gap-2 h-[34px] px-3 rounded-lg text-body-small-strong transition-all ${sortMode === opt.id ? 'bg-background-default text-text-default-default shadow-sm' : 'text-text-default-tertiary hover:text-text-default-default'}`}
-                                >
-                                    {opt.icon && <opt.icon className="w-4 h-4" />} {opt.label}
-                                </button>
-                            ))}
+                        <div className="relative group/select">
+                            <select
+                                value={sortMode}
+                                onChange={(e) => onSortChange(e.target.value)}
+                                className="w-full h-[42px] pl-4 pr-10 bg-background-tertiary border border-border-default-secondary rounded-xl text-body-small-strong text-text-default-default appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-brand-default/20 transition-all hover:border-border-default-default"
+                            >
+                                {sortOptions.map((opt) => (
+                                    <option key={opt.id} value={opt.id} className="bg-background-secondary text-text-default-default">
+                                        {opt.label}
+                                    </option>
+                                ))}
+                            </select>
+                            <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-text-default-tertiary group-hover/select:text-text-default-default transition-colors">
+                                <Filter className="w-3.5 h-3.5" />
+                            </div>
                         </div>
                     </div>
 
-                    <div className="w-px h-10 bg-border-default-secondary" />
+                    <div className="w-px h-10 bg-border-default-secondary mx-1" />
 
                     {/* View Mode Desktop */}
                     <div className="flex flex-col gap-1.5 shrink-0">

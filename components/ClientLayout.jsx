@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import { ThemeProvider } from 'next-themes';
 import { usePathname } from 'next/navigation';
 import Image from 'next/image';
+import Link from 'next/link';
 import { Clock, Info } from 'lucide-react';
 import Sidebar from '@/components/Sidebar';
 import Header from '@/components/Header';
@@ -111,6 +112,17 @@ function GlobalEventSheet() {
                             <p className="text-body-base text-text-default-secondary leading-relaxed">
                                 {selectedEvent.description || GAMES_DATA[selectedEvent.gameId]?.description || 'Este evento ofrece recompensas exclusivas por tiempo limitado. Asegúrate de completar los objetivos antes del cierre.'}
                             </p>
+                        </div>
+
+                        {/* 7. Redirección al Juego */}
+                        <div className="pt-4 border-t border-border-default-secondary/50">
+                            <Link 
+                                href={`/juegos/${selectedEvent.gameId}`}
+                                onClick={closeEvent}
+                                className="flex items-center justify-center gap-2 w-full py-4 px-6 bg-brand-default text-text-brand-on rounded-2xl text-body-strong font-bold hover:shadow-lg hover:shadow-brand-default/20 transition-all active:scale-[0.98]"
+                            >
+                                Ver Hub del Juego
+                            </Link>
                         </div>
                     </div>
                 </div>

@@ -11,7 +11,8 @@ export default function NewsCard({
     date,
     isHero = false,
     isSmall = false,
-    href
+    href,
+    className
 }) {
     // Si se pasa un ID, construimos la ruta al detalle, 
     // a menos que se pase un href explícito.
@@ -20,13 +21,13 @@ export default function NewsCard({
     return (
         <Link
             href={finalHref}
-            className="
-                group relative block w-full h-full rounded-[24px] overflow-hidden cursor-pointer
+            className={`
+                group relative block w-full rounded-[24px] overflow-hidden cursor-pointer
                 border-2 border-transparent transition-all duration-500
                 hover:border-border-default-default hover:shadow-2xl hover:-translate-y-1
                 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-white/30
-                shrink-0 snap-center
-            "
+                shrink-0 snap-center ${className || 'h-full'}
+            `}
         >
             <article className="w-full h-full">
                 {/* 1. Imagen de Fondo Optimizada */}

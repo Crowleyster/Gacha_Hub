@@ -223,6 +223,7 @@ export default async function GameHub({ params }) {
                                         imageUrl={newsItem.imageUrl || game.bannerUrl}
                                         date={newsItem.date}
                                         isSmall={true}
+                                        className="w-[280px] h-[380px] sm:w-[320px] sm:h-[420px]"
                                     />
                                 ))}
                                 <div className="w-1 shrink-0" aria-hidden="true" />

@@ -152,16 +152,17 @@ export default function Noticias() {
                         {/* 2. GRILLA / LISTA */}
                         <div className={`grid gap-4 sm:gap-6 ${viewMode === 'grid' ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3' : 'grid-cols-1'}`}>
                             {visibleData.slice(1).map((news) => (
-                                <NewsCard
-                                    key={`${news.gameId}-${news.id}`}
-                                    title={news.title}
-                                    tag={news.tag}
-                                    gameIconUrl={news.gameIconUrl}
-                                    imageUrl={news.imageUrl}
-                                    date={news.date}
-                                    viewMode={viewMode}
-                                    href={`/noticias/${news.id}`}
-                                />
+                                    <NewsCard
+                                        key={`${news.gameId}-${news.id}`}
+                                        title={news.title}
+                                        tag={news.tag}
+                                        gameIconUrl={news.gameIconUrl}
+                                        imageUrl={news.imageUrl}
+                                        date={news.date}
+                                        viewMode={viewMode}
+                                        href={`/noticias/${news.id}`}
+                                        className="h-[280px] sm:h-[320px] lg:h-[340px]"
+                                    />
                             ))}
                         </div>
                     </>
