@@ -104,7 +104,7 @@ export default async function NewsArticle({ params }) {
                         </div>
                     </div>
 
-                    <h1 className="text-title-hero text-text-default-default leading-tight">
+                    <h1 className="text-heading sm:text-title-page lg:text-[44px] lg:leading-[1.1] text-text-default-default leading-tight text-balance">
                         {article.title}
                     </h1>
                 </header>
