@@ -31,7 +31,7 @@ export default function EventCard({ event, viewMode = 'grid', onClick, className
 
   // Clases compartidas para el contenedor
   const commonClasses = "group relative overflow-hidden transition-all duration-500 cursor-pointer text-left shrink-0";
-  const gridClasses = `rounded-3xl border-2 border-transparent hover:border-border-default-default hover:shadow-600 hover:-translate-y-1 aspect-[16/9] sm:aspect-[4/3] lg:aspect-auto h-56 lg:h-64 bg-background-secondary snap-center ${className || 'w-full'}`;
+  const gridClasses = `rounded-3xl border-2 border-transparent hover:border-border-default-default hover:shadow-600 hover:-translate-y-1 aspect-[16/9] sm:aspect-[4/3] lg:aspect-auto h-56 lg:h-64 bg-background-secondary snap-start ${className || 'w-full'}`;
   const listClasses = "flex flex-col sm:flex-row sm:items-center gap-4 p-4 bg-background-secondary border border-border-default-secondary rounded-2xl hover:border-border-default-default hover:shadow-md w-full";
 
   const Content = () => {

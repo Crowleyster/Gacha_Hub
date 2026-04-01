@@ -26,7 +26,7 @@ export default function NewsCard({
                 border-2 border-transparent transition-all duration-500
                 hover:border-border-default-default hover:shadow-2xl hover:-translate-y-1
                 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-white/30
-                shrink-0 snap-center ${className || 'h-full'}
+                shrink-0 snap-start ${className || 'h-full'}
             `}
         >
             <article className="w-full h-full">

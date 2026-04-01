@@ -64,6 +64,7 @@
 
 @theme {
   --font-sans: var(--font-inter);
+  --breakpoint-xs: 500px;
 
   /* Colors mapped to SDS tokens */
   --color-background-default: var(--sds-color-background-default-default);

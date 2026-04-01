@@ -129,7 +129,7 @@ function GameCard({ game, viewMode }) {
                 <span className="text-white/90 text-body-small mb-0.5 font-medium drop-shadow-lg">
                     {game.developer}
                 </span>
-                <h2 className="text-white text-heading leading-tight drop-shadow-xl">
+                <h2 className="text-white text-heading md:text-subheading-strong lg:text-heading leading-tight drop-shadow-xl">
                     {game.name}
                 </h2>
             </div>
@@ -242,7 +242,7 @@ export default function Juegos() {
 
             <div className="flex flex-col gap-8">
                 {visibleData.length > 0 ? (
-                    <div className={`grid gap-4 sm:gap-6 ${viewMode === 'grid' ? 'grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5' : 'grid-cols-1'}`}>
+                    <div className={`grid gap-4 sm:gap-6 ${viewMode === 'grid' ? 'grid-cols-1 xs:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5' : 'grid-cols-1'}`}>
                         {visibleData.map(game => (
                             <GameCard key={game.id} game={game} viewMode={viewMode} />
                         ))}

@@ -10,7 +10,7 @@ import SectionCarousel from './ui/SectionCarousel';
 /* ─── Code Card ─────────────────────────────────────────────────────── */
 function CodeCard({ item, onCopy, isCopied }) {
     return (
-        <div className="flex-shrink-0 snap-start w-[calc(100vw-2rem)] sm:w-[320px] bg-background-secondary border border-border-default-secondary rounded-xl p-4 flex flex-col gap-3 hover:bg-background-secondary-hover hover:border-border-default-default transition-all duration-300 group/card">
+        <div className="flex-shrink-0 snap-start w-[82vw] sm:w-[320px] bg-background-secondary border border-border-default-secondary rounded-xl p-4 flex flex-col gap-3 hover:bg-background-secondary-hover hover:border-border-default-default transition-all duration-300 group/card">
 
             <div className="flex items-center justify-between gap-3">
                 <div className="flex items-center gap-2 overflow-hidden">

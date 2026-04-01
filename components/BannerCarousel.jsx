@@ -39,7 +39,7 @@ export default function BannerCarousel({ gameId, bannerUrl }) {
                 <button 
                     key={banner.id} 
                     onClick={() => openEvent(banner)}
-                    className="relative w-[75vw] sm:w-[calc(50%-8px)] aspect-[21/9] shrink-0 snap-center rounded-[24px] overflow-hidden border border-border-default-secondary bg-background-tertiary group/banner cursor-pointer text-left shadow-sm"
+                    className="relative w-[75vw] sm:w-[calc(50%-8px)] aspect-[21/9] shrink-0 snap-start rounded-[24px] overflow-hidden border border-border-default-secondary bg-background-tertiary group/banner cursor-pointer text-left shadow-sm"
                 >
                     {banner.imageUrl && (
                         <Image src={banner.imageUrl} alt={banner.title} fill sizes="(max-width: 768px) 85vw, 400px" className="object-cover transition-transform duration-500 group-hover/banner:scale-105" />
