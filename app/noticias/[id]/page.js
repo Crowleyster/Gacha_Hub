@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { ExternalLink, Calendar, ArrowRight } from 'lucide-react';
-import { GAMES_DATA } from '@/lib/games-data';
+import { getAllGamesData } from '@/services/gamesService';
 
 /* ─── Helper: Tarjeta de Noticia Relacionada ─── */
 function RelatedNewsCard({ news, game }) {
@@ -48,7 +48,8 @@ export default async function NewsArticle({ params }) {
     let article = null;
     let currentGame = null;
 
-    for (const game of Object.values(GAMES_DATA)) {
+    const gamesData = await getAllGamesData();
+    for (const game of gamesData) {
         const newsItem = game.news?.find(n => n.id === id);
         if (newsItem) {
             article = { ...newsItem, gameId: game.id, gameName: game.name, gameShort: game.shortName };

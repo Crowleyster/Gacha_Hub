@@ -133,10 +133,12 @@ function GlobalEventSheet() {
 
 export default function ClientLayout({ children }) {
     return (
-        <ActiveEventProvider>
-            <LayoutContent>{children}</LayoutContent>
-            <GlobalEventSheet />
-        </ActiveEventProvider>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+            <ActiveEventProvider>
+                <LayoutContent>{children}</LayoutContent>
+                <GlobalEventSheet />
+            </ActiveEventProvider>
+        </ThemeProvider>
     );
 }
 
@@ -175,7 +177,7 @@ function LayoutContent({ children }) {
     }, [pathname]);
 
     return (
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+        <>
             <Sidebar isExpanded={isSidebarExpanded} />
 
             {/* Tablet Overlay - Click to close */}
@@ -212,6 +214,6 @@ function LayoutContent({ children }) {
                 onClose={() => setIsGlobalSearchOpen(false)}
                 onOpen={() => setIsGlobalSearchOpen(true)}
             />
-        </ThemeProvider>
+        </>
     );
 }

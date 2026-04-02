@@ -4,11 +4,7 @@ import SectionHeader from './SectionHeader';
 import { Newspaper, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 import NewsCard from './NewsCard';
-import { newsData } from '@/lib/mock-data';
-import { GAMES_DATA } from '@/lib/games-data';
-
-
-export default function NewsBentoGrid() {
+export default function NewsBentoGrid({ newsData = [], gamesData = {} }) {
     // Layout Configuration (Optimized for Tablet & Desktop)
     // Hierarchy Configuration (1: Hero, 2: Relevant, 3+: Small)
     const BENTO_LAYOUT = [
@@ -26,37 +22,37 @@ export default function NewsBentoGrid() {
     return (
         <section className="flex flex-col gap-6 w-full font-sans">
             {/* 1. Header Unificado */}
-            <SectionHeader 
+            <SectionHeader
                 icon={Newspaper}
-                title="Noticias" 
+                title="Noticias"
                 subtitle="Destacadas"
                 href="/noticias"
                 ctaLabel="Ver todas"
             />
 
             {/* 2. Bento Grid con Jerarquía de 3 Niveles */}
-<div className="
+            <div className="
     grid grid-cols-1 min-[480px]:grid-cols-2 sm:grid-cols-4 lg:grid-cols-12
     grid-flow-row-dense gap-4 sm:gap-6 
     auto-rows-[200px] sm:auto-rows-[240px]
 ">
-    {newsData.slice(0, 6).map((news, index) => {
-        
-        // 🛠️ LÓGICA DE RESPALDO (FALLBACK)
-        const fallbackImage = news.imageUrl || GAMES_DATA[news.gameId]?.bannerUrl;
+                {newsData.slice(0, 6).map((news, index) => {
 
-        return (
-            <div key={news.id} className={BENTO_LAYOUT[index]}>
-                <NewsCard 
-                    {...news} 
-                    imageUrl={fallbackImage} 
-                    isHero={index === 0}
-                    isSmall={index >= 2} 
-                />
+                    // 🛠️ LÓGICA DE RESPALDO (FALLBACK)
+                    const fallbackImage = news.imageUrl || gamesData[news.gameId]?.bannerUrl;
+
+                    return (
+                        <div key={news.id} className={BENTO_LAYOUT[index]}>
+                            <NewsCard
+                                {...news}
+                                imageUrl={fallbackImage}
+                                isHero={index === 0}
+                                isSmall={index >= 2}
+                            />
+                        </div>
+                    );
+                })}
             </div>
-        );
-    })}
-</div>
 
 
             {/* 3. Mobile Button (at the end) */}

@@ -16,7 +16,7 @@ function CodeCard({ item, onCopy, isCopied }) {
                 <div className="flex items-center gap-2 overflow-hidden">
                     {item.gameIcon && (
                         <div className="relative w-5 h-5 shrink-0 rounded-full border border-border-default-secondary overflow-hidden">
-                             <Image src={item.gameIcon} alt={item.gameName || ''} fill sizes="20px" className="object-cover" />
+                            <Image src={item.gameIcon} alt={item.gameName || ''} fill sizes="20px" className="object-cover" />
                         </div>
                     )}
                     <code className="font-mono text-body-strong text-text-default-default tracking-wider truncate">
@@ -33,7 +33,7 @@ function CodeCard({ item, onCopy, isCopied }) {
                     ) : (
                         <Copy className="w-5 h-5 group-hover/card:scale-110 transition-transform" />
                     )}
-                    
+
                     {isCopied && (
                         <span className="absolute inset-0 flex items-center justify-center bg-status-success text-badge animate-out fade-out slide-out-to-top-4 fill-mode-forwards duration-700">
                             Copiado
@@ -57,7 +57,7 @@ function CodeCard({ item, onCopy, isCopied }) {
 /* ─── Game Dropdown ──────────────────────────────────────────────────── */
 const ALL_GAMES = "Todos los juegos";
 
-function GameDropdown({ games, selected, onSelect }) {
+function GameDropdown({ codesData, games, selected, onSelect }) {
     const [isOpen, setIsOpen] = useState(false);
     const ref = useRef(null);
 
@@ -71,10 +71,10 @@ function GameDropdown({ games, selected, onSelect }) {
 
     const getGameData = (name) => {
         if (name === ALL_GAMES) {
-            const total = Object.values(CODES_DATA).reduce((acc, g) => acc + g.codes.length, 0);
+            const total = Object.values(codesData || {}).reduce((acc, g) => acc + (g.codes?.length || 0), 0);
             return { icon: null, total };
         }
-        const data = CODES_DATA[name];
+        const data = codesData[name] || { icon: null, codes: [] };
         return { icon: data.icon, total: data.codes.length };
     };
 
@@ -139,9 +139,9 @@ function GameDropdown({ games, selected, onSelect }) {
 }
 
 /* ─── Main Component ─────────────────────────────────────────────────── */
-export default function ActiveCodes({ fixedGame = null, hideHeader = false }) {
-    const games = Object.keys(CODES_DATA);
-    
+export default function ActiveCodes({ codesData = {}, fixedGame = null, hideHeader = false }) {
+    const games = Object.keys(codesData);
+
     // Si hay un juego fijo, lo usamos. Si no, usamos ALL_GAMES.
     const [selectedGame, setSelectedGame] = useState(fixedGame || ALL_GAMES);
     const [copiedCode, setCopiedCode] = useState(null);
@@ -163,20 +163,20 @@ export default function ActiveCodes({ fixedGame = null, hideHeader = false }) {
         const target = fixedGame || selectedGame;
 
         if (target === ALL_GAMES) {
-            Object.entries(CODES_DATA).forEach(([gameName, data]) => {
-                data.codes.forEach(c => {
+            Object.entries(codesData).forEach(([gameName, data]) => {
+                (data.codes || []).forEach(c => {
                     list.push({ ...c, gameName, gameIcon: data.icon });
                 });
             });
-        } else if (CODES_DATA[target]) {
-            const data = CODES_DATA[target];
-            list = data.codes.map(c => ({ ...c, gameName: target, gameIcon: data.icon }));
+        } else if (codesData[target]) {
+            const data = codesData[target];
+            list = (data.codes || []).map(c => ({ ...c, gameName: target, gameIcon: data.icon }));
         }
 
         // Mock Defensivo para rellenar layout si el juego no tiene códigos aún
         if (list.length === 0 && fixedGame) {
             list = [
-                { code: `GIFT-${fixedGame.toUpperCase().substring(0,4)}`, rewards: "500 Monedas, 1x Ticket de Invocación", expires: "Próximamente", gameName: target },
+                { code: `GIFT-${fixedGame.toUpperCase().substring(0, 4)}`, rewards: "500 Monedas, 1x Ticket de Invocación", expires: "Próximamente", gameName: target },
                 { code: "NEW-PLAYER-BONUS", rewards: "Kit de Bienvenida (1000 Oro, 5 Pociones)", expires: "Sin límite", gameName: target }
             ];
         }
@@ -188,13 +188,13 @@ export default function ActiveCodes({ fixedGame = null, hideHeader = false }) {
         <section className="col-span-full flex flex-col gap-6 font-sans">
             {!hideHeader && (
                 <div className="flex flex-col gap-6">
-                    <SectionHeader 
+                    <SectionHeader
                         icon={Ticket}
                         title="Códigos"
                         subtitle="Activos"
                     />
                     <div className="flex justify-end mt-2 sm:-mt-12 mb-2 relative z-10 w-full sm:w-auto">
-                        <GameDropdown games={games} selected={selectedGame} onSelect={setSelectedGame} />
+                        <GameDropdown codesData={codesData} games={games} selected={selectedGame} onSelect={setSelectedGame} />
                     </div>
                 </div>
             )}

@@ -4,14 +4,13 @@ import {
     ArrowLeft, Ticket, CalendarDays, Newspaper, Star,
     Info, Globe, Twitter, MessageSquare, Download, ChevronRight
 } from 'lucide-react';
-import { GAMES_DATA } from '@/lib/games-data';
-import { newsData, EVENTS_DATA } from '@/lib/mock-data';
+import { getGameById } from '@/services/gamesService';
+import { getNews, getEvents, getActiveCodes } from '@/services/dataService';
 import PlatformIcon from '@/components/PlatformIcon';
 import NewsCard from '@/components/NewsCard';
 import EventCard from '@/components/EventCard';
 import { getTimeInfo } from '@/lib/utils/date-utils';
 import ActiveCodes from '@/components/ActiveCodes';
-import FavoriteButton from '@/components/FavoriteButton';
 import SectionCarousel from '@/components/ui/SectionCarousel';
 import BannerCarousel from '@/components/BannerCarousel';
 import GameSidebar from '@/components/GameSidebar';
@@ -41,7 +40,7 @@ function SectionHeader({ icon: Icon, title, href }) {
 
 export default async function GameHub({ params }) {
     const { id } = await params;
-    const game = GAMES_DATA[id];
+    const game = await getGameById(id);
 
     if (!game) {
         return (
@@ -57,7 +56,8 @@ export default async function GameHub({ params }) {
     const genres = (game.genre || ['Acción', 'RPG']).slice(0, 2);
 
     // Lógica de datos (Server-side)
-    const baseNews = newsData.filter(news => news.gameId === id).slice(0, 6);
+    const allGameNews = await getNews(id);
+    const baseNews = allGameNews.slice(0, 6);
     const gameNews = [...baseNews];
     let newsIdx = 1;
     while (gameNews.length < 4) {
@@ -72,7 +72,7 @@ export default async function GameHub({ params }) {
         newsIdx++;
     }
 
-    const baseEvents = EVENTS_DATA.filter(event => event.gameId === id);
+    const baseEvents = await getEvents(id);
     const gameEvents = baseEvents.filter(e => !getTimeInfo(e).expired);
     let eventIdx = 1;
     while (gameEvents.length < 3) {
@@ -95,6 +95,8 @@ export default async function GameHub({ params }) {
         <main className="col-span-full pb-content-safe font-sans flex flex-col">
 
             {/* ─── FASE 1: LA CABECERA (STOREFRONT) ─── */}
+            {/* Lógica de Códigos Server-Side */}
+            {(() => { return null; })()}
 
             {/* Hero Banner */}
             <section className="relative w-full h-48 sm:h-64 md:h-80 bg-background-tertiary border border-border-default-secondary rounded-[32px] sm:rounded-[48px] overflow-hidden">
@@ -113,7 +115,7 @@ export default async function GameHub({ params }) {
                     <ArrowLeft className="w-6 h-6" />
                 </Link>
 
-                <FavoriteButton gameId={id} />
+
             </section>
 
             {/* Identidad Solapada */}
@@ -175,7 +177,7 @@ export default async function GameHub({ params }) {
                     {/* Códigos de Canje */}
                     <section className="flex flex-col gap-4">
                         <SectionHeader icon={Ticket} title="Códigos Activos" />
-                        <ActiveCodes fixedGame={game.name} hideHeader={true} />
+                        <ActiveCodes codesData={await getActiveCodes()} fixedGame={game.name} hideHeader={true} />
                     </section>
 
                     {/* Destacados / Gachapón */}

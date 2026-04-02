@@ -2,10 +2,8 @@
 
 import { Calendar, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
-import { EVENTS_DATA } from '@/lib/mock-data';
 import EventCard from '@/components/EventCard';
 import SectionHeader from './SectionHeader';
-import { useFavorites } from '@/hooks/useFavorites';
 import SectionCarousel from './ui/SectionCarousel';
 
 // ── Helpers ──────────────────────────────────────────────
@@ -16,13 +14,9 @@ function getEndMs(dateStr) {
   return new Date(y, m - 1, d).getTime();
 }
 
-function sortedEvents(favorites = []) {
-  return [...EVENTS_DATA].sort((a, b) => {
-    // 1. Prioridad: ¿Es favorito? (Aparecen primero)
-    const aFav = favorites.includes(a.gameId);
-    const bFav = favorites.includes(b.gameId);
-    if (aFav && !bFav) return -1;
-    if (!aFav && bFav) return 1;
+function sortedEvents(eventsData, favorites = []) {
+  return [...eventsData].sort((a, b) => {
+
 
     // 2. Prioridad: 'Próximamente' van al final
     const aUpcoming = a.status === 'upcoming' || a.statusLabel === 'Próximos';
@@ -37,15 +31,14 @@ function sortedEvents(favorites = []) {
 
 // ── EventsTimeline ────────────────────────────────────────
 
-export default function EventsTimeline() {
-  const { favorites } = useFavorites();
-  const events = sortedEvents(favorites);
+export default function EventsTimeline({ eventsData = [] }) {
+  const events = sortedEvents(eventsData);
 
   return (
     <section className="col-span-full flex flex-col gap-6 font-sans">
 
       {/* Encabezado Unificado */}
-      <SectionHeader 
+      <SectionHeader
         icon={Calendar}
         title="Eventos"
         subtitle="Activos"
@@ -56,10 +49,10 @@ export default function EventsTimeline() {
       {/* Carrusel Unificado (Full-Bleed + Peek) — La lógica de scroll y flechas se delega a SectionCarousel */}
       <SectionCarousel>
         {events.map((event) => (
-          <EventCard 
-            key={event.id} 
-            event={event} 
-            className="w-[75vw] sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-12px)] xl:w-[calc(25%-12px)]" 
+          <EventCard
+            key={event.id}
+            event={event}
+            className="w-[75vw] sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-12px)] xl:w-[calc(25%-12px)]"
           />
         ))}
         {/* Espaciador invisible para el margen final */}

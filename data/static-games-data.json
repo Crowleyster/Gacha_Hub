@@ -1,0 +1,116 @@
+{
+  "wuthering-waves": {
+    "id": "wuthering-waves",
+    "name": "Wuthering Waves",
+    "developer": "Kuro Games",
+    "publisher": "Kuro Games",
+    "releaseDate": "May 23, 2024",
+    "platforms": [
+      "PC",
+      "Steam",
+      "Epic Games",
+      "iOS",
+      "Android",
+      "PlayStation 5"
+    ],
+    "genres": [
+      "Action RPG",
+      "Open World"
+    ],
+    "description": "Wuthering Waves es un RPG de acción enfocado en la historia con un alto grado de libertad. Despiertas de tu letargo como Rover, acompañado por un vibrante elenco de Resonadores en un viaje para recuperar tus recuerdos perdidos y superar el Lamento."
+  },
+  "genshin-impact": {
+    "id": "genshin-impact",
+    "name": "Genshin Impact",
+    "developer": "miHoYo",
+    "publisher": "HoYoverse",
+    "releaseDate": "September 28, 2020",
+    "platforms": [
+      "PC",
+      "Epic Games",
+      "iOS",
+      "Android",
+      "PlayStation 4",
+      "PlayStation 5"
+    ],
+    "genres": [
+      "Action RPG",
+      "Open World"
+    ],
+    "description": "Adéntrate en Teyvat, un vasto mundo rebosante de vida y energía elemental. Tú y tu hermano llegaron aquí desde otro mundo. Separados por una deidad desconocida, despojados de sus poderes y sumidos en un profundo sueño, ahora despiertas en un mundo muy diferente al que llegaste."
+  },
+  "honkai-star-rail": {
+    "id": "honkai-star-rail",
+    "name": "Honkai: Star Rail",
+    "developer": "miHoYo",
+    "publisher": "HoYoverse",
+    "releaseDate": "April 26, 2023",
+    "platforms": [
+      "PC",
+      "Epic Games",
+      "iOS",
+      "Android",
+      "PlayStation 5"
+    ],
+    "genres": [
+      "Turn-based RPG",
+      "Sci-Fi"
+    ],
+    "description": "Sube a bordo del Expreso Astral y experimenta las infinitas maravillas de la galaxia, llenas de aventuras y emociones. Conocerás nuevos compañeros a través de varios mundos y tal vez incluso te encuentres con algunas caras conocidas."
+  },
+  "zenless-zone-zero": {
+    "id": "zenless-zone-zero",
+    "name": "Zenless Zone Zero",
+    "developer": "miHoYo",
+    "publisher": "HoYoverse",
+    "releaseDate": "July 4, 2024",
+    "platforms": [
+      "PC",
+      "Epic Games",
+      "iOS",
+      "Android",
+      "PlayStation 5"
+    ],
+    "genres": [
+      "Action RPG",
+      "Urban Fantasy"
+    ],
+    "description": "Zenless Zone Zero es un nuevo juego de acción en 3D. Se desarrolla en un mundo de un futuro cercano plagado por un misterioso desastre sobrenatural conocido como las 'Cavidades'. Jugarás como un 'Proxy' para guiar a los aventureros dentro de estas impredecibles anomalías."
+  },
+  "arknights-endfield": {
+    "id": "arknights-endfield",
+    "name": "Arknights: Endfield",
+    "developer": "Hypergryph",
+    "publisher": "GRYPHLINE",
+    "releaseDate": "TBD",
+    "platforms": [
+      "PC",
+      "Epic Games",
+      "iOS",
+      "Android",
+      "PlayStation 5"
+    ],
+    "genres": [
+      "Action RPG",
+      "Strategy"
+    ],
+    "description": "Una aventura con temática de space opera que tiene lugar en un nuevo planeta llamado Talos-II, un mundo peligroso plagado de Catástrofes y riesgos. Explora este mundo indómito con un equipo de operadores de Endfield Industries para desentrañar el misterio oculto en sus ruinas abandonadas."
+  },
+  "nikke": {
+    "id": "nikke",
+    "name": "GODDESS OF VICTORY: NIKKE",
+    "developer": "Shift Up",
+    "publisher": "Level Infinite",
+    "releaseDate": "November 4, 2022",
+    "platforms": [
+      "PC",
+      "iOS",
+      "Android"
+    ],
+    "genres": [
+      "Third-person Shooter",
+      "Sci-Fi"
+    ],
+    "description": "Un inmersivo juego de disparos y RPG de ciencia ficción, donde reclutas y diriges a varias doncellas para formar un hermoso escuadrón de chicas anime especializado en el uso de armas de fuego y tecnología futurista. ¡Comanda y colecciona chicas con especialidades de combate únicas para crear tu equipo definitivo!"
+  }
+}
