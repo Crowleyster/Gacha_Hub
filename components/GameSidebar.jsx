@@ -1,9 +1,23 @@
-import { Info, Twitter, MessageSquare, Globe } from 'lucide-react';
+import { Info, Globe } from 'lucide-react';
+import { 
+    SiX, SiDiscord, SiYoutube, 
+    SiFacebook, SiInstagram, SiReddit 
+} from 'react-icons/si';
 import SectionHeader from '@/components/SectionHeader';
+
+const SOCIAL_ICONS = {
+    twitter: { icon: SiX, label: 'Twitter' },
+    discord: { icon: SiDiscord, label: 'Discord' },
+    youtube: { icon: SiYoutube, label: 'YouTube' },
+    facebook: { icon: SiFacebook, label: 'Facebook' },
+    instagram: { icon: SiInstagram, label: 'Instagram' },
+    reddit: { icon: SiReddit, label: 'Reddit' },
+};
 
 export default function GameSidebar({ game }) {
     const publisher = game?.publisher || "Publisher Desconocido";
     const releaseDate = game?.releaseDate?.pc || game?.releaseDate || "TBA";
+    const socialLinks = game?.socialLinks || {};
 
     return (
         <div className="w-full lg:w-[320px] shrink-0 flex flex-col order-2 lg:order-1 lg:pt-2">
@@ -40,15 +54,38 @@ export default function GameSidebar({ game }) {
                 <section className="flex flex-col gap-5 pt-6 border-t border-border-default-secondary">
                     <h3 className="text-body-strong text-text-default-default uppercase tracking-wider">Comunidad Oficial</h3>
                     <div className="flex flex-wrap gap-2">
-                        {game.socialLinks?.twitter && (
-                            <a href={game.socialLinks.twitter} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center p-3 bg-background-tertiary border border-border-default-secondary rounded-xl text-text-default-secondary hover:text-brand-default hover:border-brand-default transition-all w-12 h-12" title="Twitter"><Twitter className="w-5 h-5" /></a>
-                        )}
-                        {game.socialLinks?.discord && (
-                            <a href={game.socialLinks.discord} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center p-3 bg-background-tertiary border border-border-default-secondary rounded-xl text-text-default-secondary hover:text-brand-default hover:border-brand-default transition-all w-12 h-12" title="Discord"><MessageSquare className="w-5 h-5" /></a>
-                        )}
+                        {/* El Sitio Oficial es prioritario */}
                         {game.officialSite && (
-                            <a href={game.officialSite} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center p-3 bg-background-tertiary border border-border-default-secondary rounded-xl text-text-default-secondary hover:text-brand-default hover:border-brand-default transition-all w-12 h-12" title="Sitio Oficial"><Globe className="w-5 h-5" /></a>
+                            <a 
+                                href={game.officialSite} 
+                                target="_blank" 
+                                rel="noopener noreferrer" 
+                                className="flex items-center justify-center p-3 bg-background-tertiary border border-border-default-secondary rounded-xl text-text-default-secondary hover:text-brand-default hover:border-brand-default transition-all w-12 h-12" 
+                                title="Sitio Oficial"
+                            >
+                                <Globe className="w-5 h-5" />
+                            </a>
                         )}
+
+                        {/* Mapeo dinámico de redes sociales */}
+                        {Object.entries(socialLinks).map(([key, url]) => {
+                            const config = SOCIAL_ICONS[key];
+                            if (!config || !url) return null;
+                            const Icon = config.icon;
+
+                            return (
+                                <a 
+                                    key={key}
+                                    href={url} 
+                                    target="_blank" 
+                                    rel="noopener noreferrer" 
+                                    className="flex items-center justify-center p-3 bg-background-tertiary border border-border-default-secondary rounded-xl text-text-default-secondary hover:text-brand-default hover:border-brand-default transition-all w-12 h-12" 
+                                    title={config.label}
+                                >
+                                    <Icon className="w-5 h-5" />
+                                </a>
+                            );
+                        })}
                     </div>
                 </section>
             </div>

@@ -121,34 +121,57 @@ export default async function GameHub({ params }) {
             {/* Identidad Solapada */}
             <section className="-mt-8 sm:-mt-12 md:-mt-16 relative z-10 px-4 md:px-8 flex flex-col gap-6">
 
-                <div className="flex flex-row items-end gap-3 sm:gap-4 md:gap-6">
-                    {/* Izquierda: Ícono */}
-                    <div className="relative w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 shrink-0 rounded-2xl border-4 border-background-default shadow-300 bg-background-default overflow-hidden">
-                        {game.iconUrl && (
-                            <Image
-                                src={game.iconUrl}
-                                alt={`${game.name} icon`}
-                                fill
-                                sizes="(max-width: 640px) 64px, (max-width: 768px) 80px, 96px"
-                                className="object-cover"
-                            />
-                        )}
+                <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 w-full">
+                    <div className="flex flex-row items-end gap-3 sm:gap-4 md:gap-6">
+                        {/* Izquierda: Ícono */}
+                        <div className="relative w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 shrink-0 rounded-2xl border-4 border-background-default shadow-300 bg-background-default overflow-hidden">
+                            {game.iconUrl && (
+                                <Image
+                                    src={game.iconUrl}
+                                    alt={`${game.name} icon`}
+                                    fill
+                                    sizes="(max-width: 640px) 64px, (max-width: 768px) 80px, 96px"
+                                    className="object-cover"
+                                />
+                            )}
+                        </div>
+
+                        {/* Centro: Título, Versión y Géneros */}
+                        <div className="flex-1 flex flex-col gap-0.5 pb-1 md:pb-2">
+                            <h1 className="text-subheading-strong sm:text-heading lg:text-title-page text-text-default-default leading-tight drop-shadow-lg">{game.name}</h1>
+                            <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+                                <span className="text-body-small-strong sm:text-body-strong text-text-default-secondary shrink-0">v{game.currentVersion}</span>
+                                <span className="text-text-default-tertiary hidden sm:inline">•</span>
+                                <div className="flex flex-wrap gap-2">
+                                    {genres.map(g => (
+                                        <span key={g} className="text-[10px] sm:text-badge font-bold uppercase tracking-wider text-text-default-tertiary whitespace-nowrap bg-background-tertiary/50 px-2 py-0.5 rounded-md border border-border-default-secondary/50">
+                                            {g}
+                                        </span>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
-                    {/* Derecha: Título y Versión */}
-                    <div className="flex-1 flex flex-col gap-0.5 pb-1 md:pb-2">
-                        <h1 className="text-subheading-strong sm:text-heading lg:text-title-page text-text-default-default leading-tight drop-shadow-lg">{game.name}</h1>
-                        <span className="text-body-small-strong sm:text-body-strong text-text-default-secondary">v{game.currentVersion}</span>
-                    </div>
-                </div>
-
-                {/* Acciones y Tags Rápidos */}
-                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 border-b border-border-default-secondary pb-6">
+                    {/* Botón Juega Gratis (Desktop/Tablet) */}
                     <a
                         href={game.officialSite || '#'}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="w-full sm:w-auto flex items-center justify-center gap-2 h-12 px-8 bg-brand-default text-text-brand-on rounded-2xl text-body-strong font-bold hover:opacity-90 transition-opacity whitespace-nowrap shadow-100"
+                        className="hidden sm:flex items-center justify-center gap-2 h-12 px-8 bg-brand-default text-text-brand-on rounded-2xl text-body-strong font-bold hover:opacity-90 transition-opacity whitespace-nowrap shadow-100 mb-2"
+                    >
+                        <Download className="w-5 h-5" /> Jugar Gratis
+                    </a>
+                </div>
+
+                {/* Acciones y Tags Rápidos */}
+                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 border-b border-border-default-secondary pb-6">
+                    {/* Botón Juega Gratis (Mobile) */}
+                    <a
+                        href={game.officialSite || '#'}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="sm:hidden w-full flex items-center justify-center gap-2 h-12 px-8 bg-brand-default text-text-brand-on rounded-2xl text-body-strong font-bold hover:opacity-90 transition-opacity whitespace-nowrap shadow-100"
                     >
                         <Download className="w-5 h-5" /> Jugar Gratis
                     </a>
@@ -156,14 +179,9 @@ export default async function GameHub({ params }) {
                     <div className="flex gap-2 overflow-x-auto scrollbar-none w-full pb-1 -mx-4 px-4 sm:mx-0 sm:px-0 sm:pb-0">
                         {game.platforms.map(p => (
                             <div key={p} className="flex items-center gap-2 px-3 py-1.5 bg-background-secondary border border-border-default-secondary rounded-lg text-body-small-strong text-text-default-default whitespace-nowrap shrink-0">
-                                <PlatformIcon platform={p} className="w-4 h-4 text-text-default-secondary" /> {p}
+                                <PlatformIcon platform={p} className="w-4 h-4 text-text-default-secondary" />
+                                <span className="hidden sm:inline">{p}</span>
                             </div>
-                        ))}
-                        <div className="w-px h-6 bg-border-default-secondary self-center mx-1 shrink-0" />
-                        {genres.map(g => (
-                            <span key={g} className="px-3 py-1.5 bg-background-tertiary border border-border-default-secondary rounded-lg text-badge tracking-wider text-text-default-secondary whitespace-nowrap shrink-0">
-                                {g}
-                            </span>
                         ))}
                     </div>
                 </div>
