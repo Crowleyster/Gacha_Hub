@@ -5,28 +5,28 @@ import {
     FaApple, 
     FaAndroid 
 } from 'react-icons/fa6';
+import { SiEpicgames } from 'react-icons/si';
 import { Monitor, Gamepad } from 'lucide-react';
 
 /**
  * PlatformIcon Component
  * 
  * Renders branded icons for gaming platforms.
- * Uses 'react-icons/fa6' (Font Awesome 6) for most brands.
- * Includes custom SVGs for specific brands not in FA6 (Epic, Switch).
+ * Uses 'react-icons/fa6' (Font Awesome 6) and 'react-icons/si' (Simple Icons).
  * 
- * @param {string} platform - The platform name (e.g., "Steam", "Epic Store", "Android", "iOS")
+ * @param {string} platform - The platform name (e.g., "Steam", "PS4/PS5", "Android")
  * @param {string} className - Optional Tailwind classes
  */
 export default function PlatformIcon({ platform, className = "w-3.5 h-3.5" }) {
     const p = platform.toLowerCase();
 
-    // ─── Apple (iOS / Mac) ───
-    if (p === 'ios' || p === 'iphone' || p === 'ipad' || p === 'apple' || p === 'mac' || p === 'macos') {
+    // ─── Apple Ecosystem (iOS / Mac) ───
+    if (p.includes('apple') || p.includes('ios') || p.includes('mac') || p.includes('iphone')) {
         return <FaApple className={className} />;
     }
 
     // ─── Android ───
-    if (p === 'android') {
+    if (p === 'android' || p.includes('google play')) {
         return <FaAndroid className={className} />;
     }
 
@@ -35,17 +35,17 @@ export default function PlatformIcon({ platform, className = "w-3.5 h-3.5" }) {
         return <FaSteam className={className} />;
     }
 
-    // ─── Playstation ───
+    // ─── Playstation Ecosystem ───
     if (p.includes('ps') || p.includes('playstation')) {
         return <FaPlaystation className={className} />;
     }
 
-    // ─── Xbox ───
+    // ─── Xbox Ecosystem ───
     if (p.includes('xbox')) {
         return <FaXbox className={className} />;
     }
 
-    // ─── Nintendo Switch (Custom SVG to avoid library errors) ───
+    // ─── Nintendo Switch (Custom SVG) ───
     if (p.includes('switch') || p === 'nintendo') {
         return (
             <svg viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden="true">
@@ -54,14 +54,11 @@ export default function PlatformIcon({ platform, className = "w-3.5 h-3.5" }) {
         );
     }
 
-    // ─── Epic Games Store (Custom SVG for reliability) ───
+    // ─── Epic Games Store ───
     if (p.includes('epic')) {
-        return (
-            <svg viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden="true">
-                <path d="M12 0L2.121 5.76V18.24L12 24L21.879 18.24V5.76L12 0ZM18.561 16.32L12 20.16L5.439 16.32V7.68L12 3.84L18.561 7.68V16.32ZM12 6.72L15.361 8.64V12L12 10.08L8.639 12V8.64L12 6.72ZM12 13.92L15.361 15.84V17.28L12 15.36L8.639 17.28V15.84L12 13.92Z" />
-            </svg>
-        );
+        return <SiEpicgames className={className} />;
     }
+
 
     // ─── PC (Windows / Monitor) ───
     if (p === 'pc' || p === 'windows' || p === 'desktop') {
