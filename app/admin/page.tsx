@@ -166,14 +166,15 @@ export default function AdminPage() {
             Panel de administración
           </h1>
         </div>
-        <form action="/admin/api/logout" method="POST">
-          <button 
-            type="submit" 
-            className="px-4 py-2 bg-background-secondary border border-border-default-default rounded-xl text-body-small-strong text-text-default-secondary hover:text-text-default-default hover:border-text-default-tertiary transition-all cursor-pointer shadow-100"
-          >
-            Cerrar Sesión
-          </button>
-        </form>
+        <button
+          onClick={async () => {
+            await fetch('/admin/api/logout', { method: 'POST' })
+            window.location.href = '/admin/login'
+          }}
+          style={{ background: 'transparent', border: '1px solid #222', borderRadius: '8px', color: '#666', fontSize: '13px', padding: '6px 14px', cursor: 'pointer' }}
+        >
+          Salir
+        </button>
       </header>
 
       <div className="max-w-5xl mx-auto px-6 py-8 space-y-8">
@@ -186,8 +187,8 @@ export default function AdminPage() {
                 onClick={() => setActiveTab(t.id)}
                 className={`
                   px-4 py-2.5 text-body-small-strong rounded-xl transition-all cursor-pointer
-                  ${activeTab === t.id 
-                    ? 'bg-brand-default text-text-brand-on shadow-200' 
+                  ${activeTab === t.id
+                    ? 'bg-brand-default text-text-brand-on shadow-200'
                     : 'text-text-default-secondary hover:bg-background-tertiary hover:text-text-default-default'
                   }
                 `}
@@ -202,9 +203,9 @@ export default function AdminPage() {
         {status && (
           <div className={`
             px-4 py-3 rounded-2xl text-body-small-strong border flex items-center gap-3 animate-in fade-in slide-in-from-top-2 duration-300
-            ${status.type === 'ok' ? 'bg-green-500/10 text-green-400 border-green-500/20' : 
-              status.type === 'err' ? 'bg-red-500/10 text-red-400 border-red-500/20' : 
-              'bg-background-tertiary text-text-default-secondary border-border-default-default'}
+            ${status.type === 'ok' ? 'bg-green-500/10 text-green-400 border-green-500/20' :
+              status.type === 'err' ? 'bg-red-500/10 text-red-400 border-red-500/20' :
+                'bg-background-tertiary text-text-default-secondary border-border-default-default'}
           `}>
             {status.type === 'loading' && <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />}
             {status.msg}
@@ -221,9 +222,9 @@ export default function AdminPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
                   <label className="text-body-small-strong text-text-default-secondary ml-1">Juego</label>
-                  <select 
-                    value={nGame} 
-                    onChange={e => setNGame(e.target.value)} 
+                  <select
+                    value={nGame}
+                    onChange={e => setNGame(e.target.value)}
                     className="w-full h-12 px-4 bg-background-tertiary border border-border-default-default rounded-2xl text-text-default-default text-body-base outline-none focus:border-brand-default transition-all"
                   >
                     {games.map(g => <option key={g.id} value={g.id}>{g.name}</option>)}
@@ -231,9 +232,9 @@ export default function AdminPage() {
                 </div>
                 <div className="space-y-2">
                   <label className="text-body-small-strong text-text-default-secondary ml-1">Tipo</label>
-                  <select 
-                    value={nType} 
-                    onChange={e => setNType(e.target.value)} 
+                  <select
+                    value={nType}
+                    onChange={e => setNType(e.target.value)}
                     className="w-full h-12 px-4 bg-background-tertiary border border-border-default-default rounded-2xl text-text-default-default text-body-base outline-none focus:border-brand-default transition-all"
                   >
                     <option value="official">Oficial</option>
@@ -246,57 +247,57 @@ export default function AdminPage() {
 
               <div className="space-y-2">
                 <label className="text-body-small-strong text-text-default-secondary ml-1">Título</label>
-                <input 
+                <input
                   className="w-full h-12 px-4 bg-background-tertiary border border-border-default-default rounded-2xl text-text-default-default text-body-base outline-none focus:border-brand-default transition-all placeholder:text-text-default-tertiary"
-                  value={nTitle} 
-                  onChange={e => setNTitle(e.target.value)} 
-                  placeholder="Título de la noticia" 
+                  value={nTitle}
+                  onChange={e => setNTitle(e.target.value)}
+                  placeholder="Título de la noticia"
                 />
               </div>
 
               <div className="space-y-2">
                 <label className="text-body-small-strong text-text-default-secondary ml-1">URL de la noticia</label>
-                <input 
+                <input
                   className="w-full h-12 px-4 bg-background-tertiary border border-border-default-default rounded-2xl text-text-default-default text-body-base outline-none focus:border-brand-default transition-all placeholder:text-text-default-tertiary"
-                  value={nUrl} 
-                  onChange={e => setNUrl(e.target.value)} 
-                  placeholder="https://..." 
+                  value={nUrl}
+                  onChange={e => setNUrl(e.target.value)}
+                  placeholder="https://..."
                 />
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
                   <label className="text-body-small-strong text-text-default-secondary ml-1">URL de imagen (opcional)</label>
-                  <input 
+                  <input
                     className="w-full h-12 px-4 bg-background-tertiary border border-border-default-default rounded-2xl text-text-default-default text-body-base outline-none focus:border-brand-default transition-all placeholder:text-text-default-tertiary"
-                    value={nImg} 
-                    onChange={e => setNImg(e.target.value)} 
-                    placeholder="https://..." 
+                    value={nImg}
+                    onChange={e => setNImg(e.target.value)}
+                    placeholder="https://..."
                   />
                 </div>
                 <div className="space-y-2">
                   <label className="text-body-small-strong text-text-default-secondary ml-1">Fuente</label>
-                  <input 
+                  <input
                     className="w-full h-12 px-4 bg-background-tertiary border border-border-default-default rounded-2xl text-text-default-default text-body-base outline-none focus:border-brand-default transition-all placeholder:text-text-default-tertiary"
-                    value={nSource} 
-                    onChange={e => setNSource(e.target.value)} 
-                    placeholder="Reddit, sitio oficial..." 
+                    value={nSource}
+                    onChange={e => setNSource(e.target.value)}
+                    placeholder="Reddit, sitio oficial..."
                   />
                 </div>
               </div>
 
               <div className="space-y-2">
                 <label className="text-body-small-strong text-text-default-secondary ml-1">Fecha de publicación</label>
-                <input 
-                  type="datetime-local" 
+                <input
+                  type="datetime-local"
                   className="w-full h-12 px-4 bg-background-tertiary border border-border-default-default rounded-2xl text-text-default-default text-body-base outline-none focus:border-brand-default transition-all [color-scheme:dark]"
-                  value={nDate} 
-                  onChange={e => setNDate(e.target.value)} 
+                  value={nDate}
+                  onChange={e => setNDate(e.target.value)}
                 />
               </div>
 
-              <button 
-                onClick={submitNews} 
+              <button
+                onClick={submitNews}
                 className="w-full md:w-auto px-8 h-12 bg-brand-default text-text-brand-on rounded-2xl text-body-strong hover:bg-brand-default/90 transition-all shadow-100 active:scale-[0.98] cursor-pointer"
               >
                 Guardar noticia
@@ -310,9 +311,9 @@ export default function AdminPage() {
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
                 <div className="space-y-2">
                   <label className="text-body-small-strong text-text-default-secondary ml-1">Juego</label>
-                  <select 
-                    value={eGame} 
-                    onChange={e => setEGame(e.target.value)} 
+                  <select
+                    value={eGame}
+                    onChange={e => setEGame(e.target.value)}
                     className="w-full h-12 px-4 bg-background-tertiary border border-border-default-default rounded-2xl text-text-default-default text-body-base outline-none focus:border-brand-default transition-all"
                   >
                     {games.map(g => <option key={g.id} value={g.id}>{g.name}</option>)}
@@ -320,9 +321,9 @@ export default function AdminPage() {
                 </div>
                 <div className="space-y-2">
                   <label className="text-body-small-strong text-text-default-secondary ml-1">Tipo</label>
-                  <select 
-                    value={eType} 
-                    onChange={e => setEType(e.target.value)} 
+                  <select
+                    value={eType}
+                    onChange={e => setEType(e.target.value)}
                     className="w-full h-12 px-4 bg-background-tertiary border border-border-default-default rounded-2xl text-text-default-default text-body-base outline-none focus:border-brand-default transition-all"
                   >
                     <option value="story">Historia</option>
@@ -335,9 +336,9 @@ export default function AdminPage() {
                 </div>
                 <div className="space-y-2">
                   <label className="text-body-small-strong text-text-default-secondary ml-1">Categoría</label>
-                  <select 
-                    value={eCategory} 
-                    onChange={e => setECategory(e.target.value)} 
+                  <select
+                    value={eCategory}
+                    onChange={e => setECategory(e.target.value)}
                     className="w-full h-12 px-4 bg-background-tertiary border border-border-default-default rounded-2xl text-text-default-default text-body-base outline-none focus:border-brand-default transition-all"
                   >
                     <option value="in-game">In-game</option>
@@ -349,47 +350,47 @@ export default function AdminPage() {
 
               <div className="space-y-2">
                 <label className="text-body-small-strong text-text-default-secondary ml-1">Título</label>
-                <input 
+                <input
                   className="w-full h-12 px-4 bg-background-tertiary border border-border-default-default rounded-2xl text-text-default-default text-body-base outline-none focus:border-brand-default transition-all placeholder:text-text-default-tertiary"
-                  value={eTitle} 
-                  onChange={e => setETitle(e.target.value)} 
-                  placeholder="Nombre del evento" 
+                  value={eTitle}
+                  onChange={e => setETitle(e.target.value)}
+                  placeholder="Nombre del evento"
                 />
               </div>
 
               <div className="space-y-2">
                 <label className="text-body-small-strong text-text-default-secondary ml-1">Descripción (opcional)</label>
-                <textarea 
+                <textarea
                   className="w-full px-4 py-3 bg-background-tertiary border border-border-default-default rounded-2xl text-text-default-default text-body-base outline-none focus:border-brand-default transition-all placeholder:text-text-default-tertiary resize-none min-h-[120px]"
-                  value={eDesc} 
-                  onChange={e => setEDesc(e.target.value)} 
-                  placeholder="Descripción breve..." 
+                  value={eDesc}
+                  onChange={e => setEDesc(e.target.value)}
+                  placeholder="Descripción breve..."
                 />
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
                   <label className="text-body-small-strong text-text-default-secondary ml-1">Fecha inicio</label>
-                  <input 
-                    type="datetime-local" 
+                  <input
+                    type="datetime-local"
                     className="w-full h-12 px-4 bg-background-tertiary border border-border-default-default rounded-2xl text-text-default-default text-body-base outline-none focus:border-brand-default transition-all [color-scheme:dark]"
-                    value={eStart} 
-                    onChange={e => setEStart(e.target.value)} 
+                    value={eStart}
+                    onChange={e => setEStart(e.target.value)}
                   />
                 </div>
                 <div className="space-y-2">
                   <label className="text-body-small-strong text-text-default-secondary ml-1">Fecha fin</label>
-                  <input 
-                    type="datetime-local" 
+                  <input
+                    type="datetime-local"
                     className="w-full h-12 px-4 bg-background-tertiary border border-border-default-default rounded-2xl text-text-default-default text-body-base outline-none focus:border-brand-default transition-all [color-scheme:dark]"
-                    value={eEnd} 
-                    onChange={e => setEEnd(e.target.value)} 
+                    value={eEnd}
+                    onChange={e => setEEnd(e.target.value)}
                   />
                 </div>
               </div>
 
-              <button 
-                onClick={submitEvent} 
+              <button
+                onClick={submitEvent}
                 className="w-full md:w-auto px-8 h-12 bg-brand-default text-text-brand-on rounded-2xl text-body-strong hover:bg-brand-default/90 transition-all shadow-100 active:scale-[0.98] cursor-pointer"
               >
                 Guardar evento
@@ -403,9 +404,9 @@ export default function AdminPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
                   <label className="text-body-small-strong text-text-default-secondary ml-1">Juego</label>
-                  <select 
-                    value={cGame} 
-                    onChange={e => setCGame(e.target.value)} 
+                  <select
+                    value={cGame}
+                    onChange={e => setCGame(e.target.value)}
                     className="w-full h-12 px-4 bg-background-tertiary border border-border-default-default rounded-2xl text-text-default-default text-body-base outline-none focus:border-brand-default transition-all"
                   >
                     {games.map(g => <option key={g.id} value={g.id}>{g.name}</option>)}
@@ -413,11 +414,11 @@ export default function AdminPage() {
                 </div>
                 <div className="space-y-2">
                   <label className="text-body-small-strong text-text-default-secondary ml-1">Código</label>
-                  <input 
+                  <input
                     className="w-full h-12 px-4 bg-background-tertiary border border-border-default-default rounded-2xl text-text-default-default text-body-code outline-none focus:border-brand-default transition-all placeholder:text-text-default-tertiary uppercase"
-                    value={cCode} 
-                    onChange={e => setCCode(e.target.value)} 
-                    placeholder="NIKKE2024ABC" 
+                    value={cCode}
+                    onChange={e => setCCode(e.target.value)}
+                    placeholder="NIKKE2024ABC"
                   />
                 </div>
               </div>
@@ -425,11 +426,11 @@ export default function AdminPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
                   <label className="text-body-small-strong text-text-default-secondary ml-1">Recompensas</label>
-                  <input 
+                  <input
                     className="w-full h-12 px-4 bg-background-tertiary border border-border-default-default rounded-2xl text-text-default-default text-body-base outline-none focus:border-brand-default transition-all placeholder:text-text-default-tertiary"
-                    value={cRewards} 
-                    onChange={e => setCRewards(e.target.value)} 
-                    placeholder="100 gemas, 3 tickets..." 
+                    value={cRewards}
+                    onChange={e => setCRewards(e.target.value)}
+                    placeholder="100 gemas, 3 tickets..."
                   />
                 </div>
                 <div className="space-y-2">
@@ -437,17 +438,17 @@ export default function AdminPage() {
                     Expira
                     <span className="text-[9px] font-normal lowercase ml-2 text-text-default-tertiary">opcional</span>
                   </label>
-                  <input 
-                    type="datetime-local" 
+                  <input
+                    type="datetime-local"
                     className="w-full h-12 px-4 bg-background-tertiary border border-border-default-default rounded-2xl text-text-default-default text-body-base outline-none focus:border-brand-default transition-all [color-scheme:dark]"
-                    value={cExp} 
-                    onChange={e => setCExp(e.target.value)} 
+                    value={cExp}
+                    onChange={e => setCExp(e.target.value)}
                   />
                 </div>
               </div>
 
-              <button 
-                onClick={submitCode} 
+              <button
+                onClick={submitCode}
                 className="w-full md:w-auto px-8 h-12 bg-brand-default text-text-brand-on rounded-2xl text-body-strong hover:bg-brand-default/90 transition-all shadow-100 active:scale-[0.98] cursor-pointer"
               >
                 Guardar código
@@ -461,9 +462,9 @@ export default function AdminPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
                   <label className="text-body-small-strong text-text-default-secondary ml-1">Juego</label>
-                  <select 
-                    value={bGame} 
-                    onChange={e => setBGame(e.target.value)} 
+                  <select
+                    value={bGame}
+                    onChange={e => setBGame(e.target.value)}
                     className="w-full h-12 px-4 bg-background-tertiary border border-border-default-default rounded-2xl text-text-default-default text-body-base outline-none focus:border-brand-default transition-all"
                   >
                     {games.map(g => <option key={g.id} value={g.id}>{g.name}</option>)}
@@ -471,9 +472,9 @@ export default function AdminPage() {
                 </div>
                 <div className="space-y-2">
                   <label className="text-body-small-strong text-text-default-secondary ml-1">Tipo</label>
-                  <select 
-                    value={bType} 
-                    onChange={e => setBType(e.target.value)} 
+                  <select
+                    value={bType}
+                    onChange={e => setBType(e.target.value)}
                     className="w-full h-12 px-4 bg-background-tertiary border border-border-default-default rounded-2xl text-text-default-default text-body-base outline-none focus:border-brand-default transition-all"
                   >
                     <option value="character">Personaje</option>
@@ -486,47 +487,47 @@ export default function AdminPage() {
 
               <div className="space-y-2">
                 <label className="text-body-small-strong text-text-default-secondary ml-1">Título</label>
-                <input 
+                <input
                   className="w-full h-12 px-4 bg-background-tertiary border border-border-default-default rounded-2xl text-text-default-default text-body-base outline-none focus:border-brand-default transition-all placeholder:text-text-default-tertiary"
-                  value={bTitle} 
-                  onChange={e => setBTitle(e.target.value)} 
-                  placeholder="Nombre del banner" 
+                  value={bTitle}
+                  onChange={e => setBTitle(e.target.value)}
+                  placeholder="Nombre del banner"
                 />
               </div>
 
               <div className="space-y-2">
                 <label className="text-body-small-strong text-text-default-secondary ml-1">URL imagen (opcional)</label>
-                <input 
+                <input
                   className="w-full h-12 px-4 bg-background-tertiary border border-border-default-default rounded-2xl text-text-default-default text-body-base outline-none focus:border-brand-default transition-all placeholder:text-text-default-tertiary"
-                  value={bImg} 
-                  onChange={e => setBImg(e.target.value)} 
-                  placeholder="https://..." 
+                  value={bImg}
+                  onChange={e => setBImg(e.target.value)}
+                  placeholder="https://..."
                 />
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
                   <label className="text-body-small-strong text-text-default-secondary ml-1">Fecha inicio</label>
-                  <input 
-                    type="datetime-local" 
+                  <input
+                    type="datetime-local"
                     className="w-full h-12 px-4 bg-background-tertiary border border-border-default-default rounded-2xl text-text-default-default text-body-base outline-none focus:border-brand-default transition-all [color-scheme:dark]"
-                    value={bStart} 
-                    onChange={e => setBStart(e.target.value)} 
+                    value={bStart}
+                    onChange={e => setBStart(e.target.value)}
                   />
                 </div>
                 <div className="space-y-2">
                   <label className="text-body-small-strong text-text-default-secondary ml-1">Fecha fin</label>
-                  <input 
-                    type="datetime-local" 
+                  <input
+                    type="datetime-local"
                     className="w-full h-12 px-4 bg-background-tertiary border border-border-default-default rounded-2xl text-text-default-default text-body-base outline-none focus:border-brand-default transition-all [color-scheme:dark]"
-                    value={bEnd} 
-                    onChange={e => setBEnd(e.target.value)} 
+                    value={bEnd}
+                    onChange={e => setBEnd(e.target.value)}
                   />
                 </div>
               </div>
 
-              <button 
-                onClick={submitBanner} 
+              <button
+                onClick={submitBanner}
                 className="w-full md:w-auto px-8 h-12 bg-brand-default text-text-brand-on rounded-2xl text-body-strong hover:bg-brand-default/90 transition-all shadow-100 active:scale-[0.98] cursor-pointer"
               >
                 Guardar banner
