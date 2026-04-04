@@ -3,18 +3,12 @@
  * Fetches active redemption codes for Genshin Impact, Honkai Star Rail
  * and Zenless Zone Zero from the hoyoverse-api fan API, then upserts
  * them into the Supabase `codes` table.
- *
- * API source: https://github.com/torikushiii/hoyoverse-api
- * Base URL:   https://hoyo.torikushi.me
- *
- * Runs via GitHub Actions every 6 hours.
  */
 
 const API_BASE = 'https://hoyo.torikushi.me'
 const SB_URL   = process.env.SUPABASE_URL
 const SB_KEY   = process.env.SUPABASE_KEY
 
-// Maps game slug used by the API → game_id used in your Supabase `games` table
 const GAMES = [
   { apiSlug: 'genshin',  gameId: 'genshin-impact'   },
   { apiSlug: 'starrail', gameId: 'honkai-star-rail'  },
@@ -22,11 +16,12 @@ const GAMES = [
 ]
 
 if (!SB_URL || !SB_KEY) {
-  console.error('Missing SUPABASE_URL or SUPABASE_KEY env vars')
+  console.error('Faltan SUPABASE_URL o SUPABASE_KEY')
   process.exit(1)
 }
 
-// ─── Supabase helpers ─────────────────────────────────────────────────────────
+console.log(`SUPABASE_URL: ${SB_URL}`)
+console.log(`SUPABASE_KEY: ${SB_KEY.slice(0, 12)}...`)
 
 function sbHeaders() {
   return {
@@ -36,107 +31,92 @@ function sbHeaders() {
   }
 }
 
-/**
- * Inserts an array of codes for one game.
- * Uses ON CONFLICT DO NOTHING via the `Prefer: resolution=ignore-duplicates`
- * header — safe to run multiple times without creating duplicates.
- */
+async function getExistingGameIds() {
+  const res = await fetch(`${SB_URL}/rest/v1/games?select=id`, { headers: sbHeaders() })
+  if (!res.ok) { console.error(`No se pudo consultar games: ${res.status}`); return [] }
+  const rows = await res.json()
+  return rows.map(r => r.id)
+}
+
 async function upsertCodes(gameId, codes) {
   if (codes.length === 0) return { inserted: 0 }
 
   const rows = codes.map(c => ({
     game_id:   gameId,
     code:      c.code.toUpperCase(),
-    rewards:   Array.isArray(c.rewards) ? c.rewards.join(', ') : c.rewards ?? null,
+    rewards:   Array.isArray(c.rewards) ? c.rewards.join(', ') : (c.rewards ?? null),
     is_active: true,
-    // expires_at is left null — the API doesn't provide expiry dates
   }))
+
+  console.log(`  Payload:`, JSON.stringify(rows))
 
   const res = await fetch(`${SB_URL}/rest/v1/codes`, {
     method:  'POST',
-    headers: {
-      ...sbHeaders(),
-      // This tells PostgREST to silently ignore rows that violate the
-      // UNIQUE(game_id, code) constraint we added to the table
-      'Prefer': 'return=representation,resolution=ignore-duplicates',
-    },
-    body: JSON.stringify(rows),
+    headers: { ...sbHeaders(), 'Prefer': 'return=representation,resolution=ignore-duplicates' },
+    body:    JSON.stringify(rows),
   })
 
-  if (!res.ok) {
-    const err = await res.text()
-    throw new Error(`Supabase insert failed for ${gameId}: ${res.status} — ${err}`)
-  }
+  const text = await res.text()
+  console.log(`  Supabase response (${res.status}):`, text.slice(0, 500))
 
-  const inserted = await res.json()
-  return { inserted: inserted.length }
+  if (!res.ok) throw new Error(`Insert failed: ${res.status} — ${text}`)
+
+  let arr = []; try { arr = JSON.parse(text) } catch {}
+  return { inserted: arr.length }
 }
 
-/**
- * Marks codes that are no longer active in the API as is_active = false.
- * Fetches all codes for a game from Supabase and compares against the
- * list of currently-active codes from the API.
- */
 async function deactivateExpiredCodes(gameId, activeCodes) {
   const activeSet = new Set(activeCodes.map(c => c.code.toUpperCase()))
-
-  // Get all codes currently marked active in Supabase for this game
-  const res = await fetch(
-    `${SB_URL}/rest/v1/codes?game_id=eq.${gameId}&is_active=eq.true&select=id,code`,
-    { headers: sbHeaders() }
-  )
-
+  const res = await fetch(`${SB_URL}/rest/v1/codes?game_id=eq.${gameId}&is_active=eq.true&select=id,code`, { headers: sbHeaders() })
   if (!res.ok) return
-
   const existing = await res.json()
-  const toDeactivate = existing.filter(row => !activeSet.has(row.code))
-
-  if (toDeactivate.length === 0) return
-
+  const toDeactivate = existing.filter(r => !activeSet.has(r.code))
+  if (!toDeactivate.length) return
   const ids = toDeactivate.map(r => r.id)
-
   await fetch(`${SB_URL}/rest/v1/codes?id=in.(${ids.join(',')})`, {
-    method:  'PATCH',
-    headers: sbHeaders(),
-    body:    JSON.stringify({ is_active: false }),
+    method: 'PATCH', headers: sbHeaders(), body: JSON.stringify({ is_active: false })
   })
-
-  console.log(`  ↳ Deactivated ${toDeactivate.length} expired code(s)`)
+  console.log(`  Desactivados ${toDeactivate.length} codigo(s)`)
 }
 
-// ─── Main ─────────────────────────────────────────────────────────────────────
-
 async function main() {
-  console.log(`\n🔄 Starting HoYoverse code ingestion — ${new Date().toISOString()}\n`)
+  console.log(`\nIniciando ingesta — ${new Date().toISOString()}\n`)
+
+  const existingIds = await getExistingGameIds()
+  console.log(`game_ids en Supabase: [${existingIds.join(', ')}]\n`)
 
   for (const { apiSlug, gameId } of GAMES) {
     console.log(`▶ ${gameId}`)
 
-    try {
-      const res = await fetch(`${API_BASE}/mihoyo/${apiSlug}/codes`)
+    if (!existingIds.includes(gameId)) {
+      console.warn(`  SKIP: "${gameId}" no existe en games. IDs disponibles: ${existingIds.join(', ')}`)
+      continue
+    }
 
-      if (!res.ok) {
-        console.warn(`  ⚠ API returned ${res.status} for ${apiSlug}, skipping`)
-        continue
-      }
+    try {
+      const apiUrl = `${API_BASE}/mihoyo/${apiSlug}/codes`
+      console.log(`  GET ${apiUrl}`)
+      const res = await fetch(apiUrl)
+      console.log(`  API status: ${res.status}`)
+
+      if (!res.ok) { console.warn(`  API error, saltando`); continue }
 
       const data = await res.json()
-      const activeCodes = data.active ?? []
+      console.log(`  API response:`, JSON.stringify(data).slice(0, 500))
 
-      console.log(`  Found ${activeCodes.length} active code(s) from API`)
+      const activeCodes = data.active ?? []
+      console.log(`  Codigos activos: ${activeCodes.length}`)
 
       const { inserted } = await upsertCodes(gameId, activeCodes)
-      console.log(`  ✓ Inserted ${inserted} new code(s) into Supabase`)
-
+      console.log(`  Insertados: ${inserted}`)
       await deactivateExpiredCodes(gameId, activeCodes)
-
     } catch (err) {
-      // Don't let one game failure stop the others
-      console.error(`  ✗ Error processing ${gameId}:`, err.message)
+      console.error(`  ERROR en ${gameId}:`, err.message)
     }
+    console.log()
   }
 
-  console.log('\n✅ Done\n')
+  console.log('Listo\n')
 }
 
 main()

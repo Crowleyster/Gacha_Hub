@@ -5,6 +5,9 @@ on:
     - cron: '0 */6 * * *'   # cada 6 horas
   workflow_dispatch:          # permite ejecutarlo manualmente desde GitHub
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   fetch-codes:
     runs-on: ubuntu-latest
@@ -16,7 +19,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24'
 
       - name: Run ingestion script
         env:
