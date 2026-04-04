@@ -176,6 +176,16 @@ function LayoutContent({ children }) {
         }
     }, [pathname]);
 
+    const isAdminMode = pathname?.startsWith('/admin');
+
+    if (isAdminMode) {
+        return (
+            <main className="w-full h-full min-h-dvh overflow-y-auto bg-background-default">
+                {children}
+            </main>
+        );
+    }
+
     return (
         <>
             <Sidebar isExpanded={isSidebarExpanded} />

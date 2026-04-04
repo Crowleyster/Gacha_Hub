@@ -29,30 +29,20 @@ export default function AdminLoginPage() {
   }
 
   return (
-    <div style={{
-      minHeight: '100vh',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      background: '#0a0a0a',
-      fontFamily: 'system-ui, sans-serif',
-    }}>
-      <div style={{
-        width: '100%',
-        maxWidth: '360px',
-        padding: '2rem',
-        background: '#111',
-        border: '1px solid #222',
-        borderRadius: '12px',
-      }}>
-        <div style={{ marginBottom: '1.5rem' }}>
-          <p style={{ fontSize: '11px', color: '#555', letterSpacing: '.1em', textTransform: 'uppercase', marginBottom: '4px' }}>Gacha Hub</p>
-          <h1 style={{ fontSize: '20px', fontWeight: 500, color: '#fff', margin: 0 }}>Panel de administración</h1>
+    <div className="min-h-dvh flex items-center justify-center bg-background-default p-6">
+      <div className="w-full max-w-sm bg-background-secondary border border-border-default-default rounded-[32px] p-8 shadow-400">
+        <div className="mb-8">
+          <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-text-default-tertiary mb-1">
+            Gacha Hub
+          </p>
+          <h1 className="text-subheading-strong text-text-default-default">
+            Panel de administración
+          </h1>
         </div>
 
-        <form onSubmit={handleSubmit}>
-          <div style={{ marginBottom: '1rem' }}>
-            <label style={{ display: 'block', fontSize: '12px', color: '#888', marginBottom: '6px' }}>
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div className="space-y-2">
+            <label className="text-body-small-strong text-text-default-secondary ml-1">
               Contraseña
             </label>
             <input
@@ -61,39 +51,19 @@ export default function AdminLoginPage() {
               onChange={e => setPassword(e.target.value)}
               autoFocus
               required
-              style={{
-                width: '100%',
-                padding: '10px 12px',
-                background: '#1a1a1a',
-                border: '1px solid #2a2a2a',
-                borderRadius: '8px',
-                color: '#fff',
-                fontSize: '14px',
-                outline: 'none',
-                boxSizing: 'border-box',
-              }}
+              placeholder="••••••••"
+              className="w-full h-12 px-4 bg-background-tertiary border border-border-default-default rounded-2xl text-text-default-default text-body-base focus:border-brand-default focus:ring-1 focus:ring-brand-default outline-none transition-all placeholder:text-text-default-tertiary"
             />
           </div>
 
           {error && (
-            <p style={{ fontSize: '13px', color: '#f87171', marginBottom: '1rem' }}>{error}</p>
+            <p className="text-body-small font-medium text-red-400 ml-1">{error}</p>
           )}
 
           <button
             type="submit"
             disabled={loading}
-            style={{
-              width: '100%',
-              padding: '10px',
-              background: '#fff',
-              color: '#000',
-              border: 'none',
-              borderRadius: '8px',
-              fontSize: '14px',
-              fontWeight: 500,
-              cursor: loading ? 'not-allowed' : 'pointer',
-              opacity: loading ? 0.6 : 1,
-            }}
+            className="w-full h-12 bg-brand-default hover:bg-brand-default/90 text-text-brand-on rounded-2xl text-body-strong transition-all shadow-100 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100"
           >
             {loading ? 'Verificando...' : 'Ingresar'}
           </button>

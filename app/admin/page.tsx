@@ -154,82 +154,88 @@ export default function AdminPage() {
     if (ok) { setBTitle(''); setBImg('') }
   }
 
-  const inputStyle: React.CSSProperties = {
-    width: '100%', padding: '9px 12px',
-    background: '#1a1a1a', border: '1px solid #2a2a2a',
-    borderRadius: '8px', color: '#fff', fontSize: '14px',
-    outline: 'none', boxSizing: 'border-box', fontFamily: 'inherit',
-  }
-  const labelStyle: React.CSSProperties = {
-    display: 'block', fontSize: '11px', color: '#666',
-    textTransform: 'uppercase', letterSpacing: '.06em',
-    marginBottom: '5px', fontWeight: 500,
-  }
-  const fieldStyle: React.CSSProperties = { display: 'flex', flexDirection: 'column', gap: '0' }
-
   return (
-    <div style={{ minHeight: '100vh', background: '#0a0a0a', color: '#fff', fontFamily: 'system-ui, sans-serif' }}>
+    <div className="min-h-screen bg-background-default text-text-default-default font-sans pb-20">
       {/* Header */}
-      <div style={{ borderBottom: '1px solid #1a1a1a', padding: '1rem 1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+      <header className="sticky top-0 z-50 bg-background-default/80 backdrop-blur-md border-b border-border-default-secondary px-6 py-4 flex items-center justify-between">
         <div>
-          <p style={{ fontSize: '11px', color: '#444', letterSpacing: '.1em', textTransform: 'uppercase', margin: '0 0 2px' }}>Gacha Hub</p>
-          <h1 style={{ fontSize: '18px', fontWeight: 500, margin: 0 }}>Panel de administración</h1>
+          <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-text-default-tertiary mb-0.5">
+            Gacha Hub
+          </p>
+          <h1 className="text-subheading-strong text-text-default-default">
+            Panel de administración
+          </h1>
         </div>
         <form action="/admin/api/logout" method="POST">
-          <button type="submit" style={{ background: 'transparent', border: '1px solid #222', borderRadius: '8px', color: '#666', fontSize: '13px', padding: '6px 14px', cursor: 'pointer' }}>
-            Salir
+          <button 
+            type="submit" 
+            className="px-4 py-2 bg-background-secondary border border-border-default-default rounded-xl text-body-small-strong text-text-default-secondary hover:text-text-default-default hover:border-text-default-tertiary transition-all cursor-pointer shadow-100"
+          >
+            Cerrar Sesión
           </button>
         </form>
-      </div>
+      </header>
 
-      <div style={{ maxWidth: '720px', margin: '0 auto', padding: '1.5rem' }}>
-        {/* Tabs */}
-        <div style={{ display: 'flex', gap: '2px', marginBottom: '1.5rem', background: '#111', border: '1px solid #1a1a1a', borderRadius: '10px', padding: '4px' }}>
-          {tabs.map(t => (
-            <button
-              key={t.id}
-              onClick={() => setActiveTab(t.id)}
-              style={{
-                flex: 1, padding: '8px', fontSize: '14px', fontWeight: 500,
-                background: activeTab === t.id ? '#fff' : 'transparent',
-                color: activeTab === t.id ? '#000' : '#555',
-                border: 'none', borderRadius: '7px', cursor: 'pointer',
-                transition: 'all .15s',
-              }}
-            >
-              {t.label}
-            </button>
-          ))}
-        </div>
+      <div className="max-w-5xl mx-auto px-6 py-8 space-y-8">
+        {/* Tabs Navigation */}
+        <nav className="p-1 bg-background-secondary border border-border-default-secondary rounded-2xl shadow-inner-200">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-1">
+            {tabs.map(t => (
+              <button
+                key={t.id}
+                onClick={() => setActiveTab(t.id)}
+                className={`
+                  px-4 py-2.5 text-body-small-strong rounded-xl transition-all cursor-pointer
+                  ${activeTab === t.id 
+                    ? 'bg-brand-default text-text-brand-on shadow-200' 
+                    : 'text-text-default-secondary hover:bg-background-tertiary hover:text-text-default-default'
+                  }
+                `}
+              >
+                {t.label}
+              </button>
+            ))}
+          </div>
+        </nav>
 
-        {/* Status bar */}
+        {/* Status Bar */}
         {status && (
-          <div style={{
-            padding: '10px 14px', borderRadius: '8px', fontSize: '13px', marginBottom: '1rem',
-            background: status.type === 'ok' ? '#0d2b1a' : status.type === 'err' ? '#2b0d0d' : '#1a1a1a',
-            color: status.type === 'ok' ? '#4ade80' : status.type === 'err' ? '#f87171' : '#888',
-            border: `1px solid ${status.type === 'ok' ? '#1a4a2a' : status.type === 'err' ? '#4a1a1a' : '#2a2a2a'}`,
-          }}>
+          <div className={`
+            px-4 py-3 rounded-2xl text-body-small-strong border flex items-center gap-3 animate-in fade-in slide-in-from-top-2 duration-300
+            ${status.type === 'ok' ? 'bg-green-500/10 text-green-400 border-green-500/20' : 
+              status.type === 'err' ? 'bg-red-500/10 text-red-400 border-red-500/20' : 
+              'bg-background-tertiary text-text-default-secondary border-border-default-default'}
+          `}>
+            {status.type === 'loading' && <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />}
             {status.msg}
           </div>
         )}
 
-        {/* Card */}
-        <div style={{ background: '#111', border: '1px solid #1a1a1a', borderRadius: '12px', padding: '1.5rem' }}>
+        {/* Main Content Area */}
+        <div className="bg-background-secondary border border-border-default-secondary rounded-[32px] p-6 md:p-8 shadow-300">
 
-          {/* NEWS */}
+
+          {/* NEWS TAB */}
           {activeTab === 'news' && (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }}>
-                <div style={fieldStyle}>
-                  <label style={labelStyle}>Juego</label>
-                  <select value={nGame} onChange={e => setNGame(e.target.value)} style={inputStyle}>
+            <div className="flex flex-col gap-8 animate-in fade-in duration-500">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <label className="text-body-small-strong text-text-default-secondary ml-1">Juego</label>
+                  <select 
+                    value={nGame} 
+                    onChange={e => setNGame(e.target.value)} 
+                    className="w-full h-12 px-4 bg-background-tertiary border border-border-default-default rounded-2xl text-text-default-default text-body-base outline-none focus:border-brand-default transition-all"
+                  >
                     {games.map(g => <option key={g.id} value={g.id}>{g.name}</option>)}
                   </select>
                 </div>
-                <div style={fieldStyle}>
-                  <label style={labelStyle}>Tipo</label>
-                  <select value={nType} onChange={e => setNType(e.target.value)} style={inputStyle}>
+                <div className="space-y-2">
+                  <label className="text-body-small-strong text-text-default-secondary ml-1">Tipo</label>
+                  <select 
+                    value={nType} 
+                    onChange={e => setNType(e.target.value)} 
+                    className="w-full h-12 px-4 bg-background-tertiary border border-border-default-default rounded-2xl text-text-default-default text-body-base outline-none focus:border-brand-default transition-all"
+                  >
                     <option value="official">Oficial</option>
                     <option value="community">Comunidad</option>
                     <option value="update">Actualización</option>
@@ -237,47 +243,88 @@ export default function AdminPage() {
                   </select>
                 </div>
               </div>
-              <div style={fieldStyle}>
-                <label style={labelStyle}>Título</label>
-                <input style={inputStyle} value={nTitle} onChange={e => setNTitle(e.target.value)} placeholder="Título de la noticia" />
+
+              <div className="space-y-2">
+                <label className="text-body-small-strong text-text-default-secondary ml-1">Título</label>
+                <input 
+                  className="w-full h-12 px-4 bg-background-tertiary border border-border-default-default rounded-2xl text-text-default-default text-body-base outline-none focus:border-brand-default transition-all placeholder:text-text-default-tertiary"
+                  value={nTitle} 
+                  onChange={e => setNTitle(e.target.value)} 
+                  placeholder="Título de la noticia" 
+                />
               </div>
-              <div style={fieldStyle}>
-                <label style={labelStyle}>URL de la noticia</label>
-                <input style={inputStyle} value={nUrl} onChange={e => setNUrl(e.target.value)} placeholder="https://..." />
+
+              <div className="space-y-2">
+                <label className="text-body-small-strong text-text-default-secondary ml-1">URL de la noticia</label>
+                <input 
+                  className="w-full h-12 px-4 bg-background-tertiary border border-border-default-default rounded-2xl text-text-default-default text-body-base outline-none focus:border-brand-default transition-all placeholder:text-text-default-tertiary"
+                  value={nUrl} 
+                  onChange={e => setNUrl(e.target.value)} 
+                  placeholder="https://..." 
+                />
               </div>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }}>
-                <div style={fieldStyle}>
-                  <label style={labelStyle}>URL de imagen (opcional)</label>
-                  <input style={inputStyle} value={nImg} onChange={e => setNImg(e.target.value)} placeholder="https://..." />
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <label className="text-body-small-strong text-text-default-secondary ml-1">URL de imagen (opcional)</label>
+                  <input 
+                    className="w-full h-12 px-4 bg-background-tertiary border border-border-default-default rounded-2xl text-text-default-default text-body-base outline-none focus:border-brand-default transition-all placeholder:text-text-default-tertiary"
+                    value={nImg} 
+                    onChange={e => setNImg(e.target.value)} 
+                    placeholder="https://..." 
+                  />
                 </div>
-                <div style={fieldStyle}>
-                  <label style={labelStyle}>Fuente</label>
-                  <input style={inputStyle} value={nSource} onChange={e => setNSource(e.target.value)} placeholder="Reddit, sitio oficial..." />
+                <div className="space-y-2">
+                  <label className="text-body-small-strong text-text-default-secondary ml-1">Fuente</label>
+                  <input 
+                    className="w-full h-12 px-4 bg-background-tertiary border border-border-default-default rounded-2xl text-text-default-default text-body-base outline-none focus:border-brand-default transition-all placeholder:text-text-default-tertiary"
+                    value={nSource} 
+                    onChange={e => setNSource(e.target.value)} 
+                    placeholder="Reddit, sitio oficial..." 
+                  />
                 </div>
               </div>
-              <div style={fieldStyle}>
-                <label style={labelStyle}>Fecha de publicación</label>
-                <input type="datetime-local" style={inputStyle} value={nDate} onChange={e => setNDate(e.target.value)} />
+
+              <div className="space-y-2">
+                <label className="text-body-small-strong text-text-default-secondary ml-1">Fecha de publicación</label>
+                <input 
+                  type="datetime-local" 
+                  className="w-full h-12 px-4 bg-background-tertiary border border-border-default-default rounded-2xl text-text-default-default text-body-base outline-none focus:border-brand-default transition-all [color-scheme:dark]"
+                  value={nDate} 
+                  onChange={e => setNDate(e.target.value)} 
+                />
               </div>
-              <button onClick={submitNews} style={{ padding: '10px 20px', background: '#fff', color: '#000', border: 'none', borderRadius: '8px', fontSize: '14px', fontWeight: 500, cursor: 'pointer', alignSelf: 'flex-start' }}>
+
+              <button 
+                onClick={submitNews} 
+                className="w-full md:w-auto px-8 h-12 bg-brand-default text-text-brand-on rounded-2xl text-body-strong hover:bg-brand-default/90 transition-all shadow-100 active:scale-[0.98] cursor-pointer"
+              >
                 Guardar noticia
               </button>
             </div>
           )}
 
-          {/* EVENTS */}
+          {/* EVENTS TAB */}
           {activeTab === 'events' && (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '14px' }}>
-                <div style={fieldStyle}>
-                  <label style={labelStyle}>Juego</label>
-                  <select value={eGame} onChange={e => setEGame(e.target.value)} style={inputStyle}>
+            <div className="flex flex-col gap-8 animate-in fade-in duration-500">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                <div className="space-y-2">
+                  <label className="text-body-small-strong text-text-default-secondary ml-1">Juego</label>
+                  <select 
+                    value={eGame} 
+                    onChange={e => setEGame(e.target.value)} 
+                    className="w-full h-12 px-4 bg-background-tertiary border border-border-default-default rounded-2xl text-text-default-default text-body-base outline-none focus:border-brand-default transition-all"
+                  >
                     {games.map(g => <option key={g.id} value={g.id}>{g.name}</option>)}
                   </select>
                 </div>
-                <div style={fieldStyle}>
-                  <label style={labelStyle}>Tipo</label>
-                  <select value={eType} onChange={e => setEType(e.target.value)} style={inputStyle}>
+                <div className="space-y-2">
+                  <label className="text-body-small-strong text-text-default-secondary ml-1">Tipo</label>
+                  <select 
+                    value={eType} 
+                    onChange={e => setEType(e.target.value)} 
+                    className="w-full h-12 px-4 bg-background-tertiary border border-border-default-default rounded-2xl text-text-default-default text-body-base outline-none focus:border-brand-default transition-all"
+                  >
                     <option value="story">Historia</option>
                     <option value="limited">Limitado</option>
                     <option value="collab">Colaboración</option>
@@ -286,83 +333,149 @@ export default function AdminPage() {
                     <option value="other">Otro</option>
                   </select>
                 </div>
-                <div style={fieldStyle}>
-                  <label style={labelStyle}>Categoría</label>
-                  <select value={eCategory} onChange={e => setECategory(e.target.value)} style={inputStyle}>
+                <div className="space-y-2">
+                  <label className="text-body-small-strong text-text-default-secondary ml-1">Categoría</label>
+                  <select 
+                    value={eCategory} 
+                    onChange={e => setECategory(e.target.value)} 
+                    className="w-full h-12 px-4 bg-background-tertiary border border-border-default-default rounded-2xl text-text-default-default text-body-base outline-none focus:border-brand-default transition-all"
+                  >
                     <option value="in-game">In-game</option>
                     <option value="community">Comunidad</option>
                     <option value="real-world">Real world</option>
                   </select>
                 </div>
               </div>
-              <div style={fieldStyle}>
-                <label style={labelStyle}>Título</label>
-                <input style={inputStyle} value={eTitle} onChange={e => setETitle(e.target.value)} placeholder="Nombre del evento" />
+
+              <div className="space-y-2">
+                <label className="text-body-small-strong text-text-default-secondary ml-1">Título</label>
+                <input 
+                  className="w-full h-12 px-4 bg-background-tertiary border border-border-default-default rounded-2xl text-text-default-default text-body-base outline-none focus:border-brand-default transition-all placeholder:text-text-default-tertiary"
+                  value={eTitle} 
+                  onChange={e => setETitle(e.target.value)} 
+                  placeholder="Nombre del evento" 
+                />
               </div>
-              <div style={fieldStyle}>
-                <label style={labelStyle}>Descripción (opcional)</label>
-                <textarea style={{ ...inputStyle, resize: 'vertical', minHeight: '80px' }} value={eDesc} onChange={e => setEDesc(e.target.value)} placeholder="Descripción breve..." />
+
+              <div className="space-y-2">
+                <label className="text-body-small-strong text-text-default-secondary ml-1">Descripción (opcional)</label>
+                <textarea 
+                  className="w-full px-4 py-3 bg-background-tertiary border border-border-default-default rounded-2xl text-text-default-default text-body-base outline-none focus:border-brand-default transition-all placeholder:text-text-default-tertiary resize-none min-h-[120px]"
+                  value={eDesc} 
+                  onChange={e => setEDesc(e.target.value)} 
+                  placeholder="Descripción breve..." 
+                />
               </div>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }}>
-                <div style={fieldStyle}>
-                  <label style={labelStyle}>Fecha inicio</label>
-                  <input type="datetime-local" style={inputStyle} value={eStart} onChange={e => setEStart(e.target.value)} />
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <label className="text-body-small-strong text-text-default-secondary ml-1">Fecha inicio</label>
+                  <input 
+                    type="datetime-local" 
+                    className="w-full h-12 px-4 bg-background-tertiary border border-border-default-default rounded-2xl text-text-default-default text-body-base outline-none focus:border-brand-default transition-all [color-scheme:dark]"
+                    value={eStart} 
+                    onChange={e => setEStart(e.target.value)} 
+                  />
                 </div>
-                <div style={fieldStyle}>
-                  <label style={labelStyle}>Fecha fin</label>
-                  <input type="datetime-local" style={inputStyle} value={eEnd} onChange={e => setEEnd(e.target.value)} />
+                <div className="space-y-2">
+                  <label className="text-body-small-strong text-text-default-secondary ml-1">Fecha fin</label>
+                  <input 
+                    type="datetime-local" 
+                    className="w-full h-12 px-4 bg-background-tertiary border border-border-default-default rounded-2xl text-text-default-default text-body-base outline-none focus:border-brand-default transition-all [color-scheme:dark]"
+                    value={eEnd} 
+                    onChange={e => setEEnd(e.target.value)} 
+                  />
                 </div>
               </div>
-              <button onClick={submitEvent} style={{ padding: '10px 20px', background: '#fff', color: '#000', border: 'none', borderRadius: '8px', fontSize: '14px', fontWeight: 500, cursor: 'pointer', alignSelf: 'flex-start' }}>
+
+              <button 
+                onClick={submitEvent} 
+                className="w-full md:w-auto px-8 h-12 bg-brand-default text-text-brand-on rounded-2xl text-body-strong hover:bg-brand-default/90 transition-all shadow-100 active:scale-[0.98] cursor-pointer"
+              >
                 Guardar evento
               </button>
             </div>
           )}
 
-          {/* CODES */}
+          {/* CODES TAB */}
           {activeTab === 'codes' && (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }}>
-                <div style={fieldStyle}>
-                  <label style={labelStyle}>Juego</label>
-                  <select value={cGame} onChange={e => setCGame(e.target.value)} style={inputStyle}>
+            <div className="flex flex-col gap-8 animate-in fade-in duration-500">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <label className="text-body-small-strong text-text-default-secondary ml-1">Juego</label>
+                  <select 
+                    value={cGame} 
+                    onChange={e => setCGame(e.target.value)} 
+                    className="w-full h-12 px-4 bg-background-tertiary border border-border-default-default rounded-2xl text-text-default-default text-body-base outline-none focus:border-brand-default transition-all"
+                  >
                     {games.map(g => <option key={g.id} value={g.id}>{g.name}</option>)}
                   </select>
                 </div>
-                <div style={fieldStyle}>
-                  <label style={labelStyle}>Código</label>
-                  <input style={{ ...inputStyle, fontFamily: 'monospace', textTransform: 'uppercase' }} value={cCode} onChange={e => setCCode(e.target.value)} placeholder="NIKKE2024ABC" />
+                <div className="space-y-2">
+                  <label className="text-body-small-strong text-text-default-secondary ml-1">Código</label>
+                  <input 
+                    className="w-full h-12 px-4 bg-background-tertiary border border-border-default-default rounded-2xl text-text-default-default text-body-code outline-none focus:border-brand-default transition-all placeholder:text-text-default-tertiary uppercase"
+                    value={cCode} 
+                    onChange={e => setCCode(e.target.value)} 
+                    placeholder="NIKKE2024ABC" 
+                  />
                 </div>
               </div>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }}>
-                <div style={fieldStyle}>
-                  <label style={labelStyle}>Recompensas</label>
-                  <input style={inputStyle} value={cRewards} onChange={e => setCRewards(e.target.value)} placeholder="100 gemas, 3 tickets..." />
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <label className="text-body-small-strong text-text-default-secondary ml-1">Recompensas</label>
+                  <input 
+                    className="w-full h-12 px-4 bg-background-tertiary border border-border-default-default rounded-2xl text-text-default-default text-body-base outline-none focus:border-brand-default transition-all placeholder:text-text-default-tertiary"
+                    value={cRewards} 
+                    onChange={e => setCRewards(e.target.value)} 
+                    placeholder="100 gemas, 3 tickets..." 
+                  />
                 </div>
-                <div style={fieldStyle}>
-                  <label style={labelStyle}>Expira (dejar vacío si no se sabe)</label>
-                  <input type="datetime-local" style={inputStyle} value={cExp} onChange={e => setCExp(e.target.value)} />
+                <div className="space-y-2">
+                  <label className="text-body-small-strong text-text-default-secondary ml-1 relative">
+                    Expira
+                    <span className="text-[9px] font-normal lowercase ml-2 text-text-default-tertiary">opcional</span>
+                  </label>
+                  <input 
+                    type="datetime-local" 
+                    className="w-full h-12 px-4 bg-background-tertiary border border-border-default-default rounded-2xl text-text-default-default text-body-base outline-none focus:border-brand-default transition-all [color-scheme:dark]"
+                    value={cExp} 
+                    onChange={e => setCExp(e.target.value)} 
+                  />
                 </div>
               </div>
-              <button onClick={submitCode} style={{ padding: '10px 20px', background: '#fff', color: '#000', border: 'none', borderRadius: '8px', fontSize: '14px', fontWeight: 500, cursor: 'pointer', alignSelf: 'flex-start' }}>
+
+              <button 
+                onClick={submitCode} 
+                className="w-full md:w-auto px-8 h-12 bg-brand-default text-text-brand-on rounded-2xl text-body-strong hover:bg-brand-default/90 transition-all shadow-100 active:scale-[0.98] cursor-pointer"
+              >
                 Guardar código
               </button>
             </div>
           )}
 
-          {/* BANNERS */}
+          {/* BANNERS TAB */}
           {activeTab === 'banners' && (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }}>
-                <div style={fieldStyle}>
-                  <label style={labelStyle}>Juego</label>
-                  <select value={bGame} onChange={e => setBGame(e.target.value)} style={inputStyle}>
+            <div className="flex flex-col gap-8 animate-in fade-in duration-500">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <label className="text-body-small-strong text-text-default-secondary ml-1">Juego</label>
+                  <select 
+                    value={bGame} 
+                    onChange={e => setBGame(e.target.value)} 
+                    className="w-full h-12 px-4 bg-background-tertiary border border-border-default-default rounded-2xl text-text-default-default text-body-base outline-none focus:border-brand-default transition-all"
+                  >
                     {games.map(g => <option key={g.id} value={g.id}>{g.name}</option>)}
                   </select>
                 </div>
-                <div style={fieldStyle}>
-                  <label style={labelStyle}>Tipo</label>
-                  <select value={bType} onChange={e => setBType(e.target.value)} style={inputStyle}>
+                <div className="space-y-2">
+                  <label className="text-body-small-strong text-text-default-secondary ml-1">Tipo</label>
+                  <select 
+                    value={bType} 
+                    onChange={e => setBType(e.target.value)} 
+                    className="w-full h-12 px-4 bg-background-tertiary border border-border-default-default rounded-2xl text-text-default-default text-body-base outline-none focus:border-brand-default transition-all"
+                  >
                     <option value="character">Personaje</option>
                     <option value="weapon">Arma</option>
                     <option value="standard">Estándar</option>
@@ -370,25 +483,52 @@ export default function AdminPage() {
                   </select>
                 </div>
               </div>
-              <div style={fieldStyle}>
-                <label style={labelStyle}>Título</label>
-                <input style={inputStyle} value={bTitle} onChange={e => setBTitle(e.target.value)} placeholder="Nombre del banner" />
+
+              <div className="space-y-2">
+                <label className="text-body-small-strong text-text-default-secondary ml-1">Título</label>
+                <input 
+                  className="w-full h-12 px-4 bg-background-tertiary border border-border-default-default rounded-2xl text-text-default-default text-body-base outline-none focus:border-brand-default transition-all placeholder:text-text-default-tertiary"
+                  value={bTitle} 
+                  onChange={e => setBTitle(e.target.value)} 
+                  placeholder="Nombre del banner" 
+                />
               </div>
-              <div style={fieldStyle}>
-                <label style={labelStyle}>URL imagen (opcional)</label>
-                <input style={inputStyle} value={bImg} onChange={e => setBImg(e.target.value)} placeholder="https://..." />
+
+              <div className="space-y-2">
+                <label className="text-body-small-strong text-text-default-secondary ml-1">URL imagen (opcional)</label>
+                <input 
+                  className="w-full h-12 px-4 bg-background-tertiary border border-border-default-default rounded-2xl text-text-default-default text-body-base outline-none focus:border-brand-default transition-all placeholder:text-text-default-tertiary"
+                  value={bImg} 
+                  onChange={e => setBImg(e.target.value)} 
+                  placeholder="https://..." 
+                />
               </div>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }}>
-                <div style={fieldStyle}>
-                  <label style={labelStyle}>Fecha inicio</label>
-                  <input type="datetime-local" style={inputStyle} value={bStart} onChange={e => setBStart(e.target.value)} />
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <label className="text-body-small-strong text-text-default-secondary ml-1">Fecha inicio</label>
+                  <input 
+                    type="datetime-local" 
+                    className="w-full h-12 px-4 bg-background-tertiary border border-border-default-default rounded-2xl text-text-default-default text-body-base outline-none focus:border-brand-default transition-all [color-scheme:dark]"
+                    value={bStart} 
+                    onChange={e => setBStart(e.target.value)} 
+                  />
                 </div>
-                <div style={fieldStyle}>
-                  <label style={labelStyle}>Fecha fin</label>
-                  <input type="datetime-local" style={inputStyle} value={bEnd} onChange={e => setBEnd(e.target.value)} />
+                <div className="space-y-2">
+                  <label className="text-body-small-strong text-text-default-secondary ml-1">Fecha fin</label>
+                  <input 
+                    type="datetime-local" 
+                    className="w-full h-12 px-4 bg-background-tertiary border border-border-default-default rounded-2xl text-text-default-default text-body-base outline-none focus:border-brand-default transition-all [color-scheme:dark]"
+                    value={bEnd} 
+                    onChange={e => setBEnd(e.target.value)} 
+                  />
                 </div>
               </div>
-              <button onClick={submitBanner} style={{ padding: '10px 20px', background: '#fff', color: '#000', border: 'none', borderRadius: '8px', fontSize: '14px', fontWeight: 500, cursor: 'pointer', alignSelf: 'flex-start' }}>
+
+              <button 
+                onClick={submitBanner} 
+                className="w-full md:w-auto px-8 h-12 bg-brand-default text-text-brand-on rounded-2xl text-body-strong hover:bg-brand-default/90 transition-all shadow-100 active:scale-[0.98] cursor-pointer"
+              >
                 Guardar banner
               </button>
             </div>
@@ -398,3 +538,4 @@ export default function AdminPage() {
     </div>
   )
 }
+
